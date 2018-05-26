@@ -75,4 +75,11 @@ export class AdminService {
     return 0;
   };
 
+
+  isUserAuthorized(corporateID:string) :boolean {
+    if(corporateID === '123456'){
+      return false;
+    }
+    else return true;
+  }
 }

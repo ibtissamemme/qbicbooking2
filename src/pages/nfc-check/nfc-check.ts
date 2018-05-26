@@ -1,5 +1,7 @@
+import { AdminPage } from './../admin/admin';
+import { AdminService } from './../../services/admin.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { NFC, Ndef } from '@ionic-native/nfc';
 
 /**
@@ -23,7 +25,7 @@ export class NfcCheckPage {
 
   code: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private nfc: NFC, private ndef: Ndef, private platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private nfc: NFC, private ndef: Ndef, private platform: Platform, private adminService: AdminService, private alertCtrl: AlertController) {
     let platforms = this.platform.platforms();
 
     this.platformList = platforms.join(', ');
@@ -53,8 +55,19 @@ export class NfcCheckPage {
 
   }
 
-  onPinSubmit(pinCode:string){
+  onPinSubmit(pinCode: string) {
     console.log(pinCode);
+    if (this.adminService.isUserAuthorized(pinCode)) {
+      this.navCtrl.push(AdminPage);
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: 'Non authorisé',
+        subTitle: "Vous n'êtes pas authorisé à accèder à l'administration",
+        buttons: ['retour']
+      });
+      alert.present();
+    }
 
   }
 
