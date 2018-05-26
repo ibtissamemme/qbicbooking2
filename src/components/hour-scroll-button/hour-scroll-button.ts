@@ -1,16 +1,12 @@
 import { States } from './../../app/shared/meeting';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import * as moment from "moment";
 
-/**
- * Generated class for the HourScrollButtonComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+
 @Component({
   selector: "hour-scroll-button",
-  templateUrl: "hour-scroll-button.html"
+  templateUrl: "hour-scroll-button.html",
+  encapsulation: ViewEncapsulation.None
 })
 export class HourScrollButtonComponent {
    @Input() date: moment.Moment;

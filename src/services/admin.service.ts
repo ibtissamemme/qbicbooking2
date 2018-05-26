@@ -26,7 +26,7 @@ export class AdminService {
 
   }
 
-  setSelectedSite(site: Site): Room[]{
+  setSelectedSite(site: Site): Room[] {
     let rooms: Room[] = [];
     this.selectedSite = site;
 
@@ -47,12 +47,15 @@ export class AdminService {
   }
 
   // makes a call to get meetings based on the selected room
-  refreshMeetings(): MeetingList{
-    this.gesroomService.getMeetings(this.selectedRoom).then(data => {
-      this.meetingList = data.json();
-      console.log('meetings:' + this.meetingList);
-    });
-    return this.meetingList;
+  refreshMeetings(): MeetingList {
+    if (this.selectedRoom != null) {
+
+      this.gesroomService.getMeetings(this.selectedRoom).then(data => {
+        this.meetingList = data.json();
+        console.log('meetings:' + this.meetingList);
+      });
+      return this.meetingList;
+    }
   }
 
 
@@ -64,7 +67,7 @@ export class AdminService {
 
 
   //ugly but...
-  roomCompare = (a:object,b:object) => {
+  roomCompare = (a: object, b: object) => {
     if (a['name'] < b["name"])
       return -1;
     if (a["name"] > b["name"])

@@ -21,6 +21,8 @@ export class NfcCheckPage {
   platformList: string = '';
   isApp: boolean = true;
 
+  code: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private nfc: NFC, private ndef: Ndef, private platform: Platform) {
     let platforms = this.platform.platforms();
 
@@ -51,6 +53,9 @@ export class NfcCheckPage {
 
   }
 
+  onPinSubmit(pinCode:string){
+    console.log(pinCode);
 
+  }
 
 }

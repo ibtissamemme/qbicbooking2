@@ -1,0 +1,65 @@
+<div class="pincode-wrapper" [class.hide-toolbar]="d.hideToolbar">
+  <div class="pincode-input">
+    <ion-grid class="pincode-input-grid">
+      <ion-row class="pincode-input-row">
+        <ion-col *ngFor="let item of codeArr; let i = index">
+          <span *ngIf="!d.visibility || (!isNum(codeArr[i]))" class="obscured" [class.filling]="isNum(codeArr[i])"></span>
+          <span *ngIf="d.visibility" class="code">{{item}}</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div class="pincode-button-wrapper">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(1)">1</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(2)">2</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(3)">3</button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(4)">4</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(5)">5</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(6)">6</button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(7)">7</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(8)">8</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(9)">9</button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="light" icon-only (click)="restoreClick()">
+            <ion-icon ios="ios-refresh" name="md-refresh"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" (click)="numClick(0)">0</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="light" icon-only (click)="delClick()">
+            <ion-icon ios="ios-backspace" name="md-backspace"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
+<button ion-button (click)="onSumbit()">Valider</button>

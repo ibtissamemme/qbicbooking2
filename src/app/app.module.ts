@@ -1,3 +1,4 @@
+
 import { NfcCheckPage } from './../pages/nfc-check/nfc-check';
 import { AdminPage } from './../pages/admin/admin';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,7 +20,6 @@ import { AdminService } from '../services/admin.service';
 import { ComponentsModule } from './../components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage';
-import { HourScrollButtonComponent } from './../components/hour-scroll-button/hour-scroll-button';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,6 @@ import { HourScrollButtonComponent } from './../components/hour-scroll-button/ho
     HomePage,
     AdminPage,
     NfcCheckPage,
-
   ],
   imports: [
     HttpModule,
