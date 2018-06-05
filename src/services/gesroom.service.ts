@@ -36,11 +36,17 @@ export class GesroomService {
   getSites() {
     return this.http.get(this.host + "/sites", this.setHeaders()).toPromise();
   }
-
+  getSitesObs() {
+    return this.http.get(this.host + "/sites", this.setHeaders());
+  }
   getRooms(site: Site) {
     return this.http
       .get(this.host + "/" + site.Id + "/rooms", this.setHeaders())
       .toPromise();
+    }
+  getRoomsIbs(site: Site) {
+    return this.http
+      .get(this.host + "/" + site.Id + "/rooms", this.setHeaders());
     }
 
     getMeetings(room: Room){

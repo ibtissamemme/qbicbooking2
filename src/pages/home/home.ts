@@ -1,11 +1,13 @@
 import { NfcCheckPage } from './../nfc-check/nfc-check';
-import { MeetingList } from './../../app/shared/meetingList';
+import { MeetingList } from 'app/shared/meetingList';
+import { Meeting } from 'app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
 import { Component } from "@angular/core";
 import { NavController } from "ionic-angular";
 import * as moment from "moment";
-import { AdminPage } from "../admin/admin";
 import { Room } from 'app/shared/room';
+import { Observable } from 'rxjs/Observable';
+
 
 @Component({
   selector: "page-home",
@@ -26,6 +28,9 @@ export class HomePage {
 
   // declaration in order to force label change in the header
   selectedRoom: Room;
+
+  //test with observable
+  selectedRoom$: Observable<Room>;
 
   meetingList: MeetingList;
 
@@ -59,35 +64,51 @@ export class HomePage {
     }
 
     // get selected room
-    this.selectedRoom = this.adminService.selectedRoom;
+    this.adminService.selectedRoom$.subscribe((data) => {
+      if (!data) {
+        return console.error('no data');
+      }
+      console.log("admin obs room : " + data.name);
+      this.selectedRoom = data;
 
+    });
     // start the refresh loop
-    this.refreshLoop=setInterval(() => this.refresh(), 1000);
+    this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
 
 
-  updateHourScroll(){
+  updateHourScroll() {
 
   }
 
 
   // refreshes the data on screen based on time
   refresh() {
+    console.log('refresh');
+
     this.headerTime = moment();
     //refresh the meetings
-    this.meetingList = this.adminService.refreshMeetings();
+    this.adminService.refreshMeetings().then( (meetings) => {
+      this.meetingList = meetings;
+
+    });
   }
 
 
   // go to admin panel
   onAdminClicked() {
-
-    // stop the refresh
-    clearInterval(this.refreshLoop);
-
-   // this.navCtrl.push(AdminPage);
+    // this.navCtrl.push(AdminPage);
     this.navCtrl.push(NfcCheckPage);
   }
 
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave');
+    // stop the refresh
+    clearInterval(this.refreshLoop);
+  }
 
+  ngOnDestroy() {
+    // stop the refresh
+    clearInterval(this.refreshLoop);
+  }
 }

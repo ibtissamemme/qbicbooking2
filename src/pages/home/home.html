@@ -10,6 +10,9 @@
         <ion-col text-center>
           {{ this.selectedRoom?.name }}
         </ion-col>
+        <ion-col text-center *ngIf="selectedRoom$ | async as room">
+          {{ room.name }}
+        </ion-col>
         <ion-col text-right>
           {{ this.headerTime.format('LTS') }}
         </ion-col>
@@ -25,15 +28,11 @@
 
 <ion-footer>
   <ion-navbar>
-    <ion-grid>
+    <ion-grid class="scroll">
       <ion-row nowrap>
+
         <ion-col text-center *ngFor="let dadate of dateArray">
           <hour-scroll-button [date]="dadate"></hour-scroll-button>
-
-          <button ion-button block >
-            {{ dadate.format('LT') }}
-            <!-- <ion-datetime displayFormat="HH:mm"> </ion-datetime> -->
-          </button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -1,4 +1,3 @@
-import { PincodeOpt } from './pincode-input/pincode-options';
 import { NgModule } from '@angular/core';
 import { HourScrollButtonComponent } from './hour-scroll-button/hour-scroll-button';
 import { PincodeInputComponent } from './pincode-input/pincode-input';

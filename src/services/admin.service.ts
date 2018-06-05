@@ -4,55 +4,86 @@ import { Injectable } from '@angular/core';
 import { Site } from 'app/shared/site';
 import { Room } from 'app/shared/room';
 import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
 export class AdminService {
   meetingList: MeetingList;
   selectedSite: Site;
-  selectedRoom: Room;
+
+  private selectedRoomObs: BehaviorSubject<Room>;
+  get selectedRoom$(): Observable<Room> {
+    return this.selectedRoomObs.asObservable();
+  };
+
+  private selectedSiteObs: BehaviorSubject<Site>;
+  get selectedSite$(): Observable<Site> {
+    return this.selectedSiteObs.asObservable();
+  };
+
 
   constructor(private storage: Storage, private gesroomService: GesroomService) {
+    this.selectedSiteObs = new BehaviorSubject(undefined);
+    this.selectedRoomObs = new BehaviorSubject(undefined);
+    this.meetingList = new MeetingList();
+
     this.storage.get('selectedSite').then((data) => {
-      console.log('selectedSite Storage : ' + data);
-      if (data != null)
-        this.selectedSite = JSON.parse(data);
-    });
+      if (!data) {
+      return console.log('selectedSite Storage : no data');
+      }
+      console.log('selectedRoom Storage : ' + data);
+      let _selectedSite: Site = JSON.parse(data);
+      this.selectedSiteObs.next(_selectedSite);
+    }
+    );
+
 
     this.storage.get('selectedRoom').then((data) => {
-      if (data != null)
-        this.selectedRoom = JSON.parse(data);
-    });
+      if (!data) {
+        return console.log('selectedRoom Storage : no data');
+      }
+      console.log('selectedRoom Storage : ' + data);
+      let _selectedRoom: Room = JSON.parse(data);
+      this.selectedRoomObs.next(_selectedRoom);
+    }
+    );
 
   }
 
-  setSelectedSite(site: Site): Room[] {
+  setSelectedSite(site: Site) {
     let rooms: Room[] = [];
     this.selectedSite = site;
 
-    this.gesroomService.getRooms(this.selectedSite).then(data => {
-      console.log('Rooms:' + data.json());
-      // ugly but couldn't figure a correct way to do it
-      rooms = data.json().sort(this.roomCompare);
-    });
+    // push to all
+    this.selectedSiteObs.next(site);
     this.setToStorage('selectedSite', this.selectedSite);
-    return rooms;
+    console.log("set to storage SITE => "+ this.selectedSite.name);
+
+    // this.gesroomService.getRooms(this.selectedSite).then(data => {
+    //   // ugly but couldn't figure a correct way to do it
+    //   rooms = data.json().sort((a, b) => a.name.localeCompare(b.name));
+    // });
+
+    // return rooms;
   }
 
 
   setSelectedRoom(room: Room) {
-    this.selectedRoom = room;
+    this.selectedRoomObs.next(room);
     this.refreshMeetings();
-    this.setToStorage('selectedRoom', this.selectedRoom);
+    this.setToStorage('selectedRoom', room);
+    console.log("set to storage ROOM => "+ room.name);
   }
 
   // makes a call to get meetings based on the selected room
-  refreshMeetings(): MeetingList {
-    if (this.selectedRoom != null) {
+  async refreshMeetings(): Promise<MeetingList> {
+    if (this.selectedRoomObs.getValue() !== null) {
 
-      this.gesroomService.getMeetings(this.selectedRoom).then(data => {
-        this.meetingList = data.json();
-        console.log('meetings:' + this.meetingList);
+      await this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
+        this.meetingList.meetingList = data.json();
+        console.log('meetings:' + this.meetingList.meetingList);
       });
       return this.meetingList;
     }
@@ -67,17 +98,13 @@ export class AdminService {
 
 
   //ugly but...
-  roomCompare = (a: object, b: object) => {
-    if (a['name'] < b["name"])
-      return -1;
-    if (a["name"] > b["name"])
-      return 1;
-    return 0;
+  roomCompare = (a: Room, b: Room) => {
+    a.name.localeCompare(b.name);
   };
 
 
-  isUserAuthorized(corporateID:string) :boolean {
-    if(corporateID === '123456'){
+  isUserAuthorized(corporateID: string): boolean {
+    if (corporateID === '123456') {
       return false;
     }
     else return true;
