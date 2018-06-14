@@ -50,8 +50,12 @@ export class GesroomService {
     }
 
     getMeetings(room: Room){
-      return this.http
+      if(room){
+
+        return this.http
         .get(this.host + "/room_schedule/" + room.Id, this.setHeaders())
         .toPromise();
-  }
+      }
+    else return null;
+    }
 }

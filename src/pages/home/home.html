@@ -32,7 +32,7 @@
       <ion-row nowrap>
 
         <ion-col text-center *ngFor="let dadate of dateArray">
-          <hour-scroll-button [date]="dadate"></hour-scroll-button>
+          <hour-scroll-button [date]="dadate" [state]=" getButtonState(dadate) "></hour-scroll-button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -17,14 +17,14 @@
         <ion-item>
           <ion-label>Sites</ion-label>
           <ion-select [(ngModel)]="this.selectedSite" (ionChange)="onSiteChange()"  [compareWith]="compareSite">
-            <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite.Id===sisite.Id" [value]="sisite">{{ sisite.name }}</ion-option>
+            <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite?.Id===sisite.Id" [value]="sisite">{{ sisite.name }}</ion-option>
           </ion-select>
         </ion-item>
 
         <ion-item>
           <ion-label>Rooms</ion-label>
           <ion-select  [(ngModel)]="this.selectedRoom"  (ionChange)="onRoomChange()"  [compareWith]="compareRoom">
-            <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom.Id===room.Id" [value]="room">{{ room.name }}</ion-option>
+            <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom?.Id===room.Id" [value]="room">{{ room.name }}</ion-option>
           </ion-select>
         </ion-item>
       </ion-col>

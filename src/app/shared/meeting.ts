@@ -33,8 +33,8 @@ export class Meeting {
     this.meetingDescription = meetingDescription;
     this.meetingType = meetingType;
     this.meetingStatus = meetingStatus;
-    this.startDateTime = startDateTime;
-    this.endDateTime = endDateTime;
+    this.startDateTime = moment(startDateTime);
+    this.endDateTime = moment(endDateTime);
     this.owner = owner;
     this.room = room;
     this.meetingReference = meetingReference;

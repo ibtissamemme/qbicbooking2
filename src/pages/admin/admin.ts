@@ -46,16 +46,18 @@ export class AdminPage {
         }
         this.selectedSite = data;
       })
-    }).then(() =>
+    }).then(() =>{
+      if(this.selectedSite){
+        // get room list
+        this.gesroomService.getRooms(this.selectedSite).then(data => {
+          if (!data) {
+            return console.log('no selected room data');
+          }
 
-      // get room list
-      this.gesroomService.getRooms(this.selectedSite).then(data => {
-        if (!data) {
-          return console.log('no selected room data');
-        }
-
-        this.rooms = data.json();
-      })
+          this.rooms = data.json();
+        });
+      }
+    }
     );
 
     // get selected room
@@ -81,8 +83,10 @@ export class AdminPage {
 
   onConfirmClicked() {
     // set and store
-    this.adminService.setSelectedSite(this.selectedSite);
-    this.adminService.setSelectedRoom(this.selectedRoom);
+    if(this.selectedSite)
+      this.adminService.setSelectedSite(this.selectedSite);
+    if(this.selectedRoom)
+      this.adminService.setSelectedRoom(this.selectedRoom);
     // go back to the root page
     this.navCtrl.popToRoot();
   }

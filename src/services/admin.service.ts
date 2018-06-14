@@ -1,5 +1,5 @@
 import { GesroomService } from './gesroom.service';
-import { MeetingList } from 'app/shared/meetingList';
+import { MeetingList } from '../../src/app/shared/meetingList';
 import { Injectable } from '@angular/core';
 import { Site } from 'app/shared/site';
 import { Room } from 'app/shared/room';
@@ -12,6 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class AdminService {
   meetingList: MeetingList;
   selectedSite: Site;
+  hourScrollInterval: number = 15;
 
   private selectedRoomObs: BehaviorSubject<Room>;
   get selectedRoom$(): Observable<Room> {
@@ -23,10 +24,16 @@ export class AdminService {
     return this.selectedSiteObs.asObservable();
   };
 
+  private meetingListObs: BehaviorSubject<MeetingList>;
+  get meetingList$(): Observable<MeetingList> {
+    return this.meetingListObs.asObservable();
+  };
+
 
   constructor(private storage: Storage, private gesroomService: GesroomService) {
     this.selectedSiteObs = new BehaviorSubject(undefined);
     this.selectedRoomObs = new BehaviorSubject(undefined);
+    this.meetingListObs = new BehaviorSubject(undefined);
     this.meetingList = new MeetingList();
 
     this.storage.get('selectedSite').then((data) => {
@@ -79,12 +86,19 @@ export class AdminService {
 
   // makes a call to get meetings based on the selected room
   async refreshMeetings(): Promise<MeetingList> {
-    if (this.selectedRoomObs.getValue() !== null) {
+    if (this.selectedRoomObs.getValue()) {
 
       await this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
-        this.meetingList.meetingList = data.json();
-        console.log('meetings:' + this.meetingList.meetingList);
+        if(data){
+          this.meetingList.meetingList = data.json();
+          this.meetingList.sort();
+          this.meetingListObs.next(this.meetingList);
+
+          console.log('meetings:' );
+          console.table( this.meetingList.meetingList);
+        }
       });
+      this.meetingList.sort();
       return this.meetingList;
     }
   }
