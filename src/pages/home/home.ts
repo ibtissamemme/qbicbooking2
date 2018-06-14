@@ -37,6 +37,7 @@ export class HomePage {
   selectedRoom$: Observable<Room>;
 
   meetingList: MeetingList;
+  currentMeeting: Meeting;
 
   // control of the refresh loop
   refreshLoop: any;
@@ -81,10 +82,10 @@ export class HomePage {
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
-
+      this.refresh();
     });
     // start the refresh loop
-   // this.updateMeetingScrollList();
+    // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
 
@@ -98,34 +99,33 @@ export class HomePage {
     //refresh the meetings
     this.adminService.refreshMeetings().then((meetings) => {
       this.meetingList = meetings;
-     // this.updateMeetingScrollList();
-
+      // this.updateMeetingScrollList();
+      this.getCurrentMeeting();
     });
   }
 
-  // updateMeetingScrollList() {
-  //   moment.locale("fr");
-  //   if (this.meetingList) {
-  //     if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
-  //       const options = this.optionArray;
+  getCurrentMeeting() {
+    moment.locale("fr");
+    this.currentMeeting = null;
 
-  //       this.meetingList.meetingList.forEach(function (m, index)  {
-  //         const start = m.startDateTime;
-  //         const end = m.endDateTime;
+    if (this.meetingList) {
+      if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
+        const options = this.optionArray;
 
-  //         for (let key of this.optionArray.keys()) {
+        this.meetingList.meetingList.forEach(function (m, index) {
+          const start = m.startDateTime;
+          const end = m.endDateTime;
+          if (this.headerTime.isBetween(start, end)){
+            debugger
+            this.currentMeeting = m;
+            console.log(this.currentMeeting.meetingName );
+            return;
+          }
 
-  //           if(start>= key || end < key.clone().add(this.hourScrollInterval, "minutes")){
-  //             this.optionArray.set(key, {
-  //               state:States.OCCUPIED,
-  //               meeting: m
-  //             });
-  //           }
-  //         }
-  //       }.bind(this));
-  //     }
-  //   }
-  // }
+        }.bind(this));
+      }
+    }
+  }
 
   // getButtonState(dadate:moment.Moment) {
 

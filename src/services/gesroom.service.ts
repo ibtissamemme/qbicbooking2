@@ -11,8 +11,7 @@ export class GesroomService {
   host: string = "http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API";
 
   constructor(private http: Http, private tabletService: TabletService) {
-    console.log(this.getSites());
-  }
+   }
 
   setHeaders(): RequestOptions {
     const reqHeaders = new Headers();

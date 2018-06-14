@@ -49,11 +49,7 @@ export class HourScrollButtonComponent {
           const start = m.startDateTime;
           const end = m.endDateTime;
           if(this.date.isBetween(start, end) || this.date.clone().add(this.hourScrollInterval, "minutes").isBetween(start, end) ){
-          // if (this.date <= start || this.date.clone().add(this.hourScrollInterval, "minutes") > start ) {
-          // if (this.date <= start || this.date.clone().add(this.hourScrollInterval, "minutes") > start ) {
             this.buttonColor = "danger";
-            console.log('button '+ this.date.toString() + ' inside '+ start.toString() + ' / '+ end.toString());
-
           }
         }.bind(this));
       }
