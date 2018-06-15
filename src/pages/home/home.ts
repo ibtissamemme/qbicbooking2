@@ -19,9 +19,6 @@ export class HomePage {
   // dates in the hourscroll component
   dateArray: moment.Moment[] = [];
 
-  // options for the buttons
-  optionArray: Map<moment.Moment, Object> = new Map<moment.Moment, Object>();
-
   // time displayed in the header
   headerTime: moment.Moment = moment();
   // hour scroll interval in minutes
@@ -54,7 +51,6 @@ export class HomePage {
     moment.locale("fr");
     this.headerTime = moment();
     this.dateArray = new Array();
-    this.optionArray = new Map();
 
     // get the now moment
     const now = moment();
@@ -66,13 +62,10 @@ export class HomePage {
 
     this.dateArray.push(rounded.clone());
 
-    this.optionArray.set(rounded.clone(), undefined);
-
     for (let i = 1; i < 15; i++) {
       // warning, we use the same 'rounded' variable
       const iterate = rounded.add(this.hourScrollInterval, "minutes");
       this.dateArray.push(iterate.clone());
-      this.optionArray.set(iterate.clone(), undefined);
     }
 
     // get selected room
@@ -110,15 +103,13 @@ export class HomePage {
 
     if (this.meetingList) {
       if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
-        const options = this.optionArray;
-
         this.meetingList.meetingList.forEach(function (m, index) {
           const start = m.startDateTime;
           const end = m.endDateTime;
-          if (this.headerTime.isBetween(start, end)){
+          if (this.headerTime.isBetween(start, end)) {
             debugger
             this.currentMeeting = m;
-            console.log(this.currentMeeting.meetingName );
+            console.log(this.currentMeeting.meetingName);
             return;
           }
 

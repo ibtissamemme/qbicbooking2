@@ -22,12 +22,15 @@ export class MeetingList{
     };
 
     sort(){
-      this.meetingList.map( (x) => {
-        //force moment
-        x.endDateTime=moment(x.endDateTime);
-        x.startDateTime = moment(x.startDateTime);
-      })
-      this.meetingList.sort(this.compare);
+      if(this.meetingList){
+
+        this.meetingList.map( (x) => {
+          //force moment
+          x.endDateTime=moment(x.endDateTime);
+          x.startDateTime = moment(x.startDateTime);
+        })
+        this.meetingList.sort(this.compare);
+      }
     }
 
     compare(a:object,b:object) {
