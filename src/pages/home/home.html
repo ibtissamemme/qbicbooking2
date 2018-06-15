@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [color]="headerColor">
     <ion-title>
       <ion-grid>
       <ion-row>
@@ -25,33 +25,40 @@
 <ion-content>
   <button ion-button (click)="onAdminClicked()">Admin</button>
 
+  <ion-item>upcomming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
+  <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item>
 
-  <ion-grid *ngIf="currentMeeting">
-    <ion-col>
-      <ion-row text-center *ngIf="currentMeeting.meetingName">
-        {{ currentMeeting.meetingName }}
-      </ion-row>
-      <ion-row text-center  *ngIf="currentMeeting.meetingDescription">
-        {{ currentMeeting.meetingDescription }}
-      </ion-row>
-      <ion-row text-left>
-        Organisateur : {{ currentMeeting.owner.firstName }}  {{ currentMeeting.owner.lastName }}
-      </ion-row>
-      <ion-row text-left>
-        Début : {{ currentMeeting.startDateTime.format('LT') }}
-      </ion-row>
-      <ion-row text-left>
-        Fin : {{ currentMeeting.endDateTime.format('LT') }}
-      </ion-row>
-    </ion-col>
-  </ion-grid>
+    <ion-grid *ngIf="meeting">
+      <ion-col>
+        <ion-row text-center *ngIf="upcomingMeeting">
+          Prochaine réunion :
+        </ion-row>
+        <ion-row text-center *ngIf="meeting.meetingName">
+          {{ meeting.meetingName }}
+        </ion-row>
+        <ion-row text-center  *ngIf="meeting.meetingDescription">
+          {{ meeting.meetingDescription }}
+        </ion-row>
+        <ion-row text-left>
+          Organisateur : {{ meeting.owner.firstName }}  {{ meeting.owner.lastName }}
+        </ion-row>
+        <ion-row text-left>
+          Début : {{ meeting.startDateTime.format('LT') }}
+        </ion-row>
+        <ion-row text-left>
+          Fin : {{ meeting.endDateTime.format('LT') }}
+        </ion-row>
+      </ion-col>
+    </ion-grid>
+
+
+
 </ion-content>
 
 <ion-footer>
   <ion-navbar>
     <ion-grid class="scroll">
       <ion-row nowrap>
-
         <ion-col text-center *ngFor="let dadate of dateArray">
           <hour-scroll-button [date]="dadate"></hour-scroll-button>
         </ion-col>

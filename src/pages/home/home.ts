@@ -4,7 +4,7 @@ import { MeetingList } from '../../app/shared/meetingList';
 import { Meeting } from 'app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
 import { Component } from "@angular/core";
-import { NavController } from "ionic-angular";
+import { NavController, Events } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
@@ -21,11 +21,12 @@ export class HomePage {
 
   // time displayed in the header
   headerTime: moment.Moment = moment();
+  headerColor: string = 'primary';
   // hour scroll interval in minutes
   hourScrollInterval: number;
 
   // screen refresh interval in milliseconds => used for the refresh method
-  refreshInterval: number = 5000;
+  refreshInterval: number = 50000;
 
   // declaration in order to force label change in the header
   selectedRoom: Room;
@@ -34,7 +35,15 @@ export class HomePage {
   selectedRoom$: Observable<Room>;
 
   meetingList: MeetingList;
+
+  // current meeting => red status
   currentMeeting: Meeting;
+  // upcoming meeting => orange status
+  upcomingMeeting: Meeting;
+  // merged meeting for displaying purposes
+  meeting: Meeting;
+
+  tappedButtons: moment.Moment[] = [];
 
   // control of the refresh loop
   refreshLoop: any;
@@ -42,9 +51,13 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     private adminService: AdminService,
-
-  ) {
+    public events: Events) {
     this.hourScrollInterval = adminService.hourScrollInterval;
+
+    events.subscribe('hourscrollbutton:clicked', (time) => {
+      this.buttonPressed(time);
+    });
+
   }
 
   ionViewWillEnter() {
@@ -99,34 +112,79 @@ export class HomePage {
 
   getCurrentMeeting() {
     moment.locale("fr");
+
+
+    this.upcomingMeeting = null;
     this.currentMeeting = null;
+    this.meeting = null;
 
     if (this.meetingList) {
       if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
         this.meetingList.meetingList.forEach(function (m, index) {
           const start = m.startDateTime;
           const end = m.endDateTime;
+
+
+          // check upcoming meeting
+          if (this.headerTime.isBetween(start.clone().subtract(this.hourScrollInterval, "minutes"), start)) {
+
+            this.upcomingMeeting = m;
+
+          }
+
           if (this.headerTime.isBetween(start, end)) {
-            debugger
+
             this.currentMeeting = m;
             console.log(this.currentMeeting.meetingName);
-            return;
+
+            this.headerColor = 'danger';
+
           }
 
         }.bind(this));
       }
     }
+
+    // if we are still here, it means that we have an upcoming meeting an nothing else
+    if (this.upcomingMeeting) {
+      if (this.currentMeeting) {
+        // if we have an upcomming meeting at the end of the current meeting, we stick to the current meeting
+        if (this.currentMeeting.startDateTime <= this.upcomingMeeting.startDateTime) {
+          this.upcomingMeeting = null;
+          this.meeting = this.currentMeeting;
+        }
+        else {
+          this.meeting = this.upcomingMeeting;
+        }
+      }
+      else {
+        this.meeting = this.upcomingMeeting;
+      }
+      this.headerColor = 'secondary';
+    }
+    else if (this.currentMeeting) {
+      this.meeting = this.currentMeeting;
+
+    }
+
+    if (!this.upcomingMeeting && !this.currentMeeting) {
+      this.headerColor = 'primary';
+      this.meeting = null;
+    }
   }
 
-  // getButtonState(dadate:moment.Moment) {
+  buttonPressed(time: moment.Moment) {
 
-  //   if(this.optionArray){
-  //     if(this.optionArray.has(dadate)){
-  //       return this.optionArray.get(dadate)["state"];
-  //     }
-  //   }
-  //   return States.OCCUPIED;
-  // }
+    if (!this.tappedButtons) {
+      this.tappedButtons = new Array();
+    }
+    this.tappedButtons.push(time);
+    console.log(this.tappedButtons.length + " : " + time.format('LT'));
+
+    if (this.tappedButtons.length >= 2) {
+      this.tappedButtons = new Array();
+    }
+  }
 
   // go to admin panel
   onAdminClicked() {

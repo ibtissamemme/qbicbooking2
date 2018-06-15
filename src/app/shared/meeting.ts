@@ -5,6 +5,7 @@ import * as moment from "moment";
 export enum States {
   FREE = 0,
   OCCUPIED = 1,
+  PENDING = 2,
 }
 
 
