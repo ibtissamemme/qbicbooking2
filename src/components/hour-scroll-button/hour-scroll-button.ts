@@ -93,10 +93,8 @@ export class HourScrollButtonComponent {
   }
 
   onClick() {
-
     if (this.buttonColor !== 'danger') {
       this.buttonColor = 'secondary';
-      console.log('User created!')
       this.events.publish('hourscrollbutton:clicked', this.date);
     }
   }

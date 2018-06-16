@@ -1,10 +1,11 @@
+import { BookingPage } from './../booking/booking';
 import { States } from './../../app/shared/meeting';
 import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
 import { Meeting } from 'app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
 import { Component } from "@angular/core";
-import { NavController, Events } from "ionic-angular";
+import { NavController, Events, ModalController } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
@@ -51,7 +52,8 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     private adminService: AdminService,
-    public events: Events) {
+    public events: Events,
+    private modalCtrl: ModalController) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
     events.subscribe('hourscrollbutton:clicked', (time) => {
@@ -123,22 +125,16 @@ export class HomePage {
         this.meetingList.meetingList.forEach(function (m, index) {
           const start = m.startDateTime;
           const end = m.endDateTime;
-
-
           // check upcoming meeting
           if (this.headerTime.isBetween(start.clone().subtract(this.hourScrollInterval, "minutes"), start)) {
-
             this.upcomingMeeting = m;
-
           }
 
           if (this.headerTime.isBetween(start, end)) {
-
             this.currentMeeting = m;
             console.log(this.currentMeeting.meetingName);
 
             this.headerColor = 'danger';
-
           }
 
         }.bind(this));
@@ -179,10 +175,19 @@ export class HomePage {
       this.tappedButtons = new Array();
     }
     this.tappedButtons.push(time);
-    console.log(this.tappedButtons.length + " : " + time.format('LT'));
 
     if (this.tappedButtons.length >= 2) {
+      let start: moment.Moment = this.tappedButtons[0];
+      let end: moment.Moment = this.tappedButtons[1];
+      if (this.tappedButtons[0] > this.tappedButtons[1]) {
+        start = this.tappedButtons[1];
+        end = this.tappedButtons[0];
+      }
+      let obj = { start: start, end: end };
+      let myModal = this.modalCtrl.create(BookingPage, obj);
       this.tappedButtons = new Array();
+      console.log('present'+ start.format('LT')+ " / " + end.format('LT'));
+      myModal.present();
     }
   }
 

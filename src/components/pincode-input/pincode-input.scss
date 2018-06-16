@@ -7,9 +7,9 @@ ion-pincode{
     // right: 0;
     // display: block;
     overflow: hidden;
-    width: 100%;
+    //width: 100%;
     max-width: 500px;
-    height: 295px;
+    //height: 295px;
     margin: auto;
     background-color: #fcfcfc;
     border-top: 1px solid #c8c7cc;
@@ -58,7 +58,7 @@ ion-pincode{
     text-align: center;
     width: 100%;
     line-height: 44px;
-    position: absolute;
+    //position: absolute;
     left: 0;
     right: 0;
     top: 0;
@@ -70,7 +70,7 @@ ion-pincode{
   }
 
   .pincode-input {
-    margin: 16px;
+    margin: 10px;
   }
 
   .pincode-input .pincode-input-grid {
@@ -79,6 +79,8 @@ ion-pincode{
 
   .pincode-input .pincode-input-row {
     text-align: center;
+    height: 32px;
+
   }
 
   .pincode-input .pincode-input-row ion-col {
@@ -110,7 +112,7 @@ ion-pincode{
   }
 
   .pincode-button-wrapper {
-    position: absolute;
+   // position: absolute;
     width: 100%;
     bottom: 0;
   }

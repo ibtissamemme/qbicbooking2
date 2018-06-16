@@ -1,3 +1,4 @@
+import { BookingPage } from './../pages/booking/booking';
 
 import { NfcCheckPage } from './../pages/nfc-check/nfc-check';
 import { AdminPage } from './../pages/admin/admin';
@@ -27,6 +28,8 @@ import { IonicStorageModule } from '@ionic/storage';
     HomePage,
     AdminPage,
     NfcCheckPage,
+    BookingPage,
+    BookingConfirmPage,
   ],
   imports: [
     HttpModule,
@@ -41,7 +44,9 @@ import { IonicStorageModule } from '@ionic/storage';
     MyApp,
     HomePage,
     AdminPage,
-    NfcCheckPage
+    NfcCheckPage,
+    BookingPage,
+    BookingConfirmPage,
   ],
   providers: [
     StatusBar,

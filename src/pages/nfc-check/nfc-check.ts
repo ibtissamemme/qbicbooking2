@@ -36,7 +36,6 @@ export class NfcCheckPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NfcCheckPage');
 
     if (this.isApp) {
       this.nfc.addNdefListener(() => {
