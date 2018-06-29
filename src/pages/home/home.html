@@ -2,22 +2,21 @@
   <ion-navbar [color]="headerColor">
     <ion-title>
       <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-icon name="quote"></ion-icon>
-          Logo
-        </ion-col>
-        <ion-col text-center>
-          {{ this.selectedRoom?.name }}
-        </ion-col>
-        <ion-col text-center *ngIf="selectedRoom$ | async as room">
-          {{ room.name }}
-        </ion-col>
-        <ion-col text-right>
-          {{ this.headerTime.format('LTS') }}
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        <ion-row align-items-center>
+          <ion-col>
+            <img class="logo" src="assets/imgs/logo_white.png" />
+          </ion-col>
+          <ion-col text-center>
+            {{ this.selectedRoom?.name }}
+          </ion-col>
+          <ion-col text-center *ngIf="selectedRoom$ | async as room">
+            {{ room.name }}
+          </ion-col>
+          <ion-col text-right>
+            {{ this.headerTime.format('LTS') }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -28,28 +27,46 @@
   <ion-item>upcomming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
   <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item>
 
-    <ion-grid *ngIf="meeting">
+  <ion-grid class="content-grid" *ngIf="meeting">
+
+    <ion-row text-center *ngIf="upcomingMeeting">
       <ion-col>
-        <ion-row text-center *ngIf="upcomingMeeting">
-          Prochaine réunion :
-        </ion-row>
-        <ion-row text-center *ngIf="meeting.meetingName">
-          {{ meeting.meetingName }}
-        </ion-row>
-        <ion-row text-center  *ngIf="meeting.meetingDescription">
-          {{ meeting.meetingDescription }}
-        </ion-row>
-        <ion-row text-left>
-          Organisateur : {{ meeting.owner.firstName }}  {{ meeting.owner.lastName }}
-        </ion-row>
-        <ion-row text-left>
-          Début : {{ meeting.startDateTime.format('LT') }}
-        </ion-row>
-        <ion-row text-left>
-          Fin : {{ meeting.endDateTime.format('LT') }}
-        </ion-row>
+        <ion-item>
+          Prochaine réunion : {{ meeting.meetingName }}
+        </ion-item>
       </ion-col>
-    </ion-grid>
+    </ion-row>
+
+    <ion-row text-center *ngIf="meeting.meetingDescription">
+      <ion-col>
+        <ion-item>
+          {{ meeting.meetingDescription }}
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row text-left>
+      <ion-col>
+        <ion-item>
+          Organisateur : {{ meeting.owner.firstName }} {{ meeting.owner.lastName }}
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row text-left>
+      <ion-col>
+        <ion-item>
+          Début : {{ meeting.startDateTime.format('LT') }}
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row text-left>
+      <ion-col>
+        <ion-item>
+          Fin : {{ meeting.endDateTime.format('LT') }}
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 
 
 
@@ -61,6 +78,16 @@
       <ion-row nowrap>
         <ion-col text-center *ngFor="let dadate of dateArray">
           <hour-scroll-button [date]="dadate"></hour-scroll-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+    <ion-grid>
+
+      <ion-row text-center align-items-center>
+        <ion-col>
+          {{this.headerTime.format('LL')}}
+
         </ion-col>
       </ion-row>
     </ion-grid>

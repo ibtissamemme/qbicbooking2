@@ -29,7 +29,7 @@ import { IonicStorageModule } from '@ionic/storage';
     AdminPage,
     NfcCheckPage,
     BookingPage,
-    BookingConfirmPage,
+    BookingPage,
   ],
   imports: [
     HttpModule,
@@ -46,7 +46,7 @@ import { IonicStorageModule } from '@ionic/storage';
     AdminPage,
     NfcCheckPage,
     BookingPage,
-    BookingConfirmPage,
+    BookingPage,
   ],
   providers: [
     StatusBar,
