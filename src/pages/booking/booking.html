@@ -15,7 +15,7 @@
 
 
 <ion-content padding >
-  <div *ngIf="this.emp != null">
+  <div *ngIf="isEmployeeReady()">
 
     <ion-item>Réservant : {{ this.emp.firstName }} {{ this.emp.lastName }}</ion-item>
     <ion-item>Début : {{ this.start.format('LTS') }}</ion-item>
@@ -24,7 +24,7 @@
     <button ion-button color='danger' (click)="onCancelClicked()">Annuler</button>
   </div>
 
-  <div *ngIf="this.emp == null" >
+  <div *ngIf="!isEmployeeReady()" >
     <ion-item>Saisir votre SESA :</ion-item>
     <ion-pincode (pincodeSubmitted)="onPinSubmit($event)"></ion-pincode>
 

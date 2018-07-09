@@ -72,6 +72,7 @@ export class HourScrollButtonComponent {
     }
   }
 
+  // called whenever a button is tapped
   updateButtonColor(time: moment.Moment) {
     if (!this.tappedTimeArray) {
       this.tappedTimeArray = new Array();
@@ -99,6 +100,7 @@ export class HourScrollButtonComponent {
     }
   }
 
+  // sends event to the home page and the other buttons...
   onClick() {
     if (this.buttonColor !== 'danger') {
       this.buttonColor = 'secondary';

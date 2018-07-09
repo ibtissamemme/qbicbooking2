@@ -48,8 +48,8 @@ export class BookingPage {
       if(data){
           this.emp = JSON.parse(data.text());
       }
-      loadingEmployee.dismiss();
 
+      loadingEmployee.dismiss();
     }, (reason) => {
       let alert = this.alertCtrl.create({
         title: 'Erreur',
@@ -58,6 +58,17 @@ export class BookingPage {
       });
       alert.present();
     });
+    if(!this.isEmployeeReady()){
+      const errorEmp = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: 'Impossible de trouver votre compte.',
+      });
+      errorEmp.present();
+      setTimeout(() => {
+        errorEmp.dismiss();
+
+      }, 2000);
+    }
   }
 
 
@@ -122,6 +133,15 @@ export class BookingPage {
     await this.gesroomService.postMeeting(meeting);
   }
 
+  isEmployeeReady():boolean{
+    if(!this.emp){
+      return false;
+    }
+    else if(!this.emp.corporateID){
+      return false;
+    }
+    return true;
+  }
 
   onCancelClicked(){
     // dismiss modal
