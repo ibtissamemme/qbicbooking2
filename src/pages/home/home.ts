@@ -101,7 +101,6 @@ export class HomePage {
 
   // refreshes the data on screen based on time
   refresh() {
-    console.log('refresh');
 
     this.headerTime = moment();
     //refresh the meetings
@@ -177,16 +176,25 @@ export class HomePage {
     this.tappedButtons.push(time);
 
     if (this.tappedButtons.length >= 2) {
-      let start: moment.Moment = this.tappedButtons[0];
-      let end: moment.Moment = this.tappedButtons[1];
+      // clone dates to avoid changeing displayed values inside the buttons...
+      let start: moment.Moment = this.tappedButtons[0].clone();
+      let end: moment.Moment = this.tappedButtons[1].clone();
       if (this.tappedButtons[0] > this.tappedButtons[1]) {
-        start = this.tappedButtons[1];
-        end = this.tappedButtons[0];
+        start = this.tappedButtons[1].clone();
+        end = this.tappedButtons[0].clone();
       }
-      let obj = { start: start, end: end };
+      end = end.add(this.hourScrollInterval,'minutes');
+      let obj = { start: start, end: end, room : this.selectedRoom};
       let myModal = this.modalCtrl.create(BookingPage, obj);
       this.tappedButtons = new Array();
       console.log('present'+ start.format('LT')+ " / " + end.format('LT'));
+
+      myModal.onDidDismiss( () => {
+        this.refresh();
+        // force refresh of the button colors => remove the orange if cancelled
+        this.events.publish('refreshColor:clicked');
+      });
+
       myModal.present();
     }
   }

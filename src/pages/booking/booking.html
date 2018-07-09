@@ -13,13 +13,22 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>Début : {{ this.start.format('LTS') }}</ion-item>
-  <ion-item>Fin : {{ this.end.format('LTS') }}</ion-item>
-     <h2>Saisir un code pin</h2>
-     <ion-pincode  (pincodeSubmitted)="onPinSubmit($event)"></ion-pincode>
 
-      <button ion-button color='primary' type="submit" (click)="confirmBooking()">Confirmer</button>
-  <button ion-button color='danger'>Annuler</button>
+<ion-content padding >
+  <div *ngIf="this.emp != null">
+
+    <ion-item>Réservant : {{ this.emp.firstName }} {{ this.emp.lastName }}</ion-item>
+    <ion-item>Début : {{ this.start.format('LTS') }}</ion-item>
+    <ion-item>Fin : {{ this.end.format('LTS') }}</ion-item>
+    <button ion-button color='primary' type="submit" (click)="confirmBooking()">Confirmer</button>
+    <button ion-button color='danger' (click)="onCancelClicked()">Annuler</button>
+  </div>
+
+  <div *ngIf="this.emp == null" >
+    <ion-item>Saisir votre SESA :</ion-item>
+    <ion-pincode (pincodeSubmitted)="onPinSubmit($event)"></ion-pincode>
+
+    <button ion-button color='danger' (click)="onCancelClicked()">Annuler</button>
+  </div>
 
 </ion-content>

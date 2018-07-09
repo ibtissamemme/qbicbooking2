@@ -38,7 +38,7 @@ export class AdminService {
 
     this.storage.get('selectedSite').then((data) => {
       if (!data) {
-      return console.log('selectedSite Storage : no data');
+        return console.log('selectedSite Storage : no data');
       }
       console.log('selectedRoom Storage : ' + data);
       let _selectedSite: Site = JSON.parse(data);
@@ -66,7 +66,7 @@ export class AdminService {
     // push to all
     this.selectedSiteObs.next(site);
     this.setToStorage('selectedSite', this.selectedSite);
-    console.log("set to storage SITE => "+ this.selectedSite.name);
+    console.log("set to storage SITE => " + this.selectedSite.name);
 
     // this.gesroomService.getRooms(this.selectedSite).then(data => {
     //   // ugly but couldn't figure a correct way to do it
@@ -81,7 +81,7 @@ export class AdminService {
     this.selectedRoomObs.next(room);
     this.refreshMeetings();
     this.setToStorage('selectedRoom', room);
-    console.log("set to storage ROOM => "+ room.name);
+    console.log("set to storage ROOM => " + room.name);
   }
 
   // makes a call to get meetings based on the selected room
@@ -89,13 +89,13 @@ export class AdminService {
     if (this.selectedRoomObs.getValue()) {
 
       await this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
-        if(data){
+        if (data) {
           this.meetingList.meetingList = data.json();
           this.meetingList.sort();
           this.meetingListObs.next(this.meetingList);
 
-          console.log('meetings:' );
-          console.table( this.meetingList.meetingList);
+          console.log('meetings:');
+          console.table(this.meetingList.meetingList);
         }
       });
       this.meetingList.sort();

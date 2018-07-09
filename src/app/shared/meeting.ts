@@ -8,6 +8,18 @@ export enum States {
   PENDING = 2,
 }
 
+export enum MeetingStatus{
+  NotStarted = 0,
+  Started = 1,
+  Cancelled = 2
+}
+
+export enum MeetingType {
+  Meeting = 0,
+  Training = 1
+}
+
+
 
 export class Meeting {
 

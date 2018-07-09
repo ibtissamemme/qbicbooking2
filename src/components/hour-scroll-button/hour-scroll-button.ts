@@ -34,37 +34,40 @@ export class HourScrollButtonComponent {
     events.subscribe('hourscrollbutton:clicked', (time) => {
       this.updateButtonColor(time);
     });
+
+    // called from the home in order to refresh the color and remove the orange color when cancelling a booking
+    events.subscribe('refreshColor:clicked', () => {
+      this.refreshColor();
+    });
   }
 
 
-  // getStateColor(): string {
-  //   if (this.state) {
-  //     if (this.state === States.OCCUPIED)
-  //       return "danger";
-  //   }
-  //   return "primary";
-  // }
-
+  // refreshing while a selection in being done => do not remove the orange color
   updateMeetingScrollList() {
     if (this.buttonColor !== 'secondary') {
+      this.refreshColor();
+    }
+  }
 
-      moment.locale("fr");
-      this.buttonColor = "primary";
-      if (this.meetingList) {
-        if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
+  // color logic
+  // also called directly if a force refresh is needed
+  refreshColor(){
+    moment.locale("fr");
+    this.buttonColor = "primary";
+    if(!this.date)
+      return;
 
-          this.meetingList.meetingList.forEach(function (m, index) {
-            const start = m.startDateTime;
-            const end = m.endDateTime;
-            if (this.date.isBetween(start, end) || this.date.clone().add(this.hourScrollInterval, "minutes").isBetween(start, end)) {
+    if (this.meetingList) {
+      if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
 
-              this.buttonColor = "danger";
-              return;
-            }
-
-
-          }.bind(this));
-        }
+        this.meetingList.meetingList.forEach(function (m, index) {
+          const start = m.startDateTime;
+          const end = m.endDateTime;
+          if (this.date.isBetween(start, end) || this.date.clone().add(this.hourScrollInterval, "minutes").isBetween(start, end)) {
+            this.buttonColor = "danger";
+            return;
+          }
+        }.bind(this));
       }
     }
   }
@@ -77,17 +80,21 @@ export class HourScrollButtonComponent {
 
     if (this.tappedTimeArray.length >= 2) {
       // if the current button is between the 2 taps => [] is for inclusive comparison
-      if (this.date.isBetween(this.tappedTimeArray[0], this.tappedTimeArray[1], null,'[]')) {
+      if (this.date.isBetween(this.tappedTimeArray[0], this.tappedTimeArray[1], null, '[]')) {
         this.buttonColor = 'secondary';
       }
       else {
+        if (this.buttonColor !== 'danger') {
         this.buttonColor = 'primary';
+        }
       }
       this.tappedTimeArray = new Array();
     }
     else {
-      if(this.date!==time){
-        this.buttonColor = 'primary';
+      if (this.date !== time) {
+        if (this.buttonColor !== 'danger') {
+          this.buttonColor = 'primary';
+        }
       }
     }
   }
