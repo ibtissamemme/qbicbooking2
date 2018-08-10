@@ -1,5 +1,5 @@
 import { BookingPage } from './../booking/booking';
-import { States } from './../../app/shared/meeting';
+import { States, MeetingType } from './../../app/shared/meeting';
 import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
 import { Meeting } from 'app/shared/meeting';
@@ -9,6 +9,7 @@ import { NavController, Events, ModalController } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
+import { TrainingPage } from '../training/training';
 
 
 @Component({
@@ -95,22 +96,28 @@ export class HomePage {
     // start the refresh loop
     // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
+
   }
 
 
 
   // refreshes the data on screen based on time
   refresh() {
-
     this.headerTime = moment();
     //refresh the meetings
     this.adminService.refreshMeetings().then((meetings) => {
       this.meetingList = meetings;
       // this.updateMeetingScrollList();
       this.getCurrentMeeting();
+    }).then(() => {
+      // if the next meeting is a training, we switch to the training page
+      if(this.meeting && this.meeting.meetingType === MeetingType.Training){
+        this.navCtrl.setRoot(TrainingPage);
+      }
     });
   }
 
+  // looks for the current meeting in the meeting list depending on the time
   getCurrentMeeting() {
     moment.locale("fr");
 

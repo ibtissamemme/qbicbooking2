@@ -21,11 +21,13 @@ import { AdminService } from '../services/admin.service';
 import { ComponentsModule } from './../components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { TrainingPage } from './../pages/training/training';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
+    TrainingPage,
     AdminPage,
     NfcCheckPage,
     BookingPage,
@@ -42,6 +44,7 @@ import { IonicStorageModule } from '@ionic/storage';
   entryComponents: [
     MyApp,
     HomePage,
+    TrainingPage,
     AdminPage,
     NfcCheckPage,
     BookingPage,

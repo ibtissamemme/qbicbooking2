@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the TrainingPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { MeetingList } from '../../app/shared/meetingList';
+import { Meeting } from 'app/shared/meeting';
+import { AdminService } from './../../services/admin.service';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, Events, ModalController } from "ionic-angular";
+import * as moment from "moment";
+import { Room } from 'app/shared/room';
+import { Observable } from 'rxjs/Observable';
+import { NfcCheckPage } from '../nfc-check/nfc-check';
 
 @IonicPage()
 @Component({
@@ -15,11 +15,143 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TrainingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  // time displayed in the header
+  headerTime: moment.Moment = moment();
+  headerColor: string = 'primary';
+
+  // screen refresh interval in milliseconds => used for the refresh method
+  refreshInterval: number = 50000;
+
+  // declaration in order to force label change in the header
+  selectedRoom: Room;
+
+  //test with observable
+  selectedRoom$: Observable<Room>;
+
+  meetingList: MeetingList;
+
+  // current meeting => red status
+  currentMeeting: Meeting;
+  // upcoming meeting => orange status
+  upcomingMeeting: Meeting;
+  // merged meeting for displaying purposes
+  meeting: Meeting;
+  // control of the refresh loop
+  refreshLoop: any;
+
+  constructor(
+    public navCtrl: NavController,
+    private adminService: AdminService,
+    public events: Events,
+    private modalCtrl: ModalController) {
+
+
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TrainingPage');
+  ionViewWillEnter() {
+    moment.locale("fr");
+    this.headerTime = moment();
+
+    // get selected room
+    this.adminService.selectedRoom$.subscribe((data) => {
+      if (!data) {
+        return console.error('no data');
+      }
+      console.log("admin obs room : " + data.name);
+      this.selectedRoom = data;
+      this.refresh();
+    });
+    // start the refresh loop
+    // this.updateMeetingScrollList();
+    this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
 
+  // refreshes the data on screen based on time
+  refresh() {
+
+    this.headerTime = moment();
+    //refresh the meetings
+    this.adminService.refreshMeetings().then((meetings) => {
+      this.meetingList = meetings;
+      // this.updateMeetingScrollList();
+      this.getCurrentMeeting();
+    });
+  }
+
+
+  // looks for the current meeting in the meeting list depending on the time
+  // puts it in meeting
+  getCurrentMeeting() {
+    moment.locale("fr");
+
+
+    this.upcomingMeeting = null;
+    this.currentMeeting = null;
+    this.meeting = null;
+
+    if (this.meetingList) {
+      if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
+        this.meetingList.meetingList.forEach(function (m, index) {
+          const start = m.startDateTime;
+          const end = m.endDateTime;
+          // check upcoming meeting
+          if (this.headerTime.isBetween(start.clone().subtract(this.hourScrollInterval, "minutes"), start)) {
+            this.upcomingMeeting = m;
+          }
+
+          if (this.headerTime.isBetween(start, end)) {
+            this.currentMeeting = m;
+            // console.log(this.currentMeeting.meetingName);
+
+            // this.headerColor = 'danger';
+          }
+
+        }.bind(this));
+      }
+    }
+
+    // if we are still here, it means that we have an upcoming meeting an nothing else
+    if (this.upcomingMeeting) {
+      if (this.currentMeeting) {
+        // if we have an upcomming meeting at the end of the current meeting, we stick to the current meeting
+        if (this.currentMeeting.startDateTime <= this.upcomingMeeting.startDateTime) {
+          this.upcomingMeeting = null;
+          this.meeting = this.currentMeeting;
+        }
+        else {
+          this.meeting = this.upcomingMeeting;
+        }
+      }
+      else {
+        this.meeting = this.upcomingMeeting;
+      }
+      // this.headerColor = 'secondary';
+    }
+    else if (this.currentMeeting) {
+      this.meeting = this.currentMeeting;
+
+    }
+
+    if (!this.upcomingMeeting && !this.currentMeeting) {
+      // this.headerColor = 'primary';
+      this.meeting = null;
+    }
+  }
+
+  // go to admin panel
+  onAdminClicked() {
+    // this.navCtrl.push(AdminPage);
+    this.navCtrl.push(NfcCheckPage);
+  }
+
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave');
+    // stop the refresh
+    clearInterval(this.refreshLoop);
+  }
+
+  ngOnDestroy() {
+    // stop the refresh
+    clearInterval(this.refreshLoop);
+  }
 }
