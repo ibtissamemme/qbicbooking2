@@ -67,8 +67,11 @@ export class GesroomService {
   getEmployeeById(corporateId: string) {
     const _corporateId = 'SESA' + corporateId;
     return this.http
-      .get(this.host + "/persons/corporate/" + _corporateId , this.setHeaders())
+      .get(this.host + "/persons/persons?email=saf-mat%40safewarehds.onmicrosoft.com"  , this.setHeaders())
       .toPromise();
+    // return this.http
+    //   .get(this.host + "/persons/corporate/" + _corporateId , this.setHeaders())
+    //   .toPromise();
     }
 
 
