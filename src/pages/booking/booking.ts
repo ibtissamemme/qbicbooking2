@@ -46,7 +46,8 @@ export class BookingPage {
 
     await this.gesroomService.getEmployeeById(pinCode).then( (data) => {
       if(data){
-          this.emp = JSON.parse(data.text());
+        // for some reason we get back an array
+          this.emp = JSON.parse(data.text())[0];
       }
 
       loadingEmployee.dismiss();
@@ -66,8 +67,9 @@ export class BookingPage {
       errorEmp.present();
       setTimeout(() => {
         errorEmp.dismiss();
-
+        loadingEmployee.dismiss();
       }, 2000);
+
     }
   }
 
