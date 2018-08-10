@@ -24,7 +24,7 @@
 <ion-content>
   <button ion-button (click)="onAdminClicked()">Admin</button>
 
-  <ion-item>upcomming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
+  <ion-item>upcoming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
   <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item>
 
   <ion-grid class="content-grid" *ngIf="meeting">

@@ -37,7 +37,6 @@ import { IonicStorageModule } from '@ionic/storage';
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     ComponentsModule,
-
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,7 +56,6 @@ import { IonicStorageModule } from '@ionic/storage';
     GesroomService,
     TabletService,
     AdminService
-
   ]
 })
 export class AppModule { }
