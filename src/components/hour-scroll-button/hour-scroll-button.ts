@@ -17,12 +17,13 @@ export class HourScrollButtonComponent {
   @Input() meeting: Meeting;
   @Input() state: States;
   buttonColor: string = "primary";
+  hourScrollInterval: number;
   private meetingList: MeetingList;
   private tappedTimeArray: moment.Moment[];
 
   constructor(private adminService: AdminService, public events: Events) {
     // this.buttonColor = this.getStateColor();
-
+    this.hourScrollInterval = this.adminService.hourScrollInterval;
     this.adminService.meetingList$.subscribe((data) => {
       if (!data) {
         return console.error('no data');
@@ -51,10 +52,10 @@ export class HourScrollButtonComponent {
 
   // color logic
   // also called directly if a force refresh is needed
-  refreshColor(){
+  refreshColor() {
     moment.locale("fr");
     this.buttonColor = "primary";
-    if(!this.date)
+    if (!this.date)
       return;
 
     if (this.meetingList) {
@@ -86,7 +87,7 @@ export class HourScrollButtonComponent {
       }
       else {
         if (this.buttonColor !== 'danger') {
-        this.buttonColor = 'primary';
+          this.buttonColor = 'primary';
         }
       }
       this.tappedTimeArray = new Array();
@@ -100,6 +101,11 @@ export class HourScrollButtonComponent {
     }
   }
 
+  isDisabled() {
+    if ( this.date.clone().add(this.hourScrollInterval, "minutes") < moment())
+      return true;
+    return false;
+  }
   // sends event to the home page and the other buttons...
   onClick() {
     if (this.buttonColor !== 'danger') {

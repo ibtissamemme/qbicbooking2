@@ -1,4 +1,4 @@
-  <button ion-button block [color]="buttonColor" (click)="onClick()">
+  <button ion-button block [color]="buttonColor" (click)="onClick()" [disabled]="this.isDisabled()">
     {{ date?.format('LT') }}
   </button>
 
