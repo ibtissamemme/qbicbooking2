@@ -10,7 +10,7 @@
             {{ this.selectedRoom?.name }}
           </ion-col>
           <ion-col text-center *ngIf="selectedRoom$ | async as room">
-            {{ room.name }}
+            <h4>{{ room.name }}</h4>
           </ion-col>
           <ion-col text-right>
             {{ this.headerTime.format('LTS') }}
@@ -49,7 +49,7 @@
       </ion-col>
     </ion-row>
 
-
+<div padding>&nbsp;</div>
 
     <ion-row>
       <ion-col>
@@ -61,12 +61,14 @@
     </ion-row>
   </ion-grid>
   </ion-header>
+
+
 <ion-content>
 
   <ion-grid>
 
     <ion-row *ngFor="let attendee of meeting?.attendies">
-      <ion-col>
+      <ion-col text-center>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === null" color="background" name="help"></ion-icon>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === true" color="primary" name="checkmark"></ion-icon>

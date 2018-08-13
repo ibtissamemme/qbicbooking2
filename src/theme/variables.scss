@@ -49,19 +49,19 @@ $colors: (
 //   dark:       #222
 // );
 
-
+$header-size:70px;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
+$navbar-ios-height:$header-size;
+$toolbar-ios-height:$header-size;
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
-
+$navbar-md-height:$header-size;
+$toolbar-md-height:$header-size;
 
 
 // App Windows Variables
@@ -94,3 +94,15 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+$font-size-small: 14px;
+$font-size-base: 20px;
+$font-size-large: 24px;
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/Monserrat-Medium.ttf') format("truetype");
+}
+
+$font-family-base: 'Montserrat', sans-serif !default;
