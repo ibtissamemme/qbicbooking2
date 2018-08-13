@@ -1,3 +1,4 @@
+import { RoomType } from './../../app/shared/room';
 import { BookingPage } from './../booking/booking';
 import { States, MeetingType } from './../../app/shared/meeting';
 import { NfcCheckPage } from './../nfc-check/nfc-check';
@@ -91,6 +92,9 @@ export class HomePage {
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
+      if(this.selectedRoom.roomType===RoomType.Training){
+        this.goToTrainingPage();
+      }
       this.refresh();
     });
 
@@ -179,7 +183,7 @@ export class HomePage {
 
     // if the next meeting is a training, we switch to training
     if(this.meeting && this.meeting.meetingType === MeetingType.Training){
-      this.navCtrl.setRoot(TrainingPage);
+      this.goToTrainingPage();
     }
   }
 
@@ -213,6 +217,11 @@ export class HomePage {
       myModal.present();
     }
   }
+
+  goToTrainingPage(){
+    this.navCtrl.setRoot(TrainingPage);
+  }
+
 
   // go to admin panel
   onAdminClicked() {

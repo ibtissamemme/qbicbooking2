@@ -1,3 +1,4 @@
+import { GesroomService } from './../../services/gesroom.service';
 import { AdminPage } from './../admin/admin';
 import { MeetingList } from '../../app/shared/meetingList';
 import { Meeting } from 'app/shared/meeting';
@@ -43,6 +44,7 @@ export class TrainingPage {
   constructor(
     public navCtrl: NavController,
     private adminService: AdminService,
+    private gesroomService: GesroomService,
     public events: Events,
     private modalCtrl: ModalController) {
 
@@ -148,9 +150,18 @@ export class TrainingPage {
       // this.headerColor = 'primary';
       this.meeting = null;
     }
+
+    if(this.meeting == null) {
+      this.gesroomService.getBackgroundImageForSite(this.adminService.selectedSite);
+    }
     console.log(this.meeting);
   }
 
+  getSlides(){
+    if(this.adminService.selectedSite){
+      return this.adminService.selectedSite.slides;
+    }
+  }
   // go to admin panel
   onAdminClicked() {
      this.navCtrl.push(AdminPage);

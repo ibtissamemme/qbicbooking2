@@ -67,13 +67,29 @@ export class GesroomService {
   getEmployeeById(corporateId: string) {
     const _corporateId = 'SESA' + corporateId;
     return this.http
-      .get(this.host + "/persons/persons?email=saf-mat%40safewarehds.onmicrosoft.com"  , this.setHeaders())
+      .get(this.host + "/persons/persons?email=saf-mat%40safewarehds.onmicrosoft.com", this.setHeaders())
       .toPromise();
     // return this.http
     //   .get(this.host + "/persons/corporate/" + _corporateId , this.setHeaders())
     //   .toPromise();
-    }
+  }
 
+
+  // only for the training page, get the URLs of the images to display of no training is available
+  // TODO : refactor to call from the admin service
+  getBackgroundImageForSite(site: Site){
+    if (!site) {
+      site = new Site('VPARDEFAUT', 'Le Hive');
+    }
+    this.http
+      .get(this.host + "/sites/uris/", this.setHeaders()).toPromise().then((data) => {
+        site.slides = new Array();
+        if (data && typeof (data) == typeof (site.slides)) {
+          site.slides = JSON.parse(data.text());
+        }
+      });
+
+  }
 
 
   /**

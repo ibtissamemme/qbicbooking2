@@ -64,7 +64,11 @@
 
 
 <ion-content>
-
+  <ion-slides *ngIf="!meeting">
+    <ion-slide *ngFor="let image of getSlides()">
+      <img src="{{image}}" alt="">
+    </ion-slide>
+  </ion-slides>
   <ion-grid>
 
     <ion-row *ngFor="let attendee of meeting?.attendies">
