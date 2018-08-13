@@ -7,7 +7,7 @@
             <img class="logo" src="assets/imgs/logo_white.png" />
           </ion-col>
           <ion-col text-center>
-            TRAINING PAGE {{ this.selectedRoom?.name }}
+            {{ this.selectedRoom?.name }}
           </ion-col>
           <ion-col text-center *ngIf="selectedRoom$ | async as room">
             {{ room.name }}
@@ -19,45 +19,100 @@
       </ion-grid>
     </ion-title>
   </ion-navbar>
-</ion-header>
-
-<ion-content>
 
 
-  <button ion-button (click)="onAdminClicked()">Admin</button>
-  <ion-grid class="content-grid" *ngIf="meeting">
+  <button ion-button outlined class="hidden" (click)="onAdminClicked()">&nbsp;</button>
+
+
+  <ion-grid *ngIf="meeting">
 
     <ion-row text-center>
       <ion-col>
-        <ion-label>
+        <h4>
           {{ meeting.meetingName }} {{ meeting.meetingDescription }}
-        </ion-label>
+        </h4>
       </ion-col>
     </ion-row>
 
     <ion-row text-left>
       <ion-col>
-        <ion-label>
+        <div>
           Organisateur : {{ meeting?.owner.firstName }} {{ meeting?.owner.lastName }}
-        </ion-label>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row text-left>
       <ion-col>
-        <ion-label>
-          Début : {{ meeting?.startDateTime.format('LT') }}
-        </ion-label>
+        <div>
+          De {{ meeting?.startDateTime.format('LT') }} à {{ meeting?.endDateTime.format('LT') }}
+        </div>
       </ion-col>
     </ion-row>
-    <ion-row text-left>
+
+
+
+    <ion-row>
       <ion-col>
-        <ion-label>
-          Fin : {{ meeting?.endDateTime.format('LT') }}
-        </ion-label>
+        <ion-icon  color="background" name="clipboard"></ion-icon>
       </ion-col>
+      <ion-col>Prénom</ion-col>
+      <ion-col>Nom</ion-col>
+      <ion-col>Société</ion-col>
     </ion-row>
   </ion-grid>
+  </ion-header>
+<ion-content>
 
+  <ion-grid>
+
+    <ion-row *ngFor="let attendee of meeting?.attendies">
+      <ion-col>
+        <ion-icon item-start *ngIf="this.isPresent(attendee) === null" color="background" name="help"></ion-icon>
+        <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
+        <ion-icon item-start *ngIf="this.isPresent(attendee) === true" color="primary" name="checkmark"></ion-icon>
+      </ion-col>
+      <ion-col>{{attendee.firstName}}</ion-col>
+      <ion-col>{{attendee.lastName}}</ion-col>
+      <ion-col>{{attendee.company}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<!--
+    <button ion-button outlined class="hidden" (click)="onAdminClicked()">&nbsp;</button>
+    <ion-grid *ngIf="meeting">
+
+      <ion-row text-center>
+        <ion-col>
+          <ion-label>
+            {{ meeting.meetingName }} {{ meeting.meetingDescription }}
+          </ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row text-left>
+        <ion-col>
+          <ion-label>
+            Organisateur : {{ meeting?.owner.firstName }} {{ meeting?.owner.lastName }}
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row text-left>
+        <ion-col>
+          <ion-label>
+            Début : {{ meeting?.startDateTime.format('LT') }}
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row text-left>
+        <ion-col>
+          <ion-label>
+            Fin : {{ meeting?.endDateTime.format('LT') }}
+          </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  <ion-content class="attendies" padding>
 
 
     <ion-list>
@@ -71,5 +126,4 @@
       </ion-item>
     </ion-list>
 
-
-</ion-content>
+</ion-content> -->
