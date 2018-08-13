@@ -11,7 +11,8 @@
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
     "ionic:release": "ionic cordova build --release android",
-    "ionic:ios": "ionic cordova build ios --prod"
+    "ionic:ios": "ionic cordova build ios --prod",
+    "ionic:launchios": "ionic cordova run ios --device"
   },
   "dependencies": {
     "@angular/animations": "5.2.10",
