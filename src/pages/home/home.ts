@@ -105,16 +105,16 @@ export class HomePage {
   refresh() {
     this.headerTime = moment();
     //refresh the meetings
-    this.adminService.refreshMeetings().then((meetings) => {
-      this.meetingList = meetings;
-      // this.updateMeetingScrollList();
-      this.getCurrentMeeting();
-    }).then(() => {
-      // if the next meeting is a training, we switch to the training page
-      if(this.meeting && this.meeting.meetingType === MeetingType.Training){
-        this.navCtrl.setRoot(TrainingPage);
-      }
-    });
+    // this.adminService.refreshMeetings().then((meetings) => {
+    //   this.meetingList = meetings;
+    //   // this.updateMeetingScrollList();
+    //   this.getCurrentMeeting();
+    // }).then(() => {
+    //   // if the next meeting is a training, we switch to the training page
+    //   if(this.meeting && this.meeting.meetingType === MeetingType.Training){
+    //     this.navCtrl.setRoot(TrainingPage);
+    //   }
+    // });
   }
 
   // looks for the current meeting in the meeting list depending on the time

@@ -85,10 +85,9 @@ export class AdminService {
   }
 
   // makes a call to get meetings based on the selected room
-  async refreshMeetings(): Promise<MeetingList> {
+  refreshMeetings() {
     if (this.selectedRoomObs.getValue()) {
-
-      await this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
+      this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
         if (data) {
           this.meetingList.meetingList = data.json();
           this.meetingList.sort();
@@ -97,9 +96,11 @@ export class AdminService {
           console.log('meetings:');
           console.table(this.meetingList.meetingList);
         }
-      });
-      this.meetingList.sort();
-      return this.meetingList;
+        return this.meetingList.meetingList;
+      }).then((data) => {
+        return this.meetingList.sort()
+      }
+      );
     }
   }
 

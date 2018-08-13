@@ -1,7 +1,10 @@
+import { BookingPageModule } from './../pages/booking/booking.module';
+import { AdminPageModule } from './../pages/admin/admin.module';
+import { TrainingPageModule } from './../pages/training/training.module';
+import { AdminPage } from './../pages/admin/admin';
 import { BookingPage } from './../pages/booking/booking';
 
 import { NfcCheckPage } from './../pages/nfc-check/nfc-check';
-import { AdminPage } from './../pages/admin/admin';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -22,16 +25,16 @@ import { ComponentsModule } from './../components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { TrainingPage } from './../pages/training/training';
+import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    TrainingPage,
-    AdminPage,
-    NfcCheckPage,
-    BookingPage,
-    BookingPage,
+    // TrainingPage,
+    // AdminPage,
+    // NfcCheckPage,
+    // BookingPage,
   ],
   imports: [
     HttpModule,
@@ -39,16 +42,19 @@ import { TrainingPage } from './../pages/training/training';
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     ComponentsModule,
+    BookingPageModule,
+    AdminPageModule,
+    NfcCheckPageModule,
+    TrainingPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    TrainingPage,
-    AdminPage,
-    NfcCheckPage,
-    BookingPage,
-    BookingPage,
+    // TrainingPage,
+    // AdminPage,
+    // NfcCheckPage,
+    // BookingPage,
   ],
   providers: [
     StatusBar,

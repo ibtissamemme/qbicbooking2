@@ -1,3 +1,4 @@
+import { AdminPage } from './../admin/admin';
 import { MeetingList } from '../../app/shared/meetingList';
 import { Meeting } from 'app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
@@ -6,7 +7,6 @@ import { IonicPage, NavController, Events, ModalController } from "ionic-angular
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
-import { NfcCheckPage } from '../nfc-check/nfc-check';
 
 @IonicPage()
 @Component({
@@ -71,11 +71,11 @@ export class TrainingPage {
 
     this.headerTime = moment();
     //refresh the meetings
-    this.adminService.refreshMeetings().then((meetings) => {
-      this.meetingList = meetings;
-      // this.updateMeetingScrollList();
-      this.getCurrentMeeting();
-    });
+    // this.adminService.refreshMeetings().then((meetings) => {
+    //   this.meetingList = meetings;
+    //   // this.updateMeetingScrollList();
+    //   this.getCurrentMeeting();
+    // });
   }
 
 
@@ -140,8 +140,7 @@ export class TrainingPage {
 
   // go to admin panel
   onAdminClicked() {
-    // this.navCtrl.push(AdminPage);
-    this.navCtrl.push(NfcCheckPage);
+     this.navCtrl.push(AdminPage);
   }
 
   ionViewWillLeave() {
