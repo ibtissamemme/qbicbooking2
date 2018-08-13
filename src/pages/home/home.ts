@@ -93,6 +93,17 @@ export class HomePage {
       this.selectedRoom = data;
       this.refresh();
     });
+
+    // get meeting updates
+    this.adminService.meetingList$.subscribe((data) => {
+      if (!data) {
+        return console.error('no data');
+      }
+      this.meetingList = data;
+      this.getCurrentMeeting();
+    });
+
+
     // start the refresh loop
     // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
@@ -105,17 +116,9 @@ export class HomePage {
   refresh() {
     this.headerTime = moment();
     //refresh the meetings
-    // this.adminService.refreshMeetings().then((meetings) => {
-    //   this.meetingList = meetings;
-    //   // this.updateMeetingScrollList();
-    //   this.getCurrentMeeting();
-    // }).then(() => {
-    //   // if the next meeting is a training, we switch to the training page
-    //   if(this.meeting && this.meeting.meetingType === MeetingType.Training){
-    //     this.navCtrl.setRoot(TrainingPage);
-    //   }
-    // });
-  }
+    this.adminService.refreshMeetings();
+  };
+
 
   // looks for the current meeting in the meeting list depending on the time
   getCurrentMeeting() {
@@ -173,6 +176,11 @@ export class HomePage {
       this.headerColor = 'primary';
       this.meeting = null;
     }
+
+    // if the next meeting is a training, we switch to training
+    if(this.meeting && this.meeting.meetingType === MeetingType.Training){
+      this.navCtrl.setRoot(TrainingPage);
+    }
   }
 
   buttonPressed(time: moment.Moment) {
@@ -190,13 +198,13 @@ export class HomePage {
         start = this.tappedButtons[1].clone();
         end = this.tappedButtons[0].clone();
       }
-      end = end.add(this.hourScrollInterval,'minutes');
-      let obj = { start: start, end: end, room : this.selectedRoom};
+      end = end.add(this.hourScrollInterval, 'minutes');
+      let obj = { start: start, end: end, room: this.selectedRoom };
       let myModal = this.modalCtrl.create(BookingPage, obj);
       this.tappedButtons = new Array();
-      console.log('present'+ start.format('LT')+ " / " + end.format('LT'));
+      console.log('present' + start.format('LT') + " / " + end.format('LT'));
 
-      myModal.onDidDismiss( () => {
+      myModal.onDidDismiss(() => {
         this.refresh();
         // force refresh of the button colors => remove the orange if cancelled
         this.events.publish('refreshColor:clicked');

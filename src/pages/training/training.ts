@@ -7,6 +7,7 @@ import { IonicPage, NavController, Events, ModalController } from "ionic-angular
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
+import { Employee } from '../../app/shared/employee';
 
 @IonicPage()
 @Component({
@@ -61,6 +62,16 @@ export class TrainingPage {
       this.selectedRoom = data;
       this.refresh();
     });
+
+      // get meeting updates
+      this.adminService.meetingList$.subscribe((data) => {
+        if (!data) {
+          return console.error('no data');
+        }
+        this.meetingList = data;
+        this.getCurrentMeeting();
+      });
+
     // start the refresh loop
     // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
@@ -95,7 +106,8 @@ export class TrainingPage {
           const start = m.startDateTime;
           const end = m.endDateTime;
           // check upcoming meeting
-          if (this.headerTime.isBetween(start.clone().subtract(this.hourScrollInterval, "minutes"), start)) {
+          // in training mode, we check 4 hours before
+          if (this.headerTime.isBetween(start.clone().subtract(4, "hours"), start)) {
             this.upcomingMeeting = m;
           }
 
@@ -136,6 +148,7 @@ export class TrainingPage {
       // this.headerColor = 'primary';
       this.meeting = null;
     }
+    console.log(this.meeting);
   }
 
   // go to admin panel
@@ -152,5 +165,16 @@ export class TrainingPage {
   ngOnDestroy() {
     // stop the refresh
     clearInterval(this.refreshLoop);
+  }
+
+
+  isPresent(emp:Employee): boolean {
+    if (emp.corporateID)
+      return null;
+    if (emp.status === -1)
+      return false;
+    if (emp.status === 1)
+      return true;
+    else return null;
   }
 }

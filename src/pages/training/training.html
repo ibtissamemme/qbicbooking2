@@ -1,77 +1,75 @@
 <ion-header>
-    <ion-navbar [color]="headerColor">
-      <ion-title>
-        <ion-grid>
-          <ion-row align-items-center>
-            <ion-col>
-              <img class="logo" src="assets/imgs/logo_white.png" />
-            </ion-col>
-            <ion-col text-center>
-              {{ this.selectedRoom?.name }}
-            </ion-col>
-            <ion-col text-center *ngIf="selectedRoom$ | async as room">
-              {{ room.name }}
-            </ion-col>
-            <ion-col text-right>
-              {{ this.headerTime.format('LTS') }}
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-title>
-    </ion-navbar>
-  </ion-header>
+  <ion-navbar [color]="headerColor">
+    <ion-title>
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col>
+            <img class="logo" src="assets/imgs/logo_white.png" />
+          </ion-col>
+          <ion-col text-center>
+            TRAINING PAGE {{ this.selectedRoom?.name }}
+          </ion-col>
+          <ion-col text-center *ngIf="selectedRoom$ | async as room">
+            {{ room.name }}
+          </ion-col>
+          <ion-col text-right>
+            {{ this.headerTime.format('LTS') }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
 
-  <ion-content>
+<ion-content>
 
 
-    <button ion-button (click)="onAdminClicked()">Admin</button>
+  <button ion-button (click)="onAdminClicked()">Admin</button>
+  <ion-grid class="content-grid" *ngIf="meeting">
 
-    <ion-item>upcoming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
-    <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item>
+    <ion-row text-center>
+      <ion-col>
+        <ion-label>
+          {{ meeting.meetingName }} {{ meeting.meetingDescription }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
 
-    <ion-grid class="content-grid" *ngIf="meeting">
-
-      <ion-row text-center *ngIf="upcomingMeeting">
-        <ion-col>
-          <ion-item>
-            Prochaine réunion : {{ meeting.meetingName }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-      <ion-row text-center *ngIf="meeting.meetingDescription">
-        <ion-col>
-          <ion-item>
-            {{ meeting.meetingDescription }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row text-left>
-        <ion-col>
-          <ion-item>
-            Organisateur : {{ meeting.owner.firstName }} {{ meeting.owner.lastName }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row text-left>
-        <ion-col>
-          <ion-item>
-            Début : {{ meeting.startDateTime.format('LT') }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row text-left>
-        <ion-col>
-          <ion-item>
-            Fin : {{ meeting.endDateTime.format('LT') }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-    </ion-grid>
+    <ion-row text-left>
+      <ion-col>
+        <ion-label>
+          Organisateur : {{ meeting?.owner.firstName }} {{ meeting?.owner.lastName }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row text-left>
+      <ion-col>
+        <ion-label>
+          Début : {{ meeting?.startDateTime.format('LT') }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row text-left>
+      <ion-col>
+        <ion-label>
+          Fin : {{ meeting?.endDateTime.format('LT') }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 
 
-  </ion-content>
+    <ion-list>
+      <ion-list-header>Participants</ion-list-header>
+      <ion-item *ngFor="let attendee of meeting?.attendies">
+        <ion-icon item-start *ngIf="this.isPresent(attendee) === null" color="background" name="help"></ion-icon>
+        <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
+        <ion-icon item-start *ngIf="this.isPresent(attendee) === true" color="primary" name="checkmark"></ion-icon>
+        <ion-label>{{attendee.firstName}} {{attendee.lastName}}</ion-label>
+        <p item-end>{{attendee.company}}</p>
+      </ion-item>
+    </ion-list>
 
 
+</ion-content>
