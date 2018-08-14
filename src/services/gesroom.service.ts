@@ -78,17 +78,8 @@ export class GesroomService {
   // only for the training page, get the URLs of the images to display of no training is available
   // TODO : refactor to call from the admin service
   getBackgroundImageForSite(site: Site){
-    if (!site) {
-      site = new Site('VPARDEFAUT', 'Le Hive');
-    }
-    this.http
-      .get(this.host + "/sites/uris/", this.setHeaders()).toPromise().then((data) => {
-        site.slides = new Array();
-        if (data && typeof (data) == typeof (site.slides)) {
-          site.slides = JSON.parse(data.text());
-        }
-      });
-
+    return this.http
+      .get(this.host + "/sites/uris/", this.setHeaders()).toPromise();
   }
 
 

@@ -3,8 +3,8 @@ import { AdminPage } from './../admin/admin';
 import { MeetingList } from '../../app/shared/meetingList';
 import { Meeting } from 'app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
-import { Component } from "@angular/core";
-import { IonicPage, NavController, Events, ModalController } from "ionic-angular";
+import { Component, ViewChild } from "@angular/core";
+import { IonicPage, NavController, Events, ModalController, Slides } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
@@ -23,7 +23,7 @@ export class TrainingPage {
 
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 50000;
-
+  slideLoopInterval: number = 5000;
   // declaration in order to force label change in the header
   selectedRoom: Room;
 
@@ -40,6 +40,11 @@ export class TrainingPage {
   meeting: Meeting;
   // control of the refresh loop
   refreshLoop: any;
+  slideLoop: any;
+  slideURLarray: string[];
+  // Slides for empty training page
+  @ViewChild(Slides) slides: Slides;
+
 
   constructor(
     public navCtrl: NavController,
@@ -65,13 +70,26 @@ export class TrainingPage {
       this.refresh();
     });
 
+    // get meeting updates
+    this.adminService.meetingList$.subscribe((data) => {
+      if (!data) {
+        return console.error('no data');
+      }
+      this.meetingList = data;
+      this.getCurrentMeeting();
+    });
+
       // get meeting updates
-      this.adminService.meetingList$.subscribe((data) => {
+      this.adminService.slidesAvailable$.subscribe((data) => {
         if (!data) {
-          return console.error('no data');
+          return;
         }
-        this.meetingList = data;
-        this.getCurrentMeeting();
+        // only display slides if we have a meeting
+        if(!this.meeting){
+          this.slideURLarray= data.slides;
+          this.slides.loop = true;
+          this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
+        }
       });
 
     // start the refresh loop
@@ -151,35 +169,36 @@ export class TrainingPage {
       this.meeting = null;
     }
 
-    if(this.meeting == null) {
-      this.gesroomService.getBackgroundImageForSite(this.adminService.selectedSite);
-    }
     console.log(this.meeting);
   }
 
-  getSlides(){
-    if(this.adminService.selectedSite){
-      return this.adminService.selectedSite.slides;
-    }
-  }
+
   // go to admin panel
   onAdminClicked() {
-     this.navCtrl.push(AdminPage);
+    this.navCtrl.push(AdminPage);
   }
 
   ionViewWillLeave() {
     console.log('ionViewWillLeave');
     // stop the refresh
     clearInterval(this.refreshLoop);
+    clearInterval(this.slideLoop);
   }
 
   ngOnDestroy() {
     // stop the refresh
     clearInterval(this.refreshLoop);
+    clearInterval(this.slideLoop);
+  }
+
+  // go to the next slide
+  nextSlide() {
+    this.slides.slideNext();
   }
 
 
-  isPresent(emp:Employee): boolean {
+
+  isPresent(emp: Employee): boolean {
     if (emp.corporateID)
       return null;
     if (emp.status === -1)

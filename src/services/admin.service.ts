@@ -1,3 +1,4 @@
+import { RoomType } from './../app/shared/room';
 import { GesroomService } from './gesroom.service';
 import { MeetingList } from '../../src/app/shared/meetingList';
 import { Injectable } from '@angular/core';
@@ -12,6 +13,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class AdminService {
   meetingList: MeetingList;
   selectedSite: Site;
+  selectedRoom: Room;
   hourScrollInterval: number = 15;
 
   private selectedRoomObs: BehaviorSubject<Room>;
@@ -29,11 +31,16 @@ export class AdminService {
     return this.meetingListObs.asObservable();
   };
 
+  private slidesAvailableObs: BehaviorSubject<Site>;
+  get slidesAvailable$(): Observable<Site>{
+    return this.slidesAvailableObs.asObservable();
+  }
 
   constructor(private storage: Storage, private gesroomService: GesroomService) {
     this.selectedSiteObs = new BehaviorSubject(undefined);
     this.selectedRoomObs = new BehaviorSubject(undefined);
     this.meetingListObs = new BehaviorSubject(undefined);
+    this.slidesAvailableObs = new BehaviorSubject(undefined);
     this.meetingList = new MeetingList();
 
     this.storage.get('selectedSite').then((data) => {
@@ -41,8 +48,8 @@ export class AdminService {
         return console.log('selectedSite Storage : no data');
       }
       console.log('selectedRoom Storage : ' + data);
-      let _selectedSite: Site = JSON.parse(data);
-      this.selectedSiteObs.next(_selectedSite);
+      this.selectedSite = JSON.parse(data);
+      this.selectedSiteObs.next(this.selectedSite);
     }
     );
 
@@ -52,8 +59,9 @@ export class AdminService {
         return console.log('selectedRoom Storage : no data');
       }
       console.log('selectedRoom Storage : ' + data);
-      let _selectedRoom: Room = JSON.parse(data);
-      this.selectedRoomObs.next(_selectedRoom);
+      this.selectedRoom = JSON.parse(data);
+      this.selectedRoomObs.next(this.selectedRoom);
+      this.checkSlides();
     }
     );
 
@@ -81,7 +89,10 @@ export class AdminService {
     this.selectedRoomObs.next(room);
     this.refreshMeetings();
     this.setToStorage('selectedRoom', room);
+
+    this.selectedRoom = room;
     console.log("set to storage ROOM => " + room.name);
+    this.checkSlides();
   }
 
   // makes a call to get meetings based on the selected room
@@ -110,7 +121,18 @@ export class AdminService {
     this.storage.set(key, JSON.stringify(object));
   }
 
-
+  checkSlides(){
+    if(this.selectedRoom.roomType === RoomType.Training){
+      this.gesroomService.getBackgroundImageForSite(this.selectedSite)
+        .then((data) => {
+          this.selectedSite.slides = new Array();
+          if (data && typeof (data) == typeof (this.selectedSite.slides)) {
+            this.selectedSite.slides = JSON.parse(data.text());
+            this.slidesAvailableObs.next(this.selectedSite);
+          }
+        });
+      }
+  }
 
   //ugly but...
   roomCompare = (a: Room, b: Room) => {
