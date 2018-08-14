@@ -79,18 +79,19 @@ export class TrainingPage {
       this.getCurrentMeeting();
     });
 
-      // get meeting updates
-      this.adminService.slidesAvailable$.subscribe((data) => {
-        if (!data) {
-          return;
-        }
-        // only display slides if we have a meeting
-        if(!this.meeting){
-          this.slideURLarray= data.slides;
-          this.slides.loop = true;
-          this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
-        }
-      });
+    // get meeting updates
+    this.adminService.slidesAvailable$.subscribe((data) => {
+      if (!data) {
+        return;
+      }
+      // only display slides if we have a meeting
+      if (!this.meeting) {
+        this.slideURLarray = data.slides;
+        this.slides.loop = true;
+        this.slides.centeredSlides = true;
+        this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
+      }
+    });
 
     // start the refresh loop
     // this.updateMeetingScrollList();
@@ -101,12 +102,7 @@ export class TrainingPage {
   refresh() {
 
     this.headerTime = moment();
-    //refresh the meetings
-    // this.adminService.refreshMeetings().then((meetings) => {
-    //   this.meetingList = meetings;
-    //   // this.updateMeetingScrollList();
-    //   this.getCurrentMeeting();
-    // });
+
   }
 
 
