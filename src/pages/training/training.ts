@@ -1,3 +1,5 @@
+import { HomePage } from './../home/home';
+import { RoomType, Room } from './../../app/shared/room';
 import { GesroomService } from './../../services/gesroom.service';
 import { AdminPage } from './../admin/admin';
 import { MeetingList } from '../../app/shared/meetingList';
@@ -6,7 +8,6 @@ import { AdminService } from './../../services/admin.service';
 import { Component, ViewChild } from "@angular/core";
 import { IonicPage, NavController, Events, ModalController, Slides } from "ionic-angular";
 import * as moment from "moment";
-import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../app/shared/employee';
 
@@ -67,6 +68,10 @@ export class TrainingPage {
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
+      // if we switch to a standard room type, go to the home page
+      if(this.selectedRoom.roomType === RoomType.Meeting){
+        this.navCtrl.setRoot(HomePage);
+      }
       this.refresh();
     });
 
@@ -89,6 +94,8 @@ export class TrainingPage {
         this.slideURLarray = data.slides;
         this.slides.loop = true;
         this.slides.centeredSlides = true;
+        this.slides.speed = 700;
+
         this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
       }
     });

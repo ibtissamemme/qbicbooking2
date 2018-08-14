@@ -98,20 +98,25 @@ export class AdminService {
   // makes a call to get meetings based on the selected room
   refreshMeetings() {
     if (this.selectedRoomObs.getValue()) {
-      this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
-        if (data) {
-          this.meetingList.meetingList = data.json();
-          this.meetingList.sort();
-          this.meetingListObs.next(this.meetingList);
 
-          console.log('meetings:');
-          console.table(this.meetingList.meetingList);
-        }
-        return this.meetingList.meetingList;
-      }).then((data) => {
-        return this.meetingList.sort()
-      }
+
+        this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
+          if (data) {
+            this.meetingList.meetingList = data.json();
+            this.meetingList.sort();
+            this.meetingListObs.next(this.meetingList);
+
+            console.log('meetings:');
+            console.table(this.meetingList.meetingList);
+          }
+          return this.meetingList.meetingList;
+        }, reason => console.error(reason)
+        ).then((data) => {
+          return this.meetingList.sort()
+        }, reason => console.error(reason)
+
       );
+
     }
   }
 
@@ -123,7 +128,8 @@ export class AdminService {
 
   checkSlides(){
     if(this.selectedRoom.roomType === RoomType.Training){
-      this.gesroomService.getBackgroundImageForSite(this.selectedSite)
+      try {
+        this.gesroomService.getBackgroundImageForSite(this.selectedSite)
         .then((data) => {
           this.selectedSite.slides = new Array();
           if (data && typeof (data) == typeof (this.selectedSite.slides)) {
@@ -131,6 +137,11 @@ export class AdminService {
             this.slidesAvailableObs.next(this.selectedSite);
           }
         });
+
+      } catch (error) {
+        console.error(error);
+
+      }
       }
   }
 
