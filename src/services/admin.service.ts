@@ -32,7 +32,7 @@ export class AdminService {
   };
 
   private slidesAvailableObs: BehaviorSubject<Site>;
-  get slidesAvailable$(): Observable<Site>{
+  get slidesAvailable$(): Observable<Site> {
     return this.slidesAvailableObs.asObservable();
   }
 
@@ -100,21 +100,17 @@ export class AdminService {
     if (this.selectedRoomObs.getValue()) {
 
 
-        this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
-          if (data) {
-            this.meetingList.meetingList = data.json();
-            this.meetingList.sort();
-            this.meetingListObs.next(this.meetingList);
+      this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
+        if (data && data.ok) {
+          this.meetingList.meetingList = data.json();
+          this.meetingList.sort();
+          this.meetingListObs.next(this.meetingList);
 
-            console.log('meetings:');
-            console.table(this.meetingList.meetingList);
-          }
-          return this.meetingList.meetingList;
-        }, reason => console.error(reason)
-        ).then((data) => {
-          return this.meetingList.sort()
-        }, reason => console.error(reason)
-
+          console.log('meetings:');
+          console.table(this.meetingList.meetingList);
+        }
+        return this.meetingList.meetingList;
+      }, reason => console.error(reason)
       );
 
     }
@@ -126,23 +122,23 @@ export class AdminService {
     this.storage.set(key, JSON.stringify(object));
   }
 
-  checkSlides(){
-    if(this.selectedRoom.roomType === RoomType.Training){
+  checkSlides() {
+    if (this.selectedRoom.roomType === RoomType.Training) {
       try {
         this.gesroomService.getBackgroundImageForSite(this.selectedSite)
-        .then((data) => {
-          this.selectedSite.slides = new Array();
-          if (data && typeof (data) == typeof (this.selectedSite.slides)) {
-            this.selectedSite.slides = JSON.parse(data.text());
-            this.slidesAvailableObs.next(this.selectedSite);
-          }
-        });
+          .then((data) => {
+            this.selectedSite.slides = new Array();
+            if (data && data.ok && typeof (data) == typeof (this.selectedSite.slides)) {
+              this.selectedSite.slides = JSON.parse(data.text());
+              this.slidesAvailableObs.next(this.selectedSite);
+            }
+          });
 
       } catch (error) {
         console.error(error);
 
       }
-      }
+    }
   }
 
   //ugly but...

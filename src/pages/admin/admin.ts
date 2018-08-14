@@ -54,7 +54,7 @@ export class AdminPage {
             return console.log('no selected room data');
           }
 
-          this.rooms = data.json();
+          this.rooms = data.json().sort();
         });
       }
     }
