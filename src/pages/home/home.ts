@@ -215,6 +215,9 @@ export class HomePage {
       });
 
       myModal.present();
+
+      // when the modal goes up, we empty the array for the tapped buttons
+      this.tappedButtons = [];
     }
   }
 

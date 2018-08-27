@@ -2,7 +2,7 @@ import { Employee } from './../../app/shared/employee';
 import { Meeting, MeetingType, MeetingStatus } from './../../app/shared/meeting';
 import { GesroomService } from './../../services/gesroom.service';
 import { Room } from 'app/shared/room';
-import { ModalController, LoadingController, ViewController } from 'ionic-angular';
+import { LoadingController, ViewController } from 'ionic-angular';
 import { AdminService } from './../../services/admin.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
