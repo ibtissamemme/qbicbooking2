@@ -10,9 +10,12 @@
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
-    "ionic:release": "ionic cordova build --release android",
     "ionic:ios": "ionic cordova build ios --prod",
-    "ionic:launchios": "ionic cordova run ios --device"
+    "ionic:launchios": "ionic cordova run ios --device",
+    "ionic:launchandroid": "ionic cordova run android --device",
+    "preionic:release": "rm ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk || exit 0",
+    "ionic:release": "ionic cordova build --release android",
+    "postionic:release": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/safeware/HamiltonApps/private/androidReleaseKeystore.jks ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidRelease &&  /Users/safeware/Library/Android/sdk/build-tools/28.0.2/zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk"
   },
   "dependencies": {
     "@angular/animations": "5.2.10",
@@ -40,7 +43,6 @@
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "moment": "^2.22.1",
-    "phonegap-nfc": "^0.7.3",
     "rxjs": "5.5.10",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.26"
@@ -60,8 +62,7 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {},
-      "phonegap-nfc": {}
+      "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
       "android",

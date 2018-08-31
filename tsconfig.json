@@ -4,11 +4,11 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "esnext"],
-    "module": "esnext",
+    "lib": ["dom", "es2015"],
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "esnext",
+    "target": "es5",
     "baseUrl": "./src",
     "paths": {
       "@app/env": ["environments/environment"]
