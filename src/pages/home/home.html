@@ -75,6 +75,11 @@
 <ion-footer>
   <ion-navbar>
     <ion-grid class="scroll">
+      <ion-row align-items-center>
+        <ion-col text-center>
+          {{ this.helperLabel }} &darr;
+        </ion-col>
+      </ion-row>
       <ion-row nowrap>
         <ion-col text-center *ngFor="let dadate of dateArray">
           <hour-scroll-button [date]="dadate"></hour-scroll-button>
@@ -83,7 +88,6 @@
 
     </ion-grid>
     <ion-grid>
-
       <ion-row text-center align-items-center>
         <ion-col>
           {{this.headerTime.format('LL')}}

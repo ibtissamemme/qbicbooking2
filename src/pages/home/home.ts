@@ -25,6 +25,7 @@ export class HomePage {
   // time displayed in the header
   headerTime: moment.Moment = moment();
   headerColor: string = 'primary';
+  helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
   // hour scroll interval in minutes
   hourScrollInterval: number;
 
@@ -92,7 +93,7 @@ export class HomePage {
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
-      if(this.selectedRoom.roomType===RoomType.Training){
+      if (this.selectedRoom.roomType === RoomType.Training) {
         this.goToTrainingPage();
       }
       this.refresh();
@@ -118,6 +119,8 @@ export class HomePage {
 
   // refreshes the data on screen based on time
   refresh() {
+    this.helperLabel = this.getHelperText();
+
     this.headerTime = moment();
     //refresh the meetings
     this.adminService.refreshMeetings();
@@ -182,8 +185,17 @@ export class HomePage {
     }
 
     // if the next meeting is a training, we switch to training
-    if(this.meeting && this.meeting.meetingType === MeetingType.Training){
+    if (this.meeting && this.meeting.meetingType === MeetingType.Training) {
       this.goToTrainingPage();
+    }
+  }
+
+  getHelperText(): string {
+    if (this.tappedButtons.length === 1) {
+      return 'Touchez un autre créneau pour continuer votre réservation';
+    }
+    else {
+      return 'Touchez un créneau pour débutter votre réservation';
     }
   }
 
@@ -193,6 +205,7 @@ export class HomePage {
       this.tappedButtons = new Array();
     }
     this.tappedButtons.push(time);
+    this.helperLabel = this.getHelperText();
 
     if (this.tappedButtons.length >= 2) {
       // clone dates to avoid changeing displayed values inside the buttons...
@@ -221,7 +234,7 @@ export class HomePage {
     }
   }
 
-  goToTrainingPage(){
+  goToTrainingPage() {
     this.navCtrl.setRoot(TrainingPage);
   }
 
