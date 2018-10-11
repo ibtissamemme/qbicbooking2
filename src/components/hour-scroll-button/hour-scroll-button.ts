@@ -64,7 +64,8 @@ export class HourScrollButtonComponent {
         this.meetingList.meetingList.forEach(function (m, index) {
           const start = m.startDateTime;
           const end = m.endDateTime;
-          if (this.date.isBetween(start, end) || this.date.clone().add(this.hourScrollInterval, "minutes").isBetween(start, end)) {
+          if (this.date.isBetween(start, end, null, '[)')
+          || this.date.clone().add(this.hourScrollInterval, "minutes").isBetween(start, end, null, '[)')) {
             this.buttonColor = "danger";
             return;
           }

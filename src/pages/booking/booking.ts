@@ -80,7 +80,7 @@ export class BookingPage {
         content: 'Réservation de votre réunion en cours...',
       });
       loadingMeeting.present();
-      this.bookMeeting(this.start, this.end, this.emp, this.room).then( (data )=> {
+      this.bookMeeting(this.start, this.end.subtract(1,"seconds"), this.emp, this.room).then( (data )=> {
         loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
@@ -92,6 +92,7 @@ export class BookingPage {
           this.onCancelClicked();
         }, 3000);
       },(reason) => {
+        loadingMeeting.dismiss();
         let alert = this.alertCtrl.create({
           title: 'Erreur',
           subTitle: "Une erreur est survenue : "+reason,
