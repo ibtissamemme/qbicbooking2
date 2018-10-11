@@ -66,13 +66,16 @@ export class HomePage {
     private modalCtrl: ModalController,
     private translate: TranslateService) {
     this.hourScrollInterval = adminService.hourScrollInterval;
-    events.subscribe('hourscrollbutton:clicked', (time) => {
-      this.buttonPressed(time);
-    });
+
 
   }
 
   ionViewWillEnter() {
+
+    this.events.subscribe('hourscrollbutton:clicked', (time) => {
+      this.buttonPressed(time);
+    });
+
     moment.locale("fr");
     this.headerTime = moment();
     this.dateArray = new Array();
@@ -308,6 +311,7 @@ export class HomePage {
     console.log('ionViewWillLeave');
     // stop the refresh
     clearInterval(this.refreshLoop);
+    this.events.unsubscribe('hourscrollbutton:clicked');
   }
 
   ngOnDestroy() {
