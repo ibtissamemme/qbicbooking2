@@ -98,15 +98,14 @@ export class AdminService {
   // makes a call to get meetings based on the selected room
   refreshMeetings() {
     if (this.selectedRoomObs.getValue()) {
-
-
       this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
         if (data && data.ok) {
           this.meetingList.meetingList = data.json();
           this.meetingList.sort();
           this.meetingListObs.next(this.meetingList);
-
-          this.meetingList.meetingList.map( (m) => console.log(m.id, m.meetingStatus, m.startDateTime.format("lll"), "=>", m.endDateTime.format("lll")) );
+          if(Array.isArray(this.meetingList.meetingList)){
+            this.meetingList.meetingList.map( (m) => console.log(m.id, m.meetingStatus, m.startDateTime.format("lll"), "=>", m.endDateTime.format("lll")) );
+          }
         }
         return this.meetingList.meetingList;
       }, reason => console.error(reason)
