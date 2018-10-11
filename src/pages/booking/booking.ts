@@ -31,7 +31,6 @@ export class BookingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BookingPage');
   }
 
 
@@ -99,6 +98,10 @@ export class BookingPage {
           buttons: ['retour']
         });
         alert.present();
+        setTimeout(() => {
+          alert.dismiss();
+          this.onCancelClicked();
+        }, 3000);
       }
     )
 

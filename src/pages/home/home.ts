@@ -1,3 +1,4 @@
+import { GesroomService } from './../../services/gesroom.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoomType } from './../../app/shared/room';
 import { BookingPage } from './../booking/booking';
@@ -7,7 +8,7 @@ import { MeetingList } from '../../app/shared/meetingList';
 import { States, Meeting } from '../../app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
 import { Component } from "@angular/core";
-import { NavController, Events, ModalController } from "ionic-angular";
+import { NavController, Events, ModalController, LoadingController } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
@@ -62,9 +63,11 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     private adminService: AdminService,
+    private gesroomService: GesroomService,
     public events: Events,
     private modalCtrl: ModalController,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private loadingCtrl: LoadingController) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
 
@@ -294,6 +297,39 @@ export class HomePage {
     return '0%';
   }
 
+  async startNow(){
+    this.meeting.startDateTime = moment();
+    let updatePending: string = "Modification de votre réservation en cours...";
+    let updateDone: string = "Modification de votre réservation effectuée.";
+
+    await this.translate.get('UPDATE.PENDING').toPromise().then( (res) => {
+      updatePending = res;
+    })
+    await this.translate.get('UPDATE.DONE').toPromise().then( (res) => {
+      updateDone = res;
+    })
+
+    const loadingMeeting = this.loadingCtrl.create({
+      spinner: 'dots',
+      content:  updatePending
+    });
+    loadingMeeting.present();
+    this.gesroomService.putMeeting(this.meeting)
+    .then( (res) => {
+      console.log(res);
+      loadingMeeting.dismiss();
+        const confirm = this.loadingCtrl.create({
+          spinner: 'hide',
+          content: updateDone,
+        });
+        confirm.present();
+        setTimeout(() => {
+          confirm.dismiss();
+          this.refresh();
+        }, 3000);
+    })
+    ;
+  }
 
   // used to display the number of minutes until the next meeting
   nextMeetingCountDown(): number{

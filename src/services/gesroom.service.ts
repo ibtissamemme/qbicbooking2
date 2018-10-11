@@ -115,6 +115,15 @@ export class GesroomService {
     }, this.setHeaders()).toPromise();
   }
 
+  putMeeting(meeting:Meeting) {
+     return this.http.put(this.host + '/room_schedule/' + meeting.id, {
+      startDateTime: meeting.startDateTime,
+      endDateTime: meeting.endDateTime,
+      meetingStatus: 'Started'
+    }, this.setHeaders()).toPromise();
+
+  }
+
   // putMeeting(meetingId, start, end) {
   //   this.http.put(this.adminDataServ.serviceUrl + '/room_schedule/' + meetingId, {
   //     startDateTime: start,

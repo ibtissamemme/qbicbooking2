@@ -24,9 +24,6 @@
 <ion-content>
 
   <div class="admin" (click)="onAdminClicked()" tappable></div>
-  <!--
-    <ion-item>upcoming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
-    <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item> -->
 
   <div id="subheader-container" [class]="this.subHeaderTheme" *ngIf="meeting">
     <ion-grid class="subheader-row">
@@ -108,50 +105,15 @@
           </div>
         </ion-col>
       </ion-row>
+      <ion-row text-center align-items-center>
+        <ion-col>
+          <button [color]="headerColor" ion-button (click)="this.startNow()">
+            {{ 'HOME_PAGE.START_NOW' | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </div>
-  <!--
-  <ion-grid *ngIf="meeting">
-    <ion-row text-center *ngIf="currentStatus === PageStates.UPCOMING">
-      <ion-col>
-        <ion-item>
-          Prochaine réunion : {{ meeting.meetingName }}
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-  <ion-row text-center *ngIf="meeting.meetingDescription">
-        <ion-col>
-          <ion-item>
-            {{ meeting.meetingDescription }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row text-left>
-        <ion-col>
-          <ion-item>
-            Organisateur : {{ meeting.owner.firstName }} {{ meeting.owner.lastName }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row text-left>
-        <ion-col>
-          <ion-item>
-            Début : {{ meeting.startDateTime.format('LT') }}
-          </ion-item>
-        </ion-col>
-      </ion-row>
-    <ion-row text-left>
-      <ion-col>
-        <ion-item>
-          Fin : {{ meeting.endDateTime.format('LT') }}
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-  </ion-grid>
- -->
-
 
  <div class="upcoming-container" *ngIf="!this.selectedRoom">
     <ion-grid class="upcoming-grid" >
