@@ -1,10 +1,9 @@
 import { BookingPageModule } from './../pages/booking/booking.module';
 import { AdminPageModule } from './../pages/admin/admin.module';
 import { TrainingPageModule } from './../pages/training/training.module';
-import { AdminPage } from './../pages/admin/admin';
-import { BookingPage } from './../pages/booking/booking';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { NfcCheckPage } from './../pages/nfc-check/nfc-check';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -24,8 +23,8 @@ import { AdminService } from '../services/admin.service';
 import { ComponentsModule } from './../components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage';
-import { TrainingPage } from './../pages/training/training';
 import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,6 +37,7 @@ import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
   ],
   imports: [
     HttpModule,
+    HttpClientModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
@@ -45,7 +45,15 @@ import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
     BookingPageModule,
     AdminPageModule,
     NfcCheckPageModule,
-    TrainingPageModule
+    TrainingPageModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -68,3 +76,8 @@ import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
   ]
 })
 export class AppModule { }
+
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}

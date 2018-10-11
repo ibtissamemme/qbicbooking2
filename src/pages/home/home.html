@@ -10,7 +10,7 @@
             {{ this.selectedRoom?.name }}
           </ion-col>
           <ion-col text-center *ngIf="selectedRoom$ | async as room">
-            {{ room.name }}
+           {{ room.name }}
           </ion-col>
           <ion-col text-right>
             {{ this.headerTime.format('LTS') }}
