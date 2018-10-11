@@ -80,24 +80,8 @@ export class HomePage {
     });
 
     moment.locale("fr");
-    this.headerTime = moment();
-    this.dateArray = new Array();
 
-    // get the now moment
-    const now = moment();
-    // get the offset to the next quarter hour
-    const remainer = this.hourScrollInterval - now.minute() % this.hourScrollInterval;
-
-    // get the next quarter hour
-    let rounded = now.add(remainer, "minutes").set("seconds", 0);
-
-    this.dateArray.push(rounded.clone());
-
-    for (let i = 1; i < 15; i++) {
-      // warning, we use the same 'rounded' variable
-      const iterate = rounded.add(this.hourScrollInterval, "minutes");
-      this.dateArray.push(iterate.clone());
-    }
+    this.buildHourScrollArray();
 
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
@@ -134,11 +118,41 @@ export class HomePage {
   refresh() {
     this.getHelperText();
     this.headerTime = moment();
+    this.buildHourScrollArray();
+
     this.nextMeetingCountDownResult = this.nextMeetingCountDown();
     //refresh the meetings
     this.adminService.refreshMeetings();
 
   };
+
+
+  buildHourScrollArray(){
+    this.headerTime = moment();
+    this.dateArray = new Array();
+
+    // get the now moment
+    const now = moment();
+
+    // // get the offset to the next quarter hour
+    // const remainer = this.hourScrollInterval - now.minute() % this.hourScrollInterval;
+    // // get the next quarter hour
+    // let rounded = now.add(remainer, "minutes").set("seconds", 0);
+
+    // get the offset to the previous quarter hour
+    const remainer = now.minute() % this.hourScrollInterval;
+    // get the next quarter hour
+    let rounded = now.subtract(remainer, "minutes").set("seconds", 0).set("milliseconds",0);
+
+    this.dateArray.push(rounded.clone());
+
+    for (let i = 1; i < 15; i++) {
+      // warning, we use the same 'rounded' variable
+      const iterate = rounded.add(this.hourScrollInterval, "minutes");
+      this.dateArray.push(iterate.clone());
+    }
+
+  }
 
 
   // looks for the current meeting in the meeting list depending on the time
