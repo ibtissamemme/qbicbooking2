@@ -119,7 +119,7 @@ export class GesroomService {
      return this.http.put(this.host + '/room_schedule/' + meeting.id, {
       startDateTime: meeting.startDateTime,
       endDateTime: meeting.endDateTime,
-      meetingStatus: 'Started'
+      meetingStatus: meeting.meetingStatus,
     }, this.setHeaders()).toPromise();
 
   }

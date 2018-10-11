@@ -2,7 +2,7 @@ import { GesroomService } from './../../services/gesroom.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoomType } from './../../app/shared/room';
 import { BookingPage } from './../booking/booking';
-import { MeetingType } from './../../app/shared/meeting';
+import { MeetingType, MeetingStatus } from './../../app/shared/meeting';
 import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
 import { States, Meeting } from '../../app/shared/meeting';
@@ -299,6 +299,7 @@ export class HomePage {
 
   async startNow(){
     this.meeting.startDateTime = moment();
+    this.meeting.meetingStatus = MeetingStatus.Started;
     let updatePending: string = "Modification de votre réservation en cours...";
     let updateDone: string = "Modification de votre réservation effectuée.";
 
@@ -321,6 +322,40 @@ export class HomePage {
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
           content: updateDone,
+        });
+        confirm.present();
+        setTimeout(() => {
+          confirm.dismiss();
+          this.refresh();
+        }, 3000);
+    })
+    ;
+  }
+
+  async endNow(){
+    this.meeting.endDateTime = moment();
+    let pendingMessage: string = "Modification de votre réservation en cours...";
+    let doneMessage: string = "Modification de votre réservation effectuée.";
+
+    await this.translate.get('CANCEL.PENDING').toPromise().then( (res) => {
+      pendingMessage = res;
+    })
+    await this.translate.get('CANCEL.DONE').toPromise().then( (res) => {
+      doneMessage = res;
+    })
+
+    const loadingMeeting = this.loadingCtrl.create({
+      spinner: 'dots',
+      content:  pendingMessage
+    });
+    loadingMeeting.present();
+    this.gesroomService.putMeeting(this.meeting)
+    .then( (res) => {
+      console.log(res);
+      loadingMeeting.dismiss();
+        const confirm = this.loadingCtrl.create({
+          spinner: 'hide',
+          content: doneMessage,
         });
         confirm.present();
         setTimeout(() => {

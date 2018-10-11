@@ -106,8 +106,7 @@ export class AdminService {
           this.meetingList.sort();
           this.meetingListObs.next(this.meetingList);
 
-          console.log('meetings:');
-          console.table(this.meetingList.meetingList);
+          this.meetingList.meetingList.map( (m) => console.log(m.id, m.meetingStatus, m.startDateTime.format("lll"), "=>", m.endDateTime.format("lll")) );
         }
         return this.meetingList.meetingList;
       }, reason => console.error(reason)

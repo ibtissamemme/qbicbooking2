@@ -8,10 +8,20 @@
     "BEGIN": "Begin",
     "END": "End",
     "START_NOW": "Start the meeting now",
+    "END_NOW": "End your booking now",
+    "EXTEND": "Extend booking",
     "NOT_CONFIGURED": "This device is not properly configured, please contact the support."
   },
   "UPDATE": {
     "PENDING": "Updating booking...",
     "DONE": "Booking update done."
-  }
+  },
+  "CANCEL": {
+    "PENDING": "Updating booking...",
+    "DONE": "Booking update done."
+  },
+  "EXTEND": {
+    "PENDING": "Updating booking...",
+    "DONE": "Booking update done."
+  },
 }

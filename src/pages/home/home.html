@@ -89,6 +89,18 @@
         </ion-col>
         <ion-col col-2></ion-col>
       </ion-row>
+      <ion-row text-center align-items-center>
+          <ion-col>
+            <button [color]="headerColor" ion-button (click)="endNow()">
+              {{ 'HOME_PAGE.END_NOW' | translate }}
+            </button>
+          </ion-col>
+          <ion-col>
+            <button [color]="headerColor" ion-button >
+              {{ 'HOME_PAGE.EXTEND' | translate }}
+            </button>
+          </ion-col>
+        </ion-row>
     </ion-grid>
   </div>
 
