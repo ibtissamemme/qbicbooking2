@@ -12,6 +12,11 @@ import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
 import { TrainingPage } from '../training/training';
 
+enum PageStates {
+  'FREE',
+  'UPCOMING',
+  'OCCUPIED',
+};
 
 @Component({
   selector: "page-home",
@@ -22,9 +27,13 @@ export class HomePage {
   // dates in the hourscroll component
   dateArray: moment.Moment[] = [];
 
+
+
   // time displayed in the header
   headerTime: moment.Moment = moment();
   headerColor: string = 'primary';
+  subHeaderTheme: string;
+
   helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
   // hour scroll interval in minutes
   hourScrollInterval: number;
@@ -124,6 +133,7 @@ export class HomePage {
     this.headerTime = moment();
     //refresh the meetings
     this.adminService.refreshMeetings();
+
   };
 
 
@@ -149,8 +159,8 @@ export class HomePage {
           if (this.headerTime.isBetween(start, end)) {
             this.currentMeeting = m;
             console.log(this.currentMeeting.meetingName);
-
-            this.headerColor = 'danger';
+            this.changeHeaderColor(PageStates.OCCUPIED)
+            //this.headerColor = 'danger';
           }
 
         }.bind(this));
@@ -172,7 +182,8 @@ export class HomePage {
       else {
         this.meeting = this.upcomingMeeting;
       }
-      this.headerColor = 'secondary';
+      this.changeHeaderColor(PageStates.UPCOMING)
+      //this.headerColor = 'secondary';
     }
     else if (this.currentMeeting) {
       this.meeting = this.currentMeeting;
@@ -180,7 +191,8 @@ export class HomePage {
     }
 
     if (!this.upcomingMeeting && !this.currentMeeting) {
-      this.headerColor = 'primary';
+      this.changeHeaderColor(PageStates.FREE)
+      // this.headerColor = 'primary';
       this.meeting = null;
     }
 
@@ -243,6 +255,25 @@ export class HomePage {
   onAdminClicked() {
     // this.navCtrl.push(AdminPage);
     this.navCtrl.push(NfcCheckPage);
+  }
+
+  changeHeaderColor(state: PageStates) {
+    switch (state) {
+      case PageStates.UPCOMING:
+        this.headerColor = 'secondary';
+        this.subHeaderTheme = 'upcoming'
+        break;
+      case PageStates.OCCUPIED:
+        this.headerColor = 'danger';
+        this.subHeaderTheme = 'occupied'
+        break;
+
+      default:
+        this.headerColor = 'primary';
+        this.subHeaderTheme = 'free'
+        break;
+    }
+
   }
 
   ionViewWillLeave() {

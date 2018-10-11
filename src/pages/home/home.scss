@@ -8,6 +8,26 @@ page-home {
   }
 
 
+  #subheader-container{
+    align-self: center;
+    height: 15%;
+    display: flex;
+  }
+  .free{
+    color: white;
+    background-color: color($colors, primary);
+   }
+  .upcoming{
+    color: white;
+    background-color: color($colors, secondary);
+   }
+  .occupied{
+    color: white;
+    background-color: color($colors, danger);
+  }
+  .subheader-row{
+    align-self: center;
+  }
 }
 .logo{
   max-height: 60px;

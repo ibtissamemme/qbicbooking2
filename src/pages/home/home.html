@@ -3,14 +3,14 @@
     <ion-title>
       <ion-grid>
         <ion-row align-items-center>
-          <ion-col>
+          <ion-col text-left>
             <img class="logo" src="assets/imgs/logo_white.png" />
           </ion-col>
           <ion-col text-center>
             {{ this.selectedRoom?.name }}
           </ion-col>
           <ion-col text-center *ngIf="selectedRoom$ | async as room">
-           {{ room.name }}
+            {{ room.name }}
           </ion-col>
           <ion-col text-right>
             {{ this.headerTime.format('LTS') }}
@@ -22,13 +22,26 @@
 </ion-header>
 
 <ion-content>
-  <button ion-button (click)="onAdminClicked()">Admin</button>
+  <!-- <button ion-button (click)="onAdminClicked()">Admin</button> -->
+  <!--
+    <ion-item>upcoming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
+    <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item> -->
 
-  <ion-item>upcoming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
-  <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item>
-
-  <ion-grid class="content-grid" *ngIf="meeting">
-
+  <div id="subheader-container" [class]="this.subHeaderTheme" *ngIf="meeting">
+    <ion-grid class="subheader-row" >
+      <ion-row >
+        <ion-col></ion-col>
+        <ion-col col-5>
+          {{ meeting.meetingName }}
+        </ion-col>
+        <ion-col col-5 text-right>
+          {{ 'HOST' | translate }} {{ meeting.owner.firstName }} {{ meeting.owner.lastName }}
+        </ion-col>
+        <ion-col></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-grid *ngIf="meeting">
     <ion-row text-center *ngIf="upcomingMeeting">
       <ion-col>
         <ion-item>
@@ -91,7 +104,6 @@
       <ion-row text-center align-items-center>
         <ion-col>
           {{this.headerTime.format('LL')}}
-
         </ion-col>
       </ion-row>
     </ion-grid>
