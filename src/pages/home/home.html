@@ -22,7 +22,8 @@
 </ion-header>
 
 <ion-content>
-  <!-- <button ion-button (click)="onAdminClicked()">Admin</button> -->
+
+  <div class="admin" (click)="onAdminClicked()" tappable></div>
   <!--
     <ion-item>upcoming : {{ upcomingMeeting?.startDateTime.format('LT') }}</ion-item>
     <ion-item>current: {{ currentMeeting?.startDateTime.format('LT') }}</ion-item> -->
@@ -41,6 +42,39 @@
       </ion-row>
     </ion-grid>
   </div>
+
+  <div id="progressbar-container"  *ngIf="meeting">
+    <ion-grid class="progressbar-grid" >
+      <ion-row>
+        <ion-col col-2></ion-col>
+        <ion-col text-left>
+            Début : {{ meeting.startDateTime.format('LT') }}
+        </ion-col>
+        <ion-col col-6></ion-col>
+        <ion-col text-right>
+            Fin : {{ meeting.endDateTime.format('LT') }}
+        </ion-col>
+        <ion-col col-2></ion-col>
+
+      </ion-row>
+      <ion-row >
+        <ion-col col-2></ion-col>
+        <ion-col col-8>
+          <div class="progress-container">
+            <span class="progress progress-past" [style.width]="getProgress()">
+            </span>
+            <span class="progress progress-future" >
+            </span>
+          </div>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+
+
   <ion-grid *ngIf="meeting">
     <ion-row text-center *ngIf="upcomingMeeting">
       <ion-col>

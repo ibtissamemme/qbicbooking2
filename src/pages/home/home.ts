@@ -33,6 +33,7 @@ export class HomePage {
   headerTime: moment.Moment = moment();
   headerColor: string = 'primary';
   subHeaderTheme: string;
+  past:any;
 
   helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
   // hour scroll interval in minutes
@@ -274,6 +275,19 @@ export class HomePage {
         break;
     }
 
+  }
+
+
+  getProgress(){
+    if(this.meeting){
+      const now = moment().unix();
+      const start = this.meeting.startDateTime.unix();
+      const end = this.meeting.endDateTime.unix();
+      const progress = Math.floor((now - start) * 100 / (end - start));
+
+      return progress + '%';
+    }
+    return '0%';
   }
 
   ionViewWillLeave() {

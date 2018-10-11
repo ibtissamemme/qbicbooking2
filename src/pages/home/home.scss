@@ -1,4 +1,11 @@
 page-home {
+  .admin{
+    position: absolute;
+    z-index: 100;
+    width: 100px;
+    height: 50px;
+
+  }
   .scroll{
     overflow-x: scroll!important;
   }
@@ -27,6 +34,24 @@ page-home {
   }
   .subheader-row{
     align-self: center;
+  }
+
+  #progressbar-container{
+    margin-top: 30px;
+  }
+  .progress-container{
+    display:flex;
+    border: 1 0 0 0;
+    background-color: rgb(236, 236, 236);
+    border-radius: 3px;
+  }
+  .progress{
+    border-radius: 3px;
+    margin: 5px;
+    height: 60px;
+  }
+  .progress-past{
+    background-color: rgb(74, 80, 89);
   }
 }
 .logo{
