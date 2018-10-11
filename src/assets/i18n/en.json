@@ -4,6 +4,9 @@
     "NEXT_MEETING_IN": "Next meeting in",
     "MINUTES": "minutes",
     "TOUCH_TO_BEGIN": "Please touch a free slot to begin your booking",
-    "TOUCH_TO_CONTINUE": "Please touch another slot to continue your booking"
+    "TOUCH_TO_CONTINUE": "Please touch another slot to continue your booking",
+    "BEGIN": "Begin",
+    "END": "End",
+    "NOT_CONFIGURED": "This device is not properly configured, please contact the support."
   }
 }

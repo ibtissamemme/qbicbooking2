@@ -13,7 +13,7 @@
             {{ room.name }}
           </ion-col>
           <ion-col text-right>
-            {{ this.headerTime.format('LTS') }}
+            {{ this.headerTime.format('LT') }}
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -60,11 +60,23 @@
       <ion-row>
         <ion-col col-2></ion-col>
         <ion-col text-left>
-          Début : {{ meeting.startDateTime.format('LT') }}
+          <div class="host-label">
+            {{ 'HOME_PAGE.BEGIN' | translate }}
+          </div>
+          <div>
+            {{ meeting.startDateTime.format('LT') }}
+          </div>
+
         </ion-col>
         <ion-col col-6></ion-col>
         <ion-col text-right>
-          Fin : {{ meeting.endDateTime.format('LT') }}
+          <div class="host-label">
+            {{ 'HOME_PAGE.END' | translate }}
+          </div>
+          <div>
+            {{ meeting.endDateTime.format('LT') }}
+          </div>
+
         </ion-col>
         <ion-col col-2></ion-col>
       </ion-row>
@@ -84,9 +96,8 @@
   </div>
 
 
-
-  <div class="upcoming-container">
-    <ion-grid class="upcoming-grid" *ngIf="currentStatus === PageStates.PENDING">
+  <div class="upcoming-container" *ngIf="currentStatus === PageStates.PENDING">
+    <ion-grid class="upcoming-grid" >
       <ion-row text-center align-items-center>
         <ion-col>
           <div>
@@ -140,6 +151,19 @@
 
   </ion-grid>
  -->
+
+
+ <div class="upcoming-container" *ngIf="!this.selectedRoom">
+    <ion-grid class="upcoming-grid" >
+      <ion-row text-center align-items-center>
+        <ion-col>
+          <div>
+            {{ 'HOME_PAGE.NOT_CONFIGURED' | translate }}
+          </div>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
 
 </ion-content>

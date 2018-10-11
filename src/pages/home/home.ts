@@ -233,7 +233,6 @@ export class HomePage {
       let obj = { start: start, end: end, room: this.selectedRoom };
       let myModal = this.modalCtrl.create(BookingPage, obj);
       this.tappedButtons = new Array();
-      console.log('present' + start.format('LT') + " / " + end.format('LT'));
 
       myModal.onDidDismiss(() => {
         this.refresh();
@@ -279,7 +278,7 @@ export class HomePage {
 
   }
 
-
+  // used to display the progress bar until the end of the meeting
   getProgress(): string{
     if(this.meeting && this.currentStatus === States.OCCUPIED){
       const now = moment().unix();
@@ -291,12 +290,15 @@ export class HomePage {
     }
     return '0%';
   }
+
+
+  // used to display the number of minutes until the next meeting
   nextMeetingCountDown(): number{
     if(this.meeting  && this.currentStatus === States.PENDING){
       const now = moment();
       const start = this.meeting.startDateTime;
       const shift = moment.duration(start.diff(now));
-      return Math.floor(shift.asMinutes());
+      return Math.ceil(shift.asMinutes());
     } else {
       return 0;
     }
