@@ -1,9 +1,10 @@
+import { TranslateService } from '@ngx-translate/core';
 import { RoomType } from './../../app/shared/room';
 import { BookingPage } from './../booking/booking';
-import { States, MeetingType } from './../../app/shared/meeting';
+import { MeetingType } from './../../app/shared/meeting';
 import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
-import { Meeting } from 'app/shared/meeting';
+import { States, Meeting } from '../../app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
 import { Component } from "@angular/core";
 import { NavController, Events, ModalController } from "ionic-angular";
@@ -11,12 +12,6 @@ import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
 import { TrainingPage } from '../training/training';
-
-enum PageStates {
-  'FREE',
-  'UPCOMING',
-  'OCCUPIED',
-};
 
 @Component({
   selector: "page-home",
@@ -34,13 +29,13 @@ export class HomePage {
   headerColor: string = 'primary';
   subHeaderTheme: string;
   past:any;
-
+  nextMeetingCountDownResult: number;
   helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
   // hour scroll interval in minutes
   hourScrollInterval: number;
 
   // screen refresh interval in milliseconds => used for the refresh method
-  refreshInterval: number = 50000;
+  refreshInterval: number = 30000;
 
   // declaration in order to force label change in the header
   selectedRoom: Room;
@@ -49,6 +44,8 @@ export class HomePage {
   selectedRoom$: Observable<Room>;
 
   meetingList: MeetingList;
+  PageStates = States;
+  currentStatus: States = States.FREE;
 
   // current meeting => red status
   currentMeeting: Meeting;
@@ -66,9 +63,9 @@ export class HomePage {
     public navCtrl: NavController,
     private adminService: AdminService,
     public events: Events,
-    private modalCtrl: ModalController) {
+    private modalCtrl: ModalController,
+    private translate: TranslateService) {
     this.hourScrollInterval = adminService.hourScrollInterval;
-
     events.subscribe('hourscrollbutton:clicked', (time) => {
       this.buttonPressed(time);
     });
@@ -129,9 +126,9 @@ export class HomePage {
 
   // refreshes the data on screen based on time
   refresh() {
-    this.helperLabel = this.getHelperText();
-
+    this.getHelperText();
     this.headerTime = moment();
+    this.nextMeetingCountDownResult = this.nextMeetingCountDown();
     //refresh the meetings
     this.adminService.refreshMeetings();
 
@@ -160,7 +157,7 @@ export class HomePage {
           if (this.headerTime.isBetween(start, end)) {
             this.currentMeeting = m;
             console.log(this.currentMeeting.meetingName);
-            this.changeHeaderColor(PageStates.OCCUPIED)
+            this.changeStatus(States.OCCUPIED)
             //this.headerColor = 'danger';
           }
 
@@ -183,7 +180,7 @@ export class HomePage {
       else {
         this.meeting = this.upcomingMeeting;
       }
-      this.changeHeaderColor(PageStates.UPCOMING)
+      this.changeStatus(States.PENDING)
       //this.headerColor = 'secondary';
     }
     else if (this.currentMeeting) {
@@ -192,7 +189,7 @@ export class HomePage {
     }
 
     if (!this.upcomingMeeting && !this.currentMeeting) {
-      this.changeHeaderColor(PageStates.FREE)
+      this.changeStatus(States.FREE)
       // this.headerColor = 'primary';
       this.meeting = null;
     }
@@ -203,12 +200,16 @@ export class HomePage {
     }
   }
 
-  getHelperText(): string {
+  getHelperText() {
     if (this.tappedButtons.length === 1) {
-      return 'Touchez un autre créneau pour continuer votre réservation';
-    }
-    else {
-      return 'Touchez un créneau pour débutter votre réservation';
+      this.translate.get('HOME_PAGE.TOUCH_TO_CONTINUE').subscribe((res: string) => {
+        this.helperLabel = res;
+    });
+  }
+  else {
+            this.translate.get('HOME_PAGE.TOUCH_TO_BEGIN').subscribe((res: string) => {
+              this.helperLabel = res;
+          });
     }
   }
 
@@ -218,7 +219,7 @@ export class HomePage {
       this.tappedButtons = new Array();
     }
     this.tappedButtons.push(time);
-    this.helperLabel = this.getHelperText();
+    this.getHelperText();
 
     if (this.tappedButtons.length >= 2) {
       // clone dates to avoid changeing displayed values inside the buttons...
@@ -258,13 +259,14 @@ export class HomePage {
     this.navCtrl.push(NfcCheckPage);
   }
 
-  changeHeaderColor(state: PageStates) {
+  changeStatus(state: States) {
+    this.currentStatus = state;
     switch (state) {
-      case PageStates.UPCOMING:
+      case States.PENDING:
         this.headerColor = 'secondary';
         this.subHeaderTheme = 'upcoming'
         break;
-      case PageStates.OCCUPIED:
+      case States.OCCUPIED:
         this.headerColor = 'danger';
         this.subHeaderTheme = 'occupied'
         break;
@@ -278,8 +280,8 @@ export class HomePage {
   }
 
 
-  getProgress(){
-    if(this.meeting){
+  getProgress(): string{
+    if(this.meeting && this.currentStatus === States.OCCUPIED){
       const now = moment().unix();
       const start = this.meeting.startDateTime.unix();
       const end = this.meeting.endDateTime.unix();
@@ -288,6 +290,16 @@ export class HomePage {
       return progress + '%';
     }
     return '0%';
+  }
+  nextMeetingCountDown(): number{
+    if(this.meeting  && this.currentStatus === States.PENDING){
+      const now = moment();
+      const start = this.meeting.startDateTime;
+      const shift = moment.duration(start.diff(now));
+      return Math.floor(shift.asMinutes());
+    } else {
+      return 0;
+    }
   }
 
   ionViewWillLeave() {
@@ -300,4 +312,5 @@ export class HomePage {
     // stop the refresh
     clearInterval(this.refreshLoop);
   }
+
 }
