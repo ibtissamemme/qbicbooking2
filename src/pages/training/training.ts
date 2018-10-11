@@ -92,6 +92,9 @@ export class TrainingPage {
       // only display slides if we have a meeting
       if (!this.meeting) {
         this.slideURLarray = data.slides;
+        if(!this.slides){
+          return;
+        }
         this.slides.loop = true;
         this.slides.centeredSlides = true;
         this.slides.speed = 700;
