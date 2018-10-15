@@ -1,3 +1,4 @@
+import { TabletService } from './../../services/tablet.service';
 import { GesroomService } from './../../services/gesroom.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoomType } from './../../app/shared/room';
@@ -67,7 +68,8 @@ export class HomePage {
     public events: Events,
     private modalCtrl: ModalController,
     private translate: TranslateService,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private tabletService: TabletService) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
 
@@ -123,7 +125,7 @@ export class HomePage {
     this.nextMeetingCountDownResult = this.nextMeetingCountDown();
     //refresh the meetings
     this.adminService.refreshMeetings();
-
+    this.tabletService.changeLED(this.currentStatus);
   };
 
 
