@@ -39,7 +39,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     HttpModule,
     HttpClientModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {mode: 'ios'}),
     IonicStorageModule.forRoot(),
     ComponentsModule,
     BookingPageModule,
