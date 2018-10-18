@@ -41,7 +41,9 @@
   </ion-navbar>
 </ion-header>
 
-
+<!-- ************ -->
+<!-- OVERLAY -->
+<!-- ************ -->
 <div class="overlay" [@opacityChange]="this.overlayOpacityState" [@displayChange]="this.overlayDisplayState" (click)="this.removeOverlay()"
   tappable *ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
 
@@ -69,12 +71,18 @@
   </div>
 </div>
 
+<!-- ************ -->
+<!-- MAIN CONTENT -->
+<!-- ************ -->
 <ion-content (click)="this.tapHandler()">
 
   <div class="admin" (click)="onAdminClicked()" tappable></div>
 
 
 
+  <!-- ************ -->
+  <!--FREE PAGE CONTENT -->
+  <!-- ************ -->
   <ion-grid class="content-grid" *ngIf="this.selectedRoom && currentStatus === PageStates.FREE">
 
 
@@ -82,62 +90,47 @@
 
 
 
-  <div id="subheader-container" [class]="this.subHeaderTheme" *ngIf="meeting">
-    <ion-grid class="subheader-row">
-      <ion-row>
-        <ion-col></ion-col>
-        <ion-col col-5>
 
-          <div class="host-label">
-            &nbsp;
-          </div>
-          <div>
-            {{ meeting.meetingName }}
-          </div>
+  <!-- ************ -->
+  <!--OCCUPIED PAGE CONTENT -->
+  <!-- ************ -->
+  <div class="content-grid" *ngIf="meeting && currentStatus === PageStates.OCCUPIED">
+    <ion-grid class="container-opacity">
 
-        </ion-col>
-        <ion-col col-5 text-right>
-          <div class="host-label">
-            {{ 'HOME_PAGE.HOST' | translate }}
-          </div>
-          <div>
-            {{ meeting.owner.firstName }} {{ meeting.owner.lastName }}
-          </div>
-        </ion-col>
-        <ion-col></ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
-  <div id="progressbar-container" *ngIf="currentStatus === PageStates.OCCUPIED">
-    <ion-grid class="progressbar-grid">
-      <ion-row>
-        <ion-col col-2></ion-col>
-        <ion-col text-left>
+      <ion-row class="padding-top">
+        <ion-col col-1></ion-col>
+        <ion-col col-2 text-left>
           <div class="host-label">
             {{ 'HOME_PAGE.BEGIN' | translate }}
           </div>
-          <div>
+          <div class="big-text">
             {{ meeting.startDateTime.format('LT') }}
           </div>
 
         </ion-col>
-        <ion-col col-6></ion-col>
-        <ion-col text-right>
+        <ion-col text-center>
+          <div class="host-label">
+            {{ 'HOME_PAGE.HOST' | translate }}
+          </div>
+          <div class="big-text">
+            {{ meeting.owner.firstName }} {{ meeting.owner.lastName }}
+          </div>
+        </ion-col>
+        <ion-col col-2 text-right>
           <div class="host-label">
             {{ 'HOME_PAGE.END' | translate }}
           </div>
-          <div>
+          <div class="big-text">
             {{ meeting.endDateTime.format('LT') }}
           </div>
 
         </ion-col>
-        <ion-col col-2></ion-col>
+        <ion-col col-1></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col col-2></ion-col>
-        <ion-col col-8>
+        <ion-col col-1></ion-col>
+        <ion-col col-10>
           <div class="progress-container">
             <span class="progress progress-past" [style.width]="getProgress()">
             </span>
@@ -145,24 +138,30 @@
             </span>
           </div>
         </ion-col>
-        <ion-col col-2></ion-col>
+        <ion-col col-1></ion-col>
       </ion-row>
-      <ion-row text-center align-items-center>
-        <ion-col>
+
+      <ion-row text-center align-items-center class="padding-top-buttons">
+        <ion-col col-1></ion-col>
+        <ion-col col-5 text-left>
           <button [color]="headerColor" ion-button (click)="endNow()">
             {{ 'HOME_PAGE.END_NOW' | translate }}
           </button>
         </ion-col>
-        <ion-col>
+        <ion-col col-5 text-right>
           <button [color]="headerColor" ion-button>
             {{ 'HOME_PAGE.EXTEND' | translate }}
           </button>
         </ion-col>
+        <ion-col col-1></ion-col>
       </ion-row>
     </ion-grid>
   </div>
 
 
+  <!-- ************ -->
+  <!--PENDING PAGE CONTENT -->
+  <!-- ************ -->
   <div class="upcoming-container" *ngIf="currentStatus === PageStates.PENDING">
     <ion-grid class="upcoming-grid">
       <ion-row text-center align-items-center>
@@ -185,6 +184,11 @@
     </ion-grid>
   </div>
 
+
+
+  <!-- ************ -->
+  <!--ERROR PAGE CONTENT -->
+  <!-- ************ -->
   <div class="upcoming-container" *ngIf="!this.selectedRoom">
     <ion-grid class="upcoming-grid">
       <ion-row text-center align-items-center>
@@ -203,6 +207,9 @@
 
 
 
+<!-- ************ -->
+<!--FOOTER CONTENT -->
+<!-- ************ -->
 <ion-footer no-shadow no-border transparent *ngIf="this.selectedRoom" (click)="this.tapHandler()">
   <!-- <ion-navbar > -->
 

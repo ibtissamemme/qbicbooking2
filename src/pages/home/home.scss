@@ -58,6 +58,7 @@ page-home {
     .header-langage-button{
       border: 1px solid white;
       border-radius: 3px;
+      background-color: rgba($color: #FFF, $alpha: 0.0)
     }
   }
 
@@ -75,6 +76,28 @@ page-home {
     background-repeat:   no-repeat;
     background-position: center center;
     height: 100%;
+
+    .container-opacity{
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      height: 100%;
+
+      .padding-top{
+        padding-top: 80px;
+      }
+
+      .host-label{
+        font-weight: 400;
+      }
+      .big-text{
+        font-weight: 500;
+        font-size: $font-size-small;
+      }
+
+      .padding-top-buttons{
+        padding-top: 40px;
+      }
+    }
   }
 
 
@@ -89,9 +112,6 @@ page-home {
     display: flex;
   }
 
-  .host-label{
-    font-weight: 300;
-  }
 
   .free{
     color: white;
@@ -104,9 +124,6 @@ page-home {
   .occupied{
     color: white;
     background-color: color($colors, danger);
-  }
-  .subheader-row{
-    align-self: center;
   }
 
   #progressbar-container{
