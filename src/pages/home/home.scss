@@ -1,18 +1,81 @@
+
 page-home {
+  ::-webkit-scrollbar, *::-webkit-scrollbar {
+    display: none;
+  }
+
   .admin{
     position: absolute;
     z-index: 100;
     width: 100px;
     height: 50px;
   }
-  .scroll{
-    overflow-x: scroll!important;
-  }
-  .scroll::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
+
+  .header-group{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
   }
 
+  .header-room{
+    font-weight: 800;
+    font-size: $font-size-jumbo;
+  }
+
+  .header-capacity-icon{
+    margin-left: 25px;
+    margin-right: 15px;
+  }
+  .header-capacity-icon-img{
+    max-height: 40px;
+    min-height: 30px;
+  }
+  .header-capacity{
+    font-size: $font-size-normal;
+  }
+
+  .header-right-group{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-around;
+
+    .header-date{
+      font-weight: 300;
+      font-size: $font-size-normal;
+    }
+
+    .header-time{
+      font-weight: 500;
+      font-size: $font-size-normal;
+    }
+    .header-langage-button{
+      border: 1px solid white;
+      border-radius: 3px;
+    }
+  }
+
+  .content{
+    height: 90%;
+  }
+
+  .helper{
+    height: 200%;
+  }
+  .content-grid{
+    background-image: url("../assets/imgs/room_Photo.png");
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    height: 100%;
+  }
+
+
+  .jumbo-text{
+    font-weight: 900;
+    font-size: 200%;
+  }
 
   #subheader-container{
     align-self: center;
@@ -43,6 +106,9 @@ page-home {
   #progressbar-container{
     margin-top: 30px;
   }
+  .progressbar-grid{
+    background-color: color($colors, danger);
+  }
   .progress-container{
     display:flex;
     border: 1 0 0 0;
@@ -64,6 +130,19 @@ page-home {
   }
   .upcoming-grid{
     align-self: center;
+  }
+
+  .bg{
+    background-color: white;
+    height: 100%;
+  }
+
+  .scroll{
+    overflow-x: scroll!important;
+  }
+  .scroll::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
   }
 
 }

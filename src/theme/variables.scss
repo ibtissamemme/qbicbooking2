@@ -33,8 +33,9 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+// primary:    rgb(61, 205, 88),
 $colors: (
-  primary:    rgb(61, 205, 88),
+  primary:    rgb(48, 193, 3),
   secondary:  rgb(228, 127, 0),
   danger:     rgb(177, 0, 67),
   light:      #f4f4f4,
@@ -49,7 +50,8 @@ $colors: (
 //   dark:       #222
 // );
 
-$header-size:70px;
+$header-size:110px;
+$footer-size:110px;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
@@ -95,9 +97,10 @@ $toolbar-md-height:$header-size;
 @import "roboto";
 @import "noto-sans";
 
-$font-size-small: 14px;
-$font-size-base: 20px;
-$font-size-large: 24px;
+$font-size-small: 22px;
+$font-size-buttons: 24px;
+$font-size-normal: 32px;
+$font-size-jumbo: 38px;
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;

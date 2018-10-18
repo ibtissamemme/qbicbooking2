@@ -1,3 +1,4 @@
+//r: 61, g:205, b: 88
 export const ENV = {
     mode: 'Production',
     serviceUrl: '',
@@ -5,7 +6,7 @@ export const ENV = {
     adminId: '',
     colors: {
       primary: {
-        r: 61, g:205, b: 88
+        r: 90, g:187, b: 61
       },
       secondary: {
         r:228, g: 127, b: 0

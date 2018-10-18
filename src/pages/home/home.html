@@ -1,20 +1,40 @@
-<ion-header>
+<ion-header no-shadow no-border>
   <ion-navbar [color]="headerColor">
     <ion-title>
       <ion-grid>
         <ion-row align-items-center>
+          <!-- <ion-col></ion-col> -->
           <ion-col text-left>
             <img class="logo" src="assets/imgs/logo_white.png" />
           </ion-col>
-          <ion-col text-center>
-            {{ this.selectedRoom?.name }}
+          <ion-col text-center align-item-center class="header-group">
+            <div class="header-room">
+              {{ this.selectedRoom?.name }}
+            </div>
+
+            <div class="header-capacity-icon">
+              <img src="assets/icon/icon_RoomSize.svg" alt="" class="header-capacity-icon-img">
+            </div>
+
+            <div class="header-capacity">
+              8
+            </div>
+
           </ion-col>
-          <ion-col text-center *ngIf="selectedRoom$ | async as room">
-            {{ room.name }}
-          </ion-col>
-          <ion-col text-right>
-            {{ this.headerTime.format('LT') }}
-          </ion-col>
+
+          <ion-col text-right >
+            <div class="header-right-group">
+
+              <div class="header-date">
+                {{this.headerTime.format('L')}}
+              </div>
+              <div class="header-time">
+                {{ this.headerTime.format('LT') }}
+              </div>
+              <button ion-button class="header-langage-button">en</button>
+            </div>
+            </ion-col>
+          <!-- <ion-col></ion-col> -->
         </ion-row>
       </ion-grid>
     </ion-title>
@@ -24,6 +44,26 @@
 <ion-content>
 
   <div class="admin" (click)="onAdminClicked()" tappable></div>
+
+
+
+  <ion-grid class="content-grid" *ngIf="this.selectedRoom && currentStatus === PageStates.FREE">
+
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col col-5 text-left>
+        <div class="jumbo-text">
+          {{ this.selectedRoom?.name }}
+        </div>
+      </ion-col>
+      <ion-col col-5 text-right>
+        blablabl
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+
+
 
   <div id="subheader-container" [class]="this.subHeaderTheme" *ngIf="meeting">
     <ion-grid class="subheader-row">
@@ -77,6 +117,7 @@
         </ion-col>
         <ion-col col-2></ion-col>
       </ion-row>
+
       <ion-row>
         <ion-col col-2></ion-col>
         <ion-col col-8>
@@ -90,23 +131,23 @@
         <ion-col col-2></ion-col>
       </ion-row>
       <ion-row text-center align-items-center>
-          <ion-col>
-            <button [color]="headerColor" ion-button (click)="endNow()">
-              {{ 'HOME_PAGE.END_NOW' | translate }}
-            </button>
-          </ion-col>
-          <ion-col>
-            <button [color]="headerColor" ion-button >
-              {{ 'HOME_PAGE.EXTEND' | translate }}
-            </button>
-          </ion-col>
-        </ion-row>
+        <ion-col>
+          <button [color]="headerColor" ion-button (click)="endNow()">
+            {{ 'HOME_PAGE.END_NOW' | translate }}
+          </button>
+        </ion-col>
+        <ion-col>
+          <button [color]="headerColor" ion-button>
+            {{ 'HOME_PAGE.EXTEND' | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </div>
 
 
   <div class="upcoming-container" *ngIf="currentStatus === PageStates.PENDING">
-    <ion-grid class="upcoming-grid" >
+    <ion-grid class="upcoming-grid">
       <ion-row text-center align-items-center>
         <ion-col>
           <div>
@@ -127,14 +168,14 @@
     </ion-grid>
   </div>
 
- <div class="upcoming-container" *ngIf="!this.selectedRoom">
-    <ion-grid class="upcoming-grid" >
+  <div class="upcoming-container" *ngIf="!this.selectedRoom">
+    <ion-grid class="upcoming-grid">
       <ion-row text-center align-items-center>
         <ion-col>
           <div>
             {{ 'HOME_PAGE.NOT_CONFIGURED' | translate }}
           </div>
-          </ion-col>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -142,27 +183,28 @@
 
 </ion-content>
 
-<ion-footer *ngIf="this.selectedRoom">
-  <ion-navbar>
-    <ion-grid class="scroll">
+
+
+
+<ion-footer no-shadow no-border transparent *ngIf="this.selectedRoom">
+  <!-- <ion-navbar > -->
+
+  <ion-grid class="bg" background>
+    <div class="scroll-wrapper">
       <ion-row align-items-center>
-        <ion-col text-center>
+        <ion-col text-left>
           {{ this.helperLabel }} &darr;
         </ion-col>
       </ion-row>
-      <ion-row nowrap>
+    </div>
+    <div class="scroll-wrapper">
+      <ion-row nowrap class="scroll">
         <ion-col text-center *ngFor="let dadate of dateArray">
           <hour-scroll-button [date]="dadate"></hour-scroll-button>
         </ion-col>
       </ion-row>
+    </div>
 
-    </ion-grid>
-    <ion-grid>
-      <ion-row text-center align-items-center>
-        <ion-col>
-          {{this.headerTime.format('LL')}}
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-navbar>
+  </ion-grid>
+  <!-- </ion-navbar> -->
 </ion-footer>

@@ -8,8 +8,8 @@ import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
 import { States, Meeting } from '../../app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
-import { Component } from "@angular/core";
-import { NavController, Events, ModalController, LoadingController } from "ionic-angular";
+import { Component, ViewChild } from "@angular/core";
+import { NavController, Events, ModalController, LoadingController, Content } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
@@ -38,7 +38,7 @@ export class HomePage {
 
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 30000;
-
+  buttonNumber: number = 20;
   // declaration in order to force label change in the header
   selectedRoom: Room;
 
@@ -60,6 +60,10 @@ export class HomePage {
 
   // control of the refresh loop
   refreshLoop: any;
+
+
+  @ViewChild(Content) content: Content;
+
 
   constructor(
     public navCtrl: NavController,
@@ -110,7 +114,9 @@ export class HomePage {
 
     // start the refresh loop
     // this.updateMeetingScrollList();
-    this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
+
+    //this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
+console.log("height",this.content.contentHeight);
 
   }
 
@@ -148,7 +154,7 @@ export class HomePage {
 
     this.dateArray.push(rounded.clone());
 
-    for (let i = 1; i < 15; i++) {
+    for (let i = 1; i < this.buttonNumber; i++) {
       // warning, we use the same 'rounded' variable
       const iterate = rounded.add(this.hourScrollInterval, "minutes");
       this.dateArray.push(iterate.clone());
