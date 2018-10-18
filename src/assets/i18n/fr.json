@@ -10,7 +10,8 @@
     "START_NOW": "Commencer maintenant",
     "END_NOW": "Terminer la réservation maintenant",
     "EXTEND": "Prolonger la réservation",
-    "NOT_CONFIGURED": "Cette tablette n'est pas correctement configurée, merci de contacter le support."
+    "NOT_CONFIGURED": "Cette tablette n'est pas correctement configurée, merci de contacter le support.",
+    "OVERLAY_HELPER": "Touchez l'écran pour faire une réservation"
   },
   "UPDATE": {
     "PENDING": "Modification de votre réservation en cours...",

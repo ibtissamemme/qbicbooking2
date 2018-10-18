@@ -3,12 +3,11 @@ import { GesroomService } from './../../services/gesroom.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoomType } from './../../app/shared/room';
 import { BookingPage } from './../booking/booking';
-import { MeetingType, MeetingStatus } from './../../app/shared/meeting';
+import { MeetingType, MeetingStatus, States, Meeting } from './../../app/shared/meeting';
 import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
-import { States, Meeting } from '../../app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, ElementRef } from "@angular/core";
 import { NavController, Events, ModalController, LoadingController, Content } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
@@ -61,8 +60,11 @@ export class HomePage {
   // control of the refresh loop
   refreshLoop: any;
 
+  isOverlayDisplayed: boolean = true;
+  // handle over the timer
+  overlayTimer: any;
 
-  @ViewChild(Content) content: Content;
+  @ViewChild('buttonBar') buttonBar: ElementRef;
 
 
   constructor(
@@ -96,6 +98,10 @@ export class HomePage {
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
+
+      // TODO debug
+      this.selectedRoom.capacity = 8;
+
       if (this.selectedRoom.roomType === RoomType.Training) {
         this.goToTrainingPage();
       }
@@ -116,10 +122,33 @@ export class HomePage {
     // this.updateMeetingScrollList();
 
     //this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
-console.log("height",this.content.contentHeight);
 
   }
 
+  scrollLeft() {
+    this.buttonBar.nativeElement.scrollLeft -= 200;
+  }
+
+  scrollRight() {
+    this.buttonBar.nativeElement.scrollLeft += 200;
+  }
+
+
+  tapHandler(){
+    clearInterval(this.overlayTimer);
+    this.removeOverlay();
+  }
+  removeOverlay(){
+    this.isOverlayDisplayed = false;
+    this.overlayTimer = setTimeout(() => {
+      this.displayOverlay();
+    }, 3000);
+  }
+  displayOverlay(){
+    if(this.currentStatus == States.FREE){
+      this.isOverlayDisplayed = true;
+    }
+  }
 
 
   // refreshes the data on screen based on time

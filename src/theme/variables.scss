@@ -40,8 +40,10 @@ $colors: (
   danger:     rgb(177, 0, 67),
   light:      #f4f4f4,
   dark:       #222,
-  background: #fff
+  background: #fff,
+  text: #222
 );
+
 // $colors: (
 //   primary:    #488aff,
 //   secondary:  #32db64,
@@ -52,6 +54,8 @@ $colors: (
 
 $header-size:110px;
 $footer-size:110px;
+$arrow-border-radius: 50%;
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
@@ -101,6 +105,8 @@ $font-size-small: 22px;
 $font-size-buttons: 24px;
 $font-size-normal: 32px;
 $font-size-jumbo: 38px;
+$font-size-maxi-jumbo: 55px;
+
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
