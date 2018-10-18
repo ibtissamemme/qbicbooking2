@@ -7,7 +7,7 @@ import { MeetingType, MeetingStatus, States, Meeting } from './../../app/shared/
 import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
 import { AdminService } from './../../services/admin.service';
-import { Component, ViewChild, ElementRef } from "@angular/core";
+import { Component, ViewChild, ElementRef, trigger, state, style, transition, animate } from "@angular/core";
 import { NavController, Events, ModalController, LoadingController, Content } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
@@ -16,14 +16,25 @@ import { TrainingPage } from '../training/training';
 
 @Component({
   selector: "page-home",
-  templateUrl: "home.html"
+  templateUrl: "home.html",
+  animations: [
+    trigger('opacityChange', [
+      state('shown', style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('shown <=> hidden', animate('200ms ease'))
+    ]),
+    trigger('displayChange', [
+      state('block',  style({ display: 'block' })),
+      state('none', style({ display: 'none'  })),
+      transition('none => block', animate('0ms ease')),
+      transition('block => none', animate('0ms 200ms ease'))
+    ])
+  ]
 })
 export class HomePage {
 
   // dates in the hourscroll component
   dateArray: moment.Moment[] = [];
-
-
 
   // time displayed in the header
   headerTime: moment.Moment = moment();
@@ -32,8 +43,23 @@ export class HomePage {
   past:any;
   nextMeetingCountDownResult: number;
   helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
+
+
+  isOverlayDisplayed: boolean = true;
+  // handle over the timer
+  overlayTimer: any;
+  overlayOpacityState = 'shown';
+  overlayDisplayState = 'block';
+
+
+  @ViewChild('buttonBar') buttonBar: ElementRef;
+
+
+
   // hour scroll interval in minutes
   hourScrollInterval: number;
+
+
 
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 30000;
@@ -59,12 +85,6 @@ export class HomePage {
 
   // control of the refresh loop
   refreshLoop: any;
-
-  isOverlayDisplayed: boolean = true;
-  // handle over the timer
-  overlayTimer: any;
-
-  @ViewChild('buttonBar') buttonBar: ElementRef;
 
 
   constructor(
@@ -139,14 +159,18 @@ export class HomePage {
     this.removeOverlay();
   }
   removeOverlay(){
-    this.isOverlayDisplayed = false;
+    //this.isOverlayDisplayed = false;
+    this.overlayOpacityState = 'hidden';
+    this.overlayDisplayState = 'none'
     this.overlayTimer = setTimeout(() => {
       this.displayOverlay();
     }, 3000);
   }
   displayOverlay(){
     if(this.currentStatus == States.FREE){
-      this.isOverlayDisplayed = true;
+      //this.isOverlayDisplayed = true;
+      this.overlayOpacityState = 'shown';
+      this.overlayDisplayState = 'block';
     }
   }
 

@@ -5,6 +5,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -39,6 +40,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     HttpModule,
     HttpClientModule,
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(MyApp, {mode: 'ios'}),
     IonicStorageModule.forRoot(),
     ComponentsModule,

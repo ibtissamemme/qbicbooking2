@@ -42,8 +42,15 @@
 </ion-header>
 
 
-<div class="overlay"  (click)="this.removeOverlay()" tappable *ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
-  <div class="overlay-opacity">
+<div
+class="overlay"
+[@opacityChange]="this.overlayOpacityState"
+[@displayChange]="this.overlayDisplayState"
+(click)="this.removeOverlay()"
+tappable
+*ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
+
+<div class="overlay-opacity">
 
     <div class="overlay-container">
       <div class="overlay-room">
