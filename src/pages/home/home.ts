@@ -142,7 +142,7 @@ export class HomePage {
     // start the refresh loop
     // this.updateMeetingScrollList();
 
-    //this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
+    this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
 
   }
 
