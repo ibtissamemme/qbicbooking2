@@ -84,7 +84,7 @@ export class HourScrollButtonComponent {
     if (this.tappedTimeArray.length >= 2) {
       // if the current button is between the 2 taps => [] is for inclusive comparison
       if (this.date.isBetween(this.tappedTimeArray[0], this.tappedTimeArray[1], null, '[]')) {
-        this.buttonColor = 'secondary';
+        this.buttonColor = 'primary-light';
       }
       else {
         if (this.buttonColor !== 'danger') {
@@ -110,7 +110,7 @@ export class HourScrollButtonComponent {
   // sends event to the home page and the other buttons...
   onClick() {
     if (this.buttonColor !== 'danger') {
-      this.buttonColor = 'secondary';
+      this.buttonColor = 'primary-light';
       this.events.publish('hourscrollbutton:clicked', this.date);
     }
   }

@@ -50,7 +50,7 @@ export class HomePage {
   overlayTimer: any;
   overlayOpacityState = 'shown';
   overlayDisplayState = 'block';
-  overlayIdleTime = 15000;
+  overlayIdleTime = 60000;
 
   @ViewChild('buttonBar') buttonBar: ElementRef;
 
