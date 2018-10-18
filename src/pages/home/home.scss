@@ -15,7 +15,10 @@ page-home {
     width: 100px;
     height: 50px;
   }
-
+  .header-padding{
+    padding-left: 10px;
+    padding-right:10px;
+  }
   .header-center-group{
     display: flex;
     flex-flow: row;
@@ -23,19 +26,17 @@ page-home {
 
     .header-room{
       font-weight: 800;
-      font-size: $font-size-jumbo;
+      font-size: $font-size-big;
     }
 
     .header-capacity-icon{
       margin-left: 25px;
-      margin-right: 15px;
     }
     .header-capacity-icon-img{
-      max-height: 40px;
-      min-height: 30px;
+      height: $font-size-small;
     }
     .header-capacity{
-      font-size: $font-size-normal;
+      font-size: $font-size-small;
     }
   }
 
@@ -48,12 +49,12 @@ page-home {
 
     .header-date{
       font-weight: 300;
-      font-size: $font-size-normal;
+      font-size: $font-size-small;
     }
 
     .header-time{
       font-weight: 500;
-      font-size: $font-size-normal;
+      font-size: $font-size-small;
     }
     .header-langage-button{
       border: 1px solid white;
@@ -91,20 +92,50 @@ page-home {
       }
       .big-text{
         font-weight: 500;
+        font-size: $font-size-normal;
+      }
+      .normal-text{
+        font-weight: 300;
         font-size: $font-size-small;
       }
-
       .padding-top-buttons{
         padding-top: 40px;
+      }
+
+      #progressbar-container{
+        margin-top: 30px;
+      }
+      .progressbar-grid{
+        background-color: color($colors, danger);
+      }
+      .progress-container{
+        display:flex;
+        border: 1 0 0 0;
+        background-color: rgb(236, 236, 236);
+        border-radius: 3px;
+      }
+      .progress{
+        border-radius: 3px;
+        margin: 5px;
+        height: 60px;
+      }
+      .progress-past{
+        background-color: rgb(74, 80, 89);
+      }
+
+    }
+    .upcoming-padding{
+      padding-top: 80px;
+    }
+    .upcoming-button-padding{
+      padding-top: 30px;
+
+      .upcoming-button-text{
+        font-size: $font-size-normal;
       }
     }
   }
 
-
-  .jumbo-text{
-    font-weight: 900;
-    font-size: 200%;
-  }
 
   #subheader-container{
     align-self: center;
@@ -126,34 +157,6 @@ page-home {
     background-color: color($colors, danger);
   }
 
-  #progressbar-container{
-    margin-top: 30px;
-  }
-  .progressbar-grid{
-    background-color: color($colors, danger);
-  }
-  .progress-container{
-    display:flex;
-    border: 1 0 0 0;
-    background-color: rgb(236, 236, 236);
-    border-radius: 3px;
-  }
-  .progress{
-    border-radius: 3px;
-    margin: 5px;
-    height: 60px;
-  }
-  .progress-past{
-    background-color: rgb(74, 80, 89);
-  }
-
-  .upcoming-container{
-    height: 70%;
-    display:flex;
-  }
-  .upcoming-grid{
-    align-self: center;
-  }
 
   .bottom-elements{
     background-color: white;

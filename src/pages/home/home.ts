@@ -195,15 +195,15 @@ export class HomePage {
     // get the now moment
     const now = moment();
 
-    // // get the offset to the next quarter hour
-    // const remainer = this.hourScrollInterval - now.minute() % this.hourScrollInterval;
-    // // get the next quarter hour
-    // let rounded = now.add(remainer, "minutes").set("seconds", 0);
-
-    // get the offset to the previous quarter hour
-    const remainer = now.minute() % this.hourScrollInterval;
+    // get the offset to the next quarter hour
+    const remainer = this.hourScrollInterval - now.minute() % this.hourScrollInterval;
     // get the next quarter hour
-    let rounded = now.subtract(remainer, "minutes").set("seconds", 0).set("milliseconds",0);
+    let rounded = now.add(remainer, "minutes").set("seconds", 0);
+
+    // // get the offset to the previous quarter hour
+    // const remainer = now.minute() % this.hourScrollInterval;
+    // // get the next quarter hour
+    // let rounded = now.subtract(remainer, "minutes").set("seconds", 0).set("milliseconds",0);
 
     this.dateArray.push(rounded.clone());
 

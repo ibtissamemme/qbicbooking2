@@ -1,6 +1,6 @@
 <ion-header no-shadow no-border (click)="this.tapHandler()">
   <ion-navbar [color]="headerColor">
-    <ion-title>
+    <ion-title class="header-padding">
       <ion-grid>
         <ion-row align-items-center>
           <!-- <ion-col></ion-col> -->
@@ -100,7 +100,7 @@
       <ion-row class="padding-top">
         <ion-col col-1></ion-col>
         <ion-col col-2 text-left>
-          <div class="host-label">
+          <div class="host-label normal-text">
             {{ 'HOME_PAGE.BEGIN' | translate }}
           </div>
           <div class="big-text">
@@ -109,7 +109,7 @@
 
         </ion-col>
         <ion-col text-center>
-          <div class="host-label">
+          <div class="host-label normal-text">
             {{ 'HOME_PAGE.HOST' | translate }}
           </div>
           <div class="big-text">
@@ -117,7 +117,7 @@
           </div>
         </ion-col>
         <ion-col col-2 text-right>
-          <div class="host-label">
+          <div class="host-label normal-text">
             {{ 'HOME_PAGE.END' | translate }}
           </div>
           <div class="big-text">
@@ -162,11 +162,11 @@
   <!-- ************ -->
   <!--PENDING PAGE CONTENT -->
   <!-- ************ -->
-  <div class="upcoming-container" *ngIf="currentStatus === PageStates.PENDING">
-    <ion-grid class="upcoming-grid">
+  <div class="content-grid " *ngIf="currentStatus === PageStates.PENDING">
+    <ion-grid class="container-opacity upcoming-padding">
       <ion-row text-center align-items-center>
-        <ion-col>
-          <div>
+        <ion-col class="big-text">
+          <div >
             {{ 'HOME_PAGE.NEXT_MEETING_IN' | translate }}
           </div>
           <div>
@@ -174,9 +174,9 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row text-center align-items-center>
-        <ion-col>
-          <button [color]="headerColor" ion-button (click)="this.startNow()">
+      <ion-row text-center align-items-center  class="upcoming-button-padding" >
+        <ion-col >
+          <button color="primary"  class="upcoming-button-text" ion-button (click)="this.startNow()">
             {{ 'HOME_PAGE.START_NOW' | translate }}
           </button>
         </ion-col>
