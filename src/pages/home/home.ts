@@ -107,8 +107,9 @@ export class HomePage {
     });
 
     moment.locale(this.language);
-    this.language = this.getNextLang();
 
+    // set the language button to the next language
+    this.language = this.getNextLang(this.language);
     this.buildHourScrollArray();
 
 
@@ -294,16 +295,16 @@ export class HomePage {
   }
 
   // cycles through the available langages
-  getNextLang(): string{
+  getNextLang(currentLanguage: string): string{
     const langs = this.translate.getLangs();
-    return (langs.indexOf(this.language) < langs.length - 1) ? langs[langs.indexOf(this.language) + 1] : langs[0];
+    return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
   }
+  // changes to the next language
   changeLangage(){
-    var nextlang = this.getNextLang();
-    this.translate.use(nextlang);
+    this.translate.use(this.language);
+    this.language = this.getNextLang(this.language);
     this.getHelperText();
     // langage displayed on the interface should be the next lang
-    this.language = this.getNextLang();
   }
 
   buttonPressed(time: moment.Moment) {
