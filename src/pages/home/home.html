@@ -17,12 +17,12 @@
             </div>
 
             <div class="header-capacity">
-               {{ this.selectedRoom?.capacity }}
-              </div>
+              {{ this.selectedRoom?.capacity }}
+            </div>
 
           </ion-col>
 
-          <ion-col text-right >
+          <ion-col text-right>
             <div class="header-right-group">
 
               <div class="header-date">
@@ -31,9 +31,9 @@
               <div class="header-time">
                 {{ this.headerTime.format('LT') }}
               </div>
-              <button ion-button class="header-langage-button">en</button>
+              <button ion-button class="header-langage-button" (click)="this.changeLangage()">{{ this.language }}</button>
             </div>
-            </ion-col>
+          </ion-col>
           <!-- <ion-col></ion-col> -->
         </ion-row>
       </ion-grid>
@@ -42,27 +42,23 @@
 </ion-header>
 
 
-<div
-class="overlay"
-[@opacityChange]="this.overlayOpacityState"
-[@displayChange]="this.overlayDisplayState"
-(click)="this.removeOverlay()"
-tappable
-*ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
+<div class="overlay" [@opacityChange]="this.overlayOpacityState" [@displayChange]="this.overlayDisplayState" (click)="this.removeOverlay()"
+  tappable *ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
 
-<div class="overlay-opacity">
-
+  <div class="overlay-opacity">
     <div class="overlay-container">
       <div class="overlay-room">
         {{ this.selectedRoom?.name }}
       </div>
       <div *ngIf="this.selectedRoom?.capacity">
         <div class="overlay-capacity-icon">
-          <img src="assets/icon/icon_RoomSize.svg" alt="" class="overlay-capacity-icon-img">
-          {{ this.selectedRoom?.capacity }}
+          <div>
+            <img src="assets/icon/icon_RoomSize.svg" class="overlay-capacity-icon-img">
+            {{ this.selectedRoom?.capacity }}
+          </div>
+          <div>
+          </div>
         </div>
-
-
       </div>
       <div>
         <i>
@@ -71,7 +67,7 @@ tappable
       </div>
     </div>
   </div>
-  </div>
+</div>
 
 <ion-content (click)="this.tapHandler()">
 
@@ -214,19 +210,19 @@ tappable
     <div class="scroll-wrapper">
       <ion-row align-items-center>
         <ion-col class="arrows" text-left col-2>
-          <button  class="left-button" ion-button (click)="this.scrollLeft()"> &larr;</button>
+          <button class="left-button" ion-button (click)="this.scrollLeft()"> &larr;</button>
         </ion-col>
         <ion-col text-center>
           {{ this.helperLabel }} &darr;
         </ion-col>
         <ion-col class="arrows" text-right col-2>
-            <button class="right-button" ion-button (click)="this.scrollRight()"> &rarr;</button>
+          <button class="right-button" ion-button (click)="this.scrollRight()"> &rarr;</button>
         </ion-col>
       </ion-row>
     </div>
     <div class="scroll-wrapper">
       <ion-row nowrap #buttonBar class="scroll">
-        <ion-col text-center  *ngFor="let dadate of dateArray">
+        <ion-col text-center *ngFor="let dadate of dateArray">
           <hour-scroll-button [date]="dadate"></hour-scroll-button>
         </ion-col>
       </ion-row>

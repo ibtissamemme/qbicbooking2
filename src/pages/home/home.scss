@@ -4,6 +4,11 @@ page-home {
     display: none;
   }
 
+  img{
+    vertical-align: -10%;
+    margin-right: 10px
+  }
+
   .admin{
     position: absolute;
     z-index: 100;
@@ -215,6 +220,14 @@ page-home {
     font-size: $font-size-normal;
     div{
       margin: 20px;
+    }
+
+    .overlay-capacity-icon{
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      justify-content: center;
+      vertical-align:center;
     }
     .overlay-room{
       font-size: $font-size-maxi-jumbo;

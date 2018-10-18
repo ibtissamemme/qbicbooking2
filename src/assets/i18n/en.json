@@ -10,7 +10,7 @@
     "START_NOW": "Start the meeting now",
     "END_NOW": "End your booking now",
     "EXTEND": "Extend booking",
-    "NOT_CONFIGURED": "This device is not properly configured, please contact the support.",
+    "NOT_CONFIGURED": "This device is not properly configured, please contact the support",
     "OVERLAY_HELPER": "Touch the screen to make a reservation"
   },
   "UPDATE": {
@@ -24,5 +24,5 @@
   "EXTEND": {
     "PENDING": "Updating booking...",
     "DONE": "Booking update done."
-  },
+  }
 }

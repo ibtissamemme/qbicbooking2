@@ -50,15 +50,14 @@ export class HomePage {
   overlayTimer: any;
   overlayOpacityState = 'shown';
   overlayDisplayState = 'block';
-
+  overlayIdleTime = 15000;
 
   @ViewChild('buttonBar') buttonBar: ElementRef;
 
-
+  language='fr';
 
   // hour scroll interval in minutes
   hourScrollInterval: number;
-
 
 
   // screen refresh interval in milliseconds => used for the refresh method
@@ -107,9 +106,11 @@ export class HomePage {
       this.buttonPressed(time);
     });
 
-    moment.locale("fr");
+    moment.locale(this.language);
+    this.language = this.getNextLang();
 
     this.buildHourScrollArray();
+
 
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
@@ -148,7 +149,6 @@ export class HomePage {
   scrollLeft() {
     this.buttonBar.nativeElement.scrollLeft -= 200;
   }
-
   scrollRight() {
     this.buttonBar.nativeElement.scrollLeft += 200;
   }
@@ -164,7 +164,7 @@ export class HomePage {
     this.overlayDisplayState = 'none'
     this.overlayTimer = setTimeout(() => {
       this.displayOverlay();
-    }, 3000);
+    }, this.overlayIdleTime);
   }
   displayOverlay(){
     if(this.currentStatus == States.FREE){
@@ -219,7 +219,6 @@ export class HomePage {
   // looks for the current meeting in the meeting list depending on the time
   getCurrentMeeting() {
     moment.locale("fr");
-
 
     this.upcomingMeeting = null;
     this.currentMeeting = null;
@@ -292,6 +291,19 @@ export class HomePage {
               this.helperLabel = res;
           });
     }
+  }
+
+  // cycles through the available langages
+  getNextLang(): string{
+    const langs = this.translate.getLangs();
+    return (langs.indexOf(this.language) < langs.length - 1) ? langs[langs.indexOf(this.language) + 1] : langs[0];
+  }
+  changeLangage(){
+    var nextlang = this.getNextLang();
+    this.translate.use(nextlang);
+    this.getHelperText();
+    // langage displayed on the interface should be the next lang
+    this.language = this.getNextLang();
   }
 
   buttonPressed(time: moment.Moment) {
