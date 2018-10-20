@@ -1,9 +1,4 @@
-<!--
-  Generated template for the AdminPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
       <ion-title>admin</ion-title>
@@ -11,18 +6,20 @@
 </ion-header>
 <ion-content>
   <ion-grid>
+    <ion-list-header>
+      {{ 'ADMIN.SITE_CONFIGURATION' | translate }}
+      </ion-list-header>
     <ion-row>
       <ion-col>
-
         <ion-item>
-          <ion-label>Sites</ion-label>
+          <ion-label> {{ 'ADMIN.SITE' | translate }} </ion-label>
           <ion-select [(ngModel)]="this.selectedSite" (ionChange)="onSiteChange()"  [compareWith]="compareSite">
             <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite?.Id===sisite.Id" [value]="sisite">{{ sisite.name }}</ion-option>
           </ion-select>
         </ion-item>
 
         <ion-item>
-          <ion-label>Rooms</ion-label>
+          <ion-label> {{ 'ADMIN.ROOM' | translate }}</ion-label>
           <ion-select  [(ngModel)]="this.selectedRoom"  (ionChange)="onRoomChange()"  [compareWith]="compareRoom">
             <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom?.Id===room.Id" [value]="room">{{ room.name }}</ion-option>
           </ion-select>
@@ -30,20 +27,54 @@
       </ion-col>
     </ion-row>
 
+
+    <ion-list-header>
+        {{ 'ADMIN.API_CONFIGURATION' | translate }}
+        </ion-list-header>
+    <ion-row >
+        <ion-col>
+            <ion-item>
+              <ion-label> {{ 'ADMIN.ENDPOINT' | translate }} </ion-label>
+              <ion-input [(ngModel)]="this.endpoint"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label> {{ 'ADMIN.API_KEY' | translate }}</ion-label>
+              <ion-input [(ngModel)]="this.apiKey" ></ion-input>
+            </ion-item>
+          </ion-col>
+
+    </ion-row>
+
+
+    <ion-row >
+        <ion-col text-center>
+          <button ion-button icon-start (click)="onSaveAPIParam()">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            {{ 'ADMIN.CONFIRM_AND_TEST' | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+
+
+
     <ion-row >
       <ion-col text-center>
         <button ion-button icon-start (click)="onConfirmClicked()">
           <ion-icon name="checkmark-circle"></ion-icon>
-          Confirmer
+          {{ 'ADMIN.CONFIRM' | translate }}
         </button>
       </ion-col>
 
       <ion-col text-center>
         <button ion-button icon-start color="danger" (click)="onCancelClicked()">
           <ion-icon name="close-circle"></ion-icon>
-          Annuler
+          {{ 'ADMIN.CANCEL' | translate }}
+
         </button>
       </ion-col>
     </ion-row>
+
+
   </ion-grid>
 </ion-content>

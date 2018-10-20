@@ -1,18 +1,75 @@
-import { Employee } from './../app/shared/employee';
 import { Meeting } from 'app/shared/meeting';
-import { TabletService } from "./tablet.service";
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions } from "@angular/http";
 import { Site } from "../app/shared/site";
+import { Storage } from '@ionic/storage';
 import { Room } from '../app/shared/room';
+import { ENV } from '@app/env';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class GesroomService {
   ges_tablet: string;
 
-  host: string = "http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API";
+  private endpoint: string;
+  private userId: string;
+  private apiKey: string;
+  private tabletId: string;
 
-  constructor(private http: Http, private tabletService: TabletService) {
+  private endpointObs: BehaviorSubject<string>;
+  get endpoint$(): Observable<string> {
+    return this.endpointObs.asObservable();
+  };
+
+  private apiKeyObs: BehaviorSubject<string>;
+  get apiKey$(): Observable<string> {
+    return this.apiKeyObs.asObservable();
+  };
+
+  private userIdObs: BehaviorSubject<string>;
+  get userId$(): Observable<string> {
+    return this.userIdObs.asObservable();
+  };
+
+  constructor(private http: Http, private storage: Storage, ) {
+    this.endpointObs = new BehaviorSubject(undefined)
+    this.apiKeyObs = new BehaviorSubject(undefined)
+    this.userIdObs = new BehaviorSubject(undefined)
+
+    this.setup();
+  }
+
+  // checks and load API parameters
+  async setup() {
+    if(!this.endpoint || !this.userId || !this.apiKey ) {
+      this.endpoint = await this.loadParam('endpoint');
+      this.userId = await this.loadParam('adminId');
+      this.apiKey = await this.loadParam('apiKey');
+
+      this.endpointObs.next(this.endpoint);
+      this.userIdObs.next(this.userId)
+      this.apiKeyObs.next(this.apiKey)
+      console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
+    }
+  }
+
+  // generic parameter loading function
+  // checks in local storage, and then in the environment files
+  async loadParam(param: string) {
+    let res: string;
+    const data = await this.storage.get(param);
+    if (!data) {
+      if (!ENV[param]) {
+        console.log(param, ' env : bad config');
+        return;
+      }
+      res = ENV[param];
+      console.log(param, ' storage : no data');
+    } else {
+      res = JSON.parse(data);
+    }
+    return res;
   }
 
   setHeaders(): RequestOptions {
@@ -20,9 +77,8 @@ export class GesroomService {
     // this.broadcaster.on("serialNumber").subscribe(ges_tablet => {
     //   this.ges_tablet = ges_tablet;
     // });
-
-    reqHeaders.append("GES_USERID", "SESA65737");
-    reqHeaders.append("GES_APIKEY", "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ");
+    reqHeaders.append("GES_USERID", this.userId);
+    reqHeaders.append("GES_APIKEY", this.apiKey);
     reqHeaders.append("GES_TABLET", "123456");
     reqHeaders.append("Accept", "application/json");
     // headers.append("GES_USERID", this.sesaId);
@@ -34,27 +90,48 @@ export class GesroomService {
     return options;
   }
 
+  setEndpoint(end: string){
+    this.endpointObs.next(end);
+    this.setToStorage("endpoint", end);
+    this.endpoint = end;
+  }
+  setApiKey(key: string){
+    this.apiKeyObs.next(key);
+    this.setToStorage("apiKey", key);
+    this.apiKey = key;
+  }
+
+  setUserId(id: string){
+    this.userIdObs.next(id);
+    this.setToStorage("userId", id);
+    this.userId = id;
+  }
+
+  // utility to store with key
+  setToStorage(key: string, object: any) {
+    this.storage.set(key, JSON.stringify(object));
+  }
   getSites() {
-    return this.http.get(this.host + "/sites", this.setHeaders()).toPromise();
+    return this.http.get(this.endpoint + "/sites", this.setHeaders()).toPromise();
   }
   getSitesObs() {
-    return this.http.get(this.host + "/sites", this.setHeaders());
+    return this.http.get(this.endpoint + "/sites", this.setHeaders());
   }
   getRooms(site: Site) {
+
     return this.http
-      .get(this.host + "/" + site.Id + "/rooms", this.setHeaders())
+      .get(this.endpoint + "/" + site.Id + "/rooms", this.setHeaders())
       .toPromise();
   }
   getRoomsIbs(site: Site) {
     return this.http
-      .get(this.host + "/" + site.Id + "/rooms", this.setHeaders());
+      .get(this.endpoint + "/" + site.Id + "/rooms", this.setHeaders());
   }
 
   getMeetings(room: Room) {
     if (room) {
-
       return this.http
-        .get(this.host + "/room_schedule/" + room.Id, this.setHeaders())
+        .get(this.endpoint + "/room_schedule/" + room.Id, this.setHeaders())
         .toPromise();
     }
     else return null;
@@ -67,19 +144,19 @@ export class GesroomService {
   getEmployeeById(corporateId: string) {
     const _corporateId = 'SESA' + corporateId;
     return this.http
-      .get(this.host + "/persons/persons?email=saf-mat%40safewarehds.onmicrosoft.com", this.setHeaders())
+      .get(this.endpoint + "/persons/persons?email=saf-mat%40safewarehds.onmicrosoft.com", this.setHeaders())
       .toPromise();
     // return this.http
-    //   .get(this.host + "/persons/corporate/" + _corporateId , this.setHeaders())
+    //   .get(this.endpoint + "/persons/corporate/" + _corporateId , this.setHeaders())
     //   .toPromise();
   }
 
 
   // only for the training page, get the URLs of the images to display of no training is available
   // TODO : refactor to call from the admin service
-  getBackgroundImageForSite(site: Site){
+  getBackgroundImageForSite(site: Site) {
     return this.http
-      .get(this.host + "/sites/uris/", this.setHeaders()).toPromise();
+      .get(this.endpoint + "/sites/uris/", this.setHeaders()).toPromise();
   }
 
 
@@ -90,7 +167,7 @@ export class GesroomService {
   postMeeting(meeting: Meeting) {
     const owner = meeting.owner;
     const room = meeting.room;
-    return this.http.post(this.host + '/room_schedule', {
+    return this.http.post(this.endpoint + '/room_schedule', {
       meetingName: meeting.meetingName,
       meetingDescription: meeting.meetingDescription,
       meetingType: meeting.meetingType,
@@ -115,8 +192,8 @@ export class GesroomService {
     }, this.setHeaders()).toPromise();
   }
 
-  putMeeting(meeting:Meeting) {
-     return this.http.put(this.host + '/room_schedule/' + meeting.id, {
+  putMeeting(meeting: Meeting) {
+    return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
       startDateTime: meeting.startDateTime,
       endDateTime: meeting.endDateTime,
       meetingStatus: meeting.meetingStatus,
@@ -143,7 +220,7 @@ export class GesroomService {
   //     endDateTime: end,
   //     meetingStatus: 'Cancelled'
   //   }, this.headersService.setHeaders()).map(response => response.json()).subscribe((jsonData) => {
-  //     this.hourScrollServ.isHostCheckedIn = false;
+  //     this.hourScrollServ.isendpointCheckedIn = false;
   //     this.getMeetings();
   //     this.broadcastOnClear();
   //   }, (error) => {

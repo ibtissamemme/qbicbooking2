@@ -18,16 +18,31 @@ export class AdminPage {
   selectedSite: Site;
   selectedRoom: Room;
 
+  endpoint: string = "http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API";
+  userId: string;
+  apiKey: string;
+  tabletId: string;
+
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private gesroomService: GesroomService,
     private adminService: AdminService,
-  ) { }
+  ) {
+
+  }
 
   ionViewWillEnter() {
-
+    this.gesroomService.endpoint$.subscribe((data) => {
+      this.endpoint = data;
+    });
+    this.gesroomService.apiKey$.subscribe((data) => {
+      this.apiKey = data;
+    });
+    this.gesroomService.userId$.subscribe((data) => {
+      this.userId = data;
+    });
 
     // get site list
     this.gesroomService.getSites().then(data => {
@@ -46,8 +61,8 @@ export class AdminPage {
         }
         this.selectedSite = data;
       })
-    }).then(() =>{
-      if(this.selectedSite){
+    }).then(() => {
+      if (this.selectedSite) {
         // get room list
         this.gesroomService.getRooms(this.selectedSite).then(data => {
           if (!data) {
@@ -81,12 +96,28 @@ export class AdminPage {
     // nothing for now...
   }
 
+  onSaveAPIParam() {
+    if (this.endpoint) {
+      this.gesroomService.setEndpoint(this.endpoint);
+    }
+    if (this.apiKey) {
+      this.gesroomService.setApiKey(this.apiKey);
+    }
+    if (this.userId) {
+      this.gesroomService.setUserId(this.userId);
+    }
+  }
+
   onConfirmClicked() {
     // set and store
-    if(this.selectedSite)
+    if (this.selectedSite) {
       this.adminService.setSelectedSite(this.selectedSite);
-    if(this.selectedRoom)
+    }
+    if (this.selectedRoom) {
       this.adminService.setSelectedRoom(this.selectedRoom);
+    }
+    // also save the api params
+    this.onSaveAPIParam();
     // go back to the root page
     this.navCtrl.popToRoot();
   }

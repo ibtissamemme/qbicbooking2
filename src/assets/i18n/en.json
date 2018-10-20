@@ -24,5 +24,18 @@
   "EXTEND": {
     "PENDING": "Updating booking...",
     "DONE": "Booking update done."
+  },
+  "ADMIN": {
+    "SITE_CONFIGURATION": "Site configuration",
+    "SITE": "Site",
+    "ROOM": "Room",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "API_CONFIGURATION": "API configuration",
+    "ENDPOINT": "URL",
+    "API_KEY": "API Key",
+    "CONFIRM_AND_TEST": "Confirm & test"
+
+
   }
 }

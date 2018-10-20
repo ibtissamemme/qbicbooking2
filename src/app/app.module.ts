@@ -1,3 +1,4 @@
+import { GesroomService } from './../services/gesroom.service';
 import { BookingPageModule } from './../pages/booking/booking.module';
 import { AdminPageModule } from './../pages/admin/admin.module';
 import { TrainingPageModule } from './../pages/training/training.module';
@@ -6,7 +7,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC, Ndef } from '@ionic-native/nfc';
@@ -18,7 +19,6 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
 import { TabletService } from '../services/tablet.service';
-import { GesroomService } from '../services/gesroom.service';
 import { AdminService } from '../services/admin.service';
 
 import { ComponentsModule } from './../components/components.module';
@@ -73,12 +73,19 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     NFC,
     Ndef,
     GesroomService,
+    { provide: APP_INITIALIZER, useFactory: loadSettings,
+        deps:[ GesroomService],
+        multi: true},
     TabletService,
     AdminService
   ]
 })
 export class AppModule { }
 
+// app init
+export function loadSettings(gesroomService: GesroomService){
+  return () => gesroomService.setup();
+}
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

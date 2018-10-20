@@ -24,5 +24,17 @@
   "EXTEND": {
     "PENDING": "Modification de votre réservation en cours...",
     "DONE": "Modification de votre réservation effectuée."
+  },
+  "ADMIN": {
+    "SITE_CONFIGURATION": "Configuration de la salle",
+    "SITE": "Site",
+    "ROOM": "Salle",
+    "CONFIRM": "Valider",
+    "CANCEL": "Annuler",
+    "API_CONFIGURATION": "Configuration de l'API",
+    "ENDPOINT": "URL",
+    "API_KEY": "API Key",
+    "CONFIRM_AND_TEST": "Sauver et tester"
+
   }
 }
