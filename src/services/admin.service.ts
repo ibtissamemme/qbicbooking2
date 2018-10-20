@@ -91,7 +91,6 @@ export class AdminService {
     this.setToStorage('selectedRoom', room);
 
     this.selectedRoom = room;
-    console.log("set to storage ROOM => " + room.name);
     this.checkSlides();
   }
 
@@ -108,9 +107,7 @@ export class AdminService {
           }
         }
         return this.meetingList.meetingList;
-      }, reason => console.error(reason)
-      );
-
+      });
     }
   }
 

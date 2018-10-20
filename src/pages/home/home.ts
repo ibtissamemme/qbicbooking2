@@ -116,7 +116,7 @@ export class HomePage {
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
       if (!data) {
-        return console.error('no data');
+        return;
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
@@ -133,7 +133,7 @@ export class HomePage {
     // get meeting updates
     this.adminService.meetingList$.subscribe((data) => {
       if (!data) {
-        return console.error('no data');
+        return;
       }
       this.meetingList = data;
       this.getCurrentMeeting();

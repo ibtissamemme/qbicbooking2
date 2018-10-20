@@ -50,7 +50,7 @@ export class GesroomService {
       this.endpointObs.next(this.endpoint);
       this.userIdObs.next(this.userId)
       this.apiKeyObs.next(this.apiKey)
-      console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
+      //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
     }
   }
 

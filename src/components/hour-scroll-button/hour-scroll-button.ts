@@ -26,7 +26,7 @@ export class HourScrollButtonComponent {
     this.hourScrollInterval = this.adminService.hourScrollInterval;
     this.adminService.meetingList$.subscribe((data) => {
       if (!data) {
-        return console.error('no data');
+        return;
       }
       this.meetingList = data;
       this.updateMeetingScrollList();
