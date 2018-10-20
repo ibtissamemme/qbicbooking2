@@ -7,6 +7,7 @@ import { Room } from '../app/shared/room';
 import { ENV } from '@app/env';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { ThrowStmt } from '@angular/compiler';
 
 @Injectable()
 export class GesroomService {
@@ -16,6 +17,10 @@ export class GesroomService {
   private userId: string;
   private apiKey: string;
   private tabletId: string;
+
+  private apiKey2: string = "B87K6ZZ8POQFZZ2BIBWJPRNLSLPZ";
+  private endpoint2: string = "http://safeware-custk.hds-group.com/TelemaqueRestAPI";
+  private authToken: string;
 
   private endpointObs: BehaviorSubject<string>;
   get endpoint$(): Observable<string> {
@@ -36,13 +41,12 @@ export class GesroomService {
     this.endpointObs = new BehaviorSubject(undefined)
     this.apiKeyObs = new BehaviorSubject(undefined)
     this.userIdObs = new BehaviorSubject(undefined)
-
-    this.setup();
   }
 
   // checks and load API parameters
+  // called at startup by the app.module.ts
   async setup() {
-    if(!this.endpoint || !this.userId || !this.apiKey ) {
+    if (!this.endpoint || !this.userId || !this.apiKey) {
       this.endpoint = await this.loadParam('endpoint');
       this.userId = await this.loadParam('adminId');
       this.apiKey = await this.loadParam('apiKey');
@@ -51,7 +55,56 @@ export class GesroomService {
       this.userIdObs.next(this.userId)
       this.apiKeyObs.next(this.apiKey)
       //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
+
+      this.authenticate();
     }
+
+  }
+
+  // new API
+  async authenticate() {
+    const reqHeaders = new Headers();
+    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
+    reqHeaders.append("Accept", "application/json");
+    const options = new RequestOptions({ headers: reqHeaders });
+
+    let body = new URLSearchParams();
+    body.set('grant_type', 'password');
+    body.set('username', this.userId);
+    body.set('password', this.userId);
+    body.set('APIKeys', this.apiKey2);
+
+    await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
+    this.authToken = JSON.parse(data.text())['access_token'];
+      console.log(data.text());
+      console.log(this.authToken );
+    });
+  }
+
+  // new API authorization header helper
+  async setHeaders2(): Promise<RequestOptions>{
+      if(!this.authToken){
+        await this.authenticate();
+      }
+    const reqHeaders = new Headers();
+    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
+    reqHeaders.append("Accept", "application/json");
+    reqHeaders.append("Authorization", "bearer " + this.authToken);
+    const options = new RequestOptions({ headers: reqHeaders });
+    return options;
+  }
+
+  async getRoomPicture(room:Room){
+    return this.http.get(`${this.endpoint2}/api/RoomPhoto/${room.Id}`, await this.setHeaders2())
+  }
+
+  // TODO fix this on API side...
+  async getRoomCapacity(room:Room){
+    //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
+    this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, await this.setHeaders2()).subscribe( (data) => {
+      console.log(data.text());
+      console.log(data.text());
+    })
   }
 
   // generic parameter loading function
@@ -81,27 +134,27 @@ export class GesroomService {
     reqHeaders.append("GES_APIKEY", this.apiKey);
     reqHeaders.append("GES_TABLET", "123456");
     reqHeaders.append("Accept", "application/json");
+    const options = new RequestOptions({ headers: reqHeaders });
     // headers.append("GES_USERID", this.sesaId);
     // headers.append("GES_APIKEY", this.adminDataServ.apiKey);
     // headers.append("GES_TABLET", this.ges_tablet);
     // headers.append("Accept", "application/json");
-    const options = new RequestOptions({ headers: reqHeaders });
 
     return options;
   }
 
-  setEndpoint(end: string){
+  setEndpoint(end: string) {
     this.endpointObs.next(end);
     this.setToStorage("endpoint", end);
     this.endpoint = end;
   }
-  setApiKey(key: string){
+  setApiKey(key: string) {
     this.apiKeyObs.next(key);
     this.setToStorage("apiKey", key);
     this.apiKey = key;
   }
 
-  setUserId(id: string){
+  setUserId(id: string) {
     this.userIdObs.next(id);
     this.setToStorage("userId", id);
     this.userId = id;

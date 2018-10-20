@@ -45,9 +45,9 @@ export class AdminService {
 
     this.storage.get('selectedSite').then((data) => {
       if (!data) {
-        return console.log('selectedSite Storage : no data');
+        return;
       }
-      console.log('selectedRoom Storage : ' + data);
+     // console.log('selectedRoom Storage : ' + data);
       this.selectedSite = JSON.parse(data);
       this.selectedSiteObs.next(this.selectedSite);
     }
@@ -56,9 +56,9 @@ export class AdminService {
 
     this.storage.get('selectedRoom').then((data) => {
       if (!data) {
-        return console.log('selectedRoom Storage : no data');
+        return;
       }
-      console.log('selectedRoom Storage : ' + data);
+      //console.log('selectedRoom Storage : ' + data);
       this.selectedRoom = JSON.parse(data);
       this.selectedRoomObs.next(this.selectedRoom);
       this.checkSlides();

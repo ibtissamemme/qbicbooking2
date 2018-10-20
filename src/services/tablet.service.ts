@@ -64,10 +64,10 @@ export class TabletService {
         )
         .subscribe(
           data => {
-            console.log("success");
+            //console.log("success");
           },
           error => {
-            console.log(error);
+           //console.log(error);
           }
         );
     }
@@ -83,10 +83,10 @@ export class TabletService {
         )
         .subscribe(
           data => {
-            console.log("success");
+            //console.log("success");
           },
           error => {
-            console.log(error);
+            //console.log(error);
           }
         );
     }
@@ -116,7 +116,7 @@ export class TabletService {
             this.timezone = data["value"];
           },
           err => {
-            console.log(err);
+            //console.log(err);
           }
         );
     }
@@ -132,10 +132,10 @@ export class TabletService {
         )
         .subscribe(
           data => {
-            console.log("success");
+            //console.log("success");
           },
           err => {
-            console.log(err);
+            //console.log(err);
           }
         );
     }

@@ -85,6 +85,7 @@ export class AppModule { }
 // app init
 export function loadSettings(gesroomService: GesroomService){
   return () => gesroomService.setup();
+
 }
 
 export function createTranslateLoader(http: HttpClient) {

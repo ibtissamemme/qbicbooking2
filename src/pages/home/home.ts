@@ -123,6 +123,7 @@ export class HomePage {
 
       // TODO debug
       this.selectedRoom.capacity = 8;
+      this.gesroomService.getRoomCapacity(this.selectedRoom);
 
       if (this.selectedRoom.roomType === RoomType.Training) {
         this.goToTrainingPage();
