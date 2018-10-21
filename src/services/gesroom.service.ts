@@ -43,70 +43,6 @@ export class GesroomService {
     this.userIdObs = new BehaviorSubject(undefined)
   }
 
-  // checks and load API parameters
-  // called at startup by the app.module.ts
-  async setup() {
-    if (!this.endpoint || !this.userId || !this.apiKey) {
-      this.endpoint = await this.loadParam('endpoint');
-      this.userId = await this.loadParam('adminId');
-      this.apiKey = await this.loadParam('apiKey');
-
-      this.endpointObs.next(this.endpoint);
-      this.userIdObs.next(this.userId)
-      this.apiKeyObs.next(this.apiKey)
-      //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
-
-      this.authenticate();
-    }
-
-  }
-
-  // new API
-  async authenticate() {
-    const reqHeaders = new Headers();
-    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
-    reqHeaders.append("Accept", "application/json");
-    const options = new RequestOptions({ headers: reqHeaders });
-
-    let body = new URLSearchParams();
-    body.set('grant_type', 'password');
-    body.set('username', this.userId);
-    body.set('password', this.userId);
-    body.set('APIKeys', this.apiKey2);
-
-    await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
-    this.authToken = JSON.parse(data.text())['access_token'];
-      console.log(data.text());
-      console.log(this.authToken );
-    });
-  }
-
-  // new API authorization header helper
-  async setHeaders2(): Promise<RequestOptions>{
-      if(!this.authToken){
-        await this.authenticate();
-      }
-    const reqHeaders = new Headers();
-    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
-    reqHeaders.append("Accept", "application/json");
-    reqHeaders.append("Authorization", "bearer " + this.authToken);
-    const options = new RequestOptions({ headers: reqHeaders });
-    return options;
-  }
-
-  async getRoomPicture(room:Room){
-    return this.http.get(`${this.endpoint2}/api/RoomPhoto/${room.Id}`, await this.setHeaders2())
-  }
-
-  // TODO fix this on API side...
-  async getRoomCapacity(room:Room){
-    //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
-    this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, await this.setHeaders2()).subscribe( (data) => {
-      console.log(data.text());
-      console.log(data.text());
-    })
-  }
-
   // generic parameter loading function
   // checks in local storage, and then in the environment files
   async loadParam(param: string) {
@@ -164,6 +100,82 @@ export class GesroomService {
   setToStorage(key: string, object: any) {
     this.storage.set(key, JSON.stringify(object));
   }
+
+  // checks and load API parameters
+  // called at startup by the app.module.ts
+  async setup() {
+    if (!this.endpoint || !this.userId || !this.apiKey) {
+      this.endpoint = await this.loadParam('endpoint');
+      this.userId = await this.loadParam('adminId');
+      this.apiKey = await this.loadParam('apiKey');
+
+      this.endpointObs.next(this.endpoint);
+      this.userIdObs.next(this.userId)
+      this.apiKeyObs.next(this.apiKey)
+      //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
+
+      this.authenticate();
+    }
+
+  }
+
+  // **********************
+  // **********************
+  // new API
+  // **********************
+  // authentification
+  // **********************
+  async authenticate() {
+    const reqHeaders = new Headers();
+    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
+    reqHeaders.append("Accept", "application/json");
+    const options = new RequestOptions({ headers: reqHeaders });
+
+    let body = new URLSearchParams();
+    body.set('grant_type', 'password');
+    body.set('username', this.userId);
+    body.set('password', this.userId);
+    body.set('APIKeys', this.apiKey2);
+
+    await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
+      this.authToken = JSON.parse(data.text())['access_token'];
+      console.log(data.text());
+      console.log(this.authToken );
+    });
+  }
+
+  // **********************
+  // new API authorization header helper
+  // **********************
+  async setHeaders2(): Promise<RequestOptions>{
+    if(!this.authToken){
+      await this.authenticate();
+    }
+    const reqHeaders = new Headers();
+    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
+    reqHeaders.append("Accept", "application/json");
+    reqHeaders.append("Authorization", "bearer " + this.authToken);
+    const options = new RequestOptions({ headers: reqHeaders });
+    return options;
+  }
+
+
+  // **********************
+  // Data methods
+  // **********************
+  async getRoomPicture(room:Room){
+    return this.http.get(`${this.endpoint2}/api/RoomPhoto/${room.Id}`, await this.setHeaders2()).toPromise();
+  }
+
+  // TODO fix this on API side...
+  async getRoomCapacity(room:Room){
+    //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
+    this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, await this.setHeaders2()).subscribe( (data) => {
+      console.log(data.text());
+      console.log(data.text());
+    })
+  }
+
   getSites() {
     return this.http.get(this.endpoint + "/sites", this.setHeaders()).toPromise();
   }

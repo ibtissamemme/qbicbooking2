@@ -44,7 +44,7 @@
 <!-- ************ -->
 <!-- OVERLAY -->
 <!-- ************ -->
-<div class="overlay" [@opacityChange]="this.overlayOpacityState" [@displayChange]="this.overlayDisplayState" (click)="this.removeOverlay()"
+<div class="overlay" [style.background-image]="this.getBackgroundImage()" [@opacityChange]="this.overlayOpacityState" [@displayChange]="this.overlayDisplayState" (click)="this.removeOverlay()"
   tappable *ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
 
   <div class="overlay-opacity">
@@ -83,7 +83,7 @@
   <!-- ************ -->
   <!--FREE PAGE CONTENT -->
   <!-- ************ -->
-  <ion-grid class="content-grid" *ngIf="this.selectedRoom && currentStatus === PageStates.FREE">
+  <ion-grid class="content-grid" [style.background-image]="this.getBackgroundImage()"  *ngIf="this.selectedRoom && currentStatus === PageStates.FREE">
 
 
   </ion-grid>
@@ -94,7 +94,7 @@
   <!-- ************ -->
   <!--OCCUPIED PAGE CONTENT -->
   <!-- ************ -->
-  <div class="content-grid" *ngIf="meeting && currentStatus === PageStates.OCCUPIED">
+  <div class="content-grid" [style.background-image]="this.getBackgroundImage()"  *ngIf="meeting && currentStatus === PageStates.OCCUPIED">
     <ion-grid class="container-opacity">
 
       <ion-row class="padding-top">
@@ -162,7 +162,7 @@
   <!-- ************ -->
   <!--PENDING PAGE CONTENT -->
   <!-- ************ -->
-  <div class="content-grid " *ngIf="currentStatus === PageStates.PENDING">
+  <div class="content-grid " [style.background-image]="this.getBackgroundImage()"   *ngIf="currentStatus === PageStates.PENDING">
     <ion-grid class="container-opacity upcoming-padding">
       <ion-row text-center align-items-center>
         <ion-col class="big-text">

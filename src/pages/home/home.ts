@@ -13,6 +13,7 @@ import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
 import { TrainingPage } from '../training/training';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: "page-home",
@@ -44,6 +45,8 @@ export class HomePage {
   nextMeetingCountDownResult: number;
   helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
 
+  imageSRC: SafeResourceUrl;
+  defaultImage:string = "../assets/imgs/room_Photo.png";
 
   isOverlayDisplayed: boolean = true;
   // handle over the timer
@@ -94,7 +97,8 @@ export class HomePage {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private loadingCtrl: LoadingController,
-    private tabletService: TabletService) {
+    private tabletService: TabletService,
+    private _sanitizer: DomSanitizer) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
 
@@ -121,9 +125,22 @@ export class HomePage {
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
 
+      // Room capacity
       // TODO debug
       this.selectedRoom.capacity = 8;
       this.gesroomService.getRoomCapacity(this.selectedRoom);
+
+      // Photo
+      // this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
+      //   if(!data){
+      //     return;
+      //   }
+      //   const resp = JSON.parse(data.text());
+      //   const photo = JSON.stringify(resp.Photo).replace(/\\n/g, '');
+      //   this.imageSRC = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${photo}`);
+      //   console.log(this.imageSRC);
+
+      // });
 
       if (this.selectedRoom.roomType === RoomType.Training) {
         this.goToTrainingPage();
@@ -155,6 +172,15 @@ export class HomePage {
     this.buttonBar.nativeElement.scrollLeft += 200;
   }
 
+  // returns the default image if there is no room picture
+  getBackgroundImage(): string|SafeResourceUrl {
+    if(!this.imageSRC){
+      return this._sanitizer.bypassSecurityTrustStyle(`url(${this.defaultImage})`);
+    } else {
+      return this._sanitizer.bypassSecurityTrustStyle(`url(${this.imageSRC})`);
+    }
+    //return this.imageSRC;
+  }
 
   tapHandler(){
     clearInterval(this.overlayTimer);
