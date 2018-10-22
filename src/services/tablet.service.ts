@@ -1,5 +1,5 @@
 import { States } from './../app/shared/meeting';
-import { RequestOptions, Http } from "@angular/http";
+import { RequestOptions, Headers, Http } from "@angular/http";
 import { Injectable } from "@angular/core";
 import { ENV } from '@app/env';
 
@@ -12,8 +12,10 @@ export class TabletService {
   private options: RequestOptions;
 
   constructor(private http: Http) {
-    this.headers = new Headers({ "Content-Type": "application/json" });
-    //this.options = new RequestOptions({ headers: this.headers });
+    this.headers = new Headers();
+    this.headers.append( "Content-Type", "application/json" )
+    this.options = new RequestOptions({ headers: this.headers });
+
   }
 
   // Simple handler for changeing LED colors
