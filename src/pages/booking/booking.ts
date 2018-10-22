@@ -42,11 +42,16 @@ export class BookingPage {
     });
     loadingEmployee.present();
 
-
-    await this.gesroomService.getEmployeeById(pinCode).then( (data) => {
+    const corporateId = 'SESA' + pinCode;
+    const site=this.adminService.selectedSite;
+    //await this.gesroomService.getEmployeeById(pinCode).then( (data) => {
+    await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
       if(data){
         // for some reason we get back an array
-          this.emp = JSON.parse(data.text())[0];
+          const _emp = JSON.parse(data.text())[0];
+          that.emp = new Employee();
+          Object.assign(that.emp, _emp);
+          //that.emp = Object.setPrototypeOf(_emp, Employee);
       }
 
       loadingEmployee.dismiss();
@@ -143,7 +148,7 @@ export class BookingPage {
     if(!this.emp){
       return false;
     }
-    else if(!this.emp.corporateID){
+    else if(!this.emp._corporateId){
       return false;
     }
     return true;
