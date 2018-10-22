@@ -41,5 +41,7 @@ export class Employee {
   get _lastName() {
     return this.lastName ? this.lastName : this.LastName;
   };
-
+  get _id(){
+    return this.id ? this.id : this.PersonVisitedId;
+  }
 }

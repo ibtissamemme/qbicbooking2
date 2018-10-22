@@ -244,10 +244,10 @@ export class GesroomService {
       startDateTime: meeting.startDateTime,
       endDateTime: meeting.endDateTime,
       owner: {
-        id: owner.id,
-        corporateID: owner.corporateID,
-        firstName: owner.firstName,
-        lastName: owner.lastName,
+        id: owner._id,
+        corporateID: owner._corporateId,
+        firstName: owner._firstName,
+        lastName: owner._lastName,
         company: owner.company,
         type: owner.type,
         status: owner.status
