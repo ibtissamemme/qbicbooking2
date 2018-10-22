@@ -25,8 +25,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       transition('shown <=> hidden', animate('200ms ease'))
     ]),
     trigger('displayChange', [
-      state('block',  style({ display: 'block' })),
-      state('none', style({ display: 'none'  })),
+      state('block', style({ display: 'block' })),
+      state('none', style({ display: 'none' })),
       transition('none => block', animate('0ms ease')),
       transition('block => none', animate('0ms 200ms ease'))
     ])
@@ -41,14 +41,17 @@ export class HomePage {
   headerTime: moment.Moment = moment();
   headerColor: string = 'primary';
   subHeaderTheme: string;
-  past:any;
+  past: any;
   nextMeetingCountDownResult: number;
   helperLabel: string = 'Touchez un créneau pour débutter votre réservation &darr;';
 
   imageSRC: SafeResourceUrl;
-  defaultImage:string = "../assets/imgs/room_Photo.png";
+  defaultImage: string = "../assets/imgs/room_Photo.png";
 
   isOverlayDisplayed: boolean = true;
+  isSomethingElseDisplayed: boolean = false;
+
+
   // handle over the timer
   overlayTimer: any;
   overlayOpacityState = 'shown';
@@ -57,7 +60,7 @@ export class HomePage {
 
   @ViewChild('buttonBar') buttonBar: ElementRef;
 
-  language='fr';
+  language = 'fr';
 
   // hour scroll interval in minutes
   hourScrollInterval: number;
@@ -173,8 +176,8 @@ export class HomePage {
   }
 
   // returns the default image if there is no room picture
-  getBackgroundImage(): string|SafeResourceUrl {
-    if(!this.imageSRC){
+  getBackgroundImage(): string | SafeResourceUrl {
+    if (!this.imageSRC) {
       return this._sanitizer.bypassSecurityTrustStyle(`url(${this.defaultImage})`);
     } else {
       return this._sanitizer.bypassSecurityTrustStyle(`url(${this.imageSRC})`);
@@ -182,11 +185,11 @@ export class HomePage {
     //return this.imageSRC;
   }
 
-  tapHandler(){
+  tapHandler() {
     clearInterval(this.overlayTimer);
     this.removeOverlay();
   }
-  removeOverlay(){
+  removeOverlay() {
     //this.isOverlayDisplayed = false;
     this.overlayOpacityState = 'hidden';
     this.overlayDisplayState = 'none'
@@ -194,11 +197,12 @@ export class HomePage {
       this.displayOverlay();
     }, this.overlayIdleTime);
   }
-  displayOverlay(){
-    if(this.currentStatus == States.FREE){
+  displayOverlay() {
+    if (this.currentStatus == States.FREE && !this.isSomethingElseDisplayed) {
       //this.isOverlayDisplayed = true;
       this.overlayOpacityState = 'shown';
       this.overlayDisplayState = 'block';
+
     }
   }
 
@@ -216,7 +220,7 @@ export class HomePage {
   };
 
 
-  buildHourScrollArray(){
+  buildHourScrollArray() {
     this.headerTime = moment();
     this.dateArray = new Array();
 
@@ -293,7 +297,6 @@ export class HomePage {
     }
     else if (this.currentMeeting) {
       this.meeting = this.currentMeeting;
-
     }
 
     if (!this.upcomingMeeting && !this.currentMeeting) {
@@ -312,27 +315,28 @@ export class HomePage {
     if (this.tappedButtons.length === 1) {
       this.translate.get('HOME_PAGE.TOUCH_TO_CONTINUE').subscribe((res: string) => {
         this.helperLabel = res;
-    });
-  }
-  else {
-            this.translate.get('HOME_PAGE.TOUCH_TO_BEGIN').subscribe((res: string) => {
-              this.helperLabel = res;
-          });
+      });
+    }
+    else {
+      this.translate.get('HOME_PAGE.TOUCH_TO_BEGIN').subscribe((res: string) => {
+        this.helperLabel = res;
+      });
     }
   }
 
   // cycles through the available langages
-  getNextLang(currentLanguage: string): string{
+  getNextLang(currentLanguage: string): string {
     const langs = this.translate.getLangs();
     return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
   }
   // changes to the next language
-  changeLangage(){
+  changeLangage() {
     this.translate.use(this.language);
     this.language = this.getNextLang(this.language);
     this.getHelperText();
     // langage displayed on the interface should be the next lang
   }
+
 
   buttonPressed(time: moment.Moment) {
 
@@ -356,13 +360,14 @@ export class HomePage {
       this.tappedButtons = new Array();
 
       myModal.onDidDismiss(() => {
+        this.isSomethingElseDisplayed = false;
         this.refresh();
         // force refresh of the button colors => remove the orange if cancelled
         this.events.publish('refreshColor:clicked');
       });
 
       myModal.present();
-
+      this.isSomethingElseDisplayed = true;
       // when the modal goes up, we empty the array for the tapped buttons
       this.tappedButtons = [];
     }
@@ -396,44 +401,47 @@ export class HomePage {
         this.subHeaderTheme = 'free'
         break;
     }
-
   }
 
   // used to display the progress bar until the end of the meeting
-  getProgress(): string{
-    if(this.meeting && this.currentStatus === States.OCCUPIED){
+  getProgress(): string {
+    if (this.meeting && this.currentStatus === States.OCCUPIED) {
       const now = moment().unix();
       const start = this.meeting.startDateTime.unix();
       const end = this.meeting.endDateTime.unix();
-      const progress = Math.floor((now - start) * 100 / (end - start));
+      // +1 is there to make sure something is dispolayed
+      const progress = Math.floor((now - start) * 100 / (end - start)) + 1;
 
       return progress + '%';
     }
     return '0%';
   }
 
-  async startNow(){
+  async startNow() {
+    this.isSomethingElseDisplayed = true;
+
     this.meeting.startDateTime = moment();
     this.meeting.meetingStatus = MeetingStatus.Started;
     let updatePending: string = "Modification de votre réservation en cours...";
     let updateDone: string = "Modification de votre réservation effectuée.";
 
-    await this.translate.get('UPDATE.PENDING').toPromise().then( (res) => {
+    await this.translate.get('UPDATE.PENDING').toPromise().then((res) => {
       updatePending = res;
     })
-    await this.translate.get('UPDATE.DONE').toPromise().then( (res) => {
+    await this.translate.get('UPDATE.DONE').toPromise().then((res) => {
       updateDone = res;
     })
 
     const loadingMeeting = this.loadingCtrl.create({
       spinner: 'dots',
-      content:  updatePending
+      content: updatePending
     });
     loadingMeeting.present();
+
     this.gesroomService.putMeeting(this.meeting)
-    .then( (res) => {
-      console.log(res);
-      loadingMeeting.dismiss();
+      .then((res) => {
+        console.log(res);
+        loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
           content: updateDone,
@@ -442,32 +450,32 @@ export class HomePage {
         setTimeout(() => {
           confirm.dismiss();
           this.refresh();
+          this.isOverlayDisplayed = false;
         }, 3000);
-    })
-    ;
+      });
   }
 
-  async endNow(){
+  async endNow() {
     this.meeting.endDateTime = moment();
     let pendingMessage: string = "Modification de votre réservation en cours...";
     let doneMessage: string = "Modification de votre réservation effectuée.";
 
-    await this.translate.get('CANCEL.PENDING').toPromise().then( (res) => {
+    await this.translate.get('CANCEL.PENDING').toPromise().then((res) => {
       pendingMessage = res;
     })
-    await this.translate.get('CANCEL.DONE').toPromise().then( (res) => {
+    await this.translate.get('CANCEL.DONE').toPromise().then((res) => {
       doneMessage = res;
     })
 
     const loadingMeeting = this.loadingCtrl.create({
       spinner: 'dots',
-      content:  pendingMessage
+      content: pendingMessage
     });
     loadingMeeting.present();
     this.gesroomService.putMeeting(this.meeting)
-    .then( (res) => {
-      console.log(res);
-      loadingMeeting.dismiss();
+      .then((res) => {
+        console.log(res);
+        loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
           content: doneMessage,
@@ -476,14 +484,14 @@ export class HomePage {
         setTimeout(() => {
           confirm.dismiss();
           this.refresh();
+          this.isSomethingElseDisplayed = false;
         }, 3000);
-    })
-    ;
+      });
   }
 
   // used to display the number of minutes until the next meeting
-  nextMeetingCountDown(): number{
-    if(this.meeting  && this.currentStatus === States.PENDING){
+  nextMeetingCountDown(): number {
+    if (this.meeting && this.currentStatus === States.PENDING) {
       const now = moment();
       const start = this.meeting.startDateTime;
       const shift = moment.duration(start.diff(now));
