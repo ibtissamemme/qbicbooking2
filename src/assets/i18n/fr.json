@@ -36,5 +36,14 @@
     "API_KEY": "API Key",
     "CONFIRM_AND_TEST": "Sauver et tester"
 
+  },
+  "BOOKING": {
+    "TITLE": "Réservation de salle",
+    "HOST": "Réservant",
+    "START": "Début",
+    "END": "Fin",
+    "CONFIRM": "Valider",
+    "CANCEL": "Annuler",
+    "INPUTID": "Saisir votre SESA :"
   }
 }

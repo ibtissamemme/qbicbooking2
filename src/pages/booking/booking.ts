@@ -8,12 +8,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import * as moment from "moment";
 
-/**
- * Generated class for the BookingPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -79,7 +73,7 @@ export class BookingPage {
 
 
   async confirmBooking() {
-    if (this.adminService.isUserAuthorized(this.emp.corporateID)) {
+    if (this.adminService.isUserAuthorized(this.emp._corporateId)) {
       const loadingMeeting = this.loadingCtrl.create({
         spinner: 'dots',
         content: 'Réservation de votre réunion en cours...',

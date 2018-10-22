@@ -35,7 +35,14 @@
     "ENDPOINT": "URL",
     "API_KEY": "API Key",
     "CONFIRM_AND_TEST": "Confirm & test"
-
-
+  },
+  "BOOKING": {
+    "TITLE": "Room booking",
+    "HOST": "Host",
+    "START": "Start",
+    "END": "End",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "INPUTID": "Please enter your ID:"
   }
 }
