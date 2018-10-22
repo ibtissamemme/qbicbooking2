@@ -176,7 +176,7 @@ export class GesroomService {
     })
   }
   async getEmployeeDetails(corporateId: string, site: Site){
-    return this.http.get(`${this.endpoint2}/api/PersonVisited?corporateId=${corporateId}&siteId=${site.Id}`, await this.setHeaders2()).toPromise();
+    return this.http.get(`${this.endpoint2}/api/PersonVisited?corporateId=${corporateId}`, await this.setHeaders2()).toPromise();
   }
 
 
