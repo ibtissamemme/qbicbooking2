@@ -27,6 +27,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+import * as Sentry from 'sentry-cordova';
+import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -69,7 +72,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    {provide: ErrorHandler, useClass: SentryIonicErrorHandler},
     NFC,
     Ndef,
     GesroomService,
@@ -91,3 +94,5 @@ export function loadSettings(gesroomService: GesroomService){
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+Sentry.init({ dsn: 'https://d541f884f4be4551aad041a2ad3b1f6f@sentry.io/1306802' });
