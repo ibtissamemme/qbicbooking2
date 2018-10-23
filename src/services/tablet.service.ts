@@ -24,15 +24,16 @@ export class TabletService {
       return;
     }
 
-    let coco = ENV.colors.primary;
+    let coco = ENV.ledColors.primary;
     switch (bookingStatus) {
       case States.PENDING:
-      coco = ENV.colors.secondary;
+      coco = ENV.ledColors.secondary;
       break;
       case States.OCCUPIED:
-      coco = ENV.colors.danger;
+      coco = ENV.ledColors.danger;
       break;
       default:
+        coco = ENV.ledColors.primary;
         break;
     }
     this.changefrontled(coco.r, coco.g, coco.b);

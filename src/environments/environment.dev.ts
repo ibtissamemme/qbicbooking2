@@ -15,5 +15,17 @@ export const ENV = {
       danger: {
         r:177, g: 0, b: 67
       }
+    },
+    // because for some reason led colors do not look antyhing like colors on the screen...
+    ledColors: {
+      primary: {
+        r: 0, g:255, b: 0
+      },
+      secondary: {
+        r:228, g: 127, b: 0
+      },
+      danger: {
+        r:255, g: 0, b: 0
+      }
     }
   };
