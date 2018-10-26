@@ -130,9 +130,10 @@ export class HomePage {
 
       // Room capacity
       // TODO debug
-      this.selectedRoom.capacity = 8;
-      this.gesroomService.getRoomCapacity(this.selectedRoom);
-
+      this.gesroomService.getRoomCapacity(this.selectedRoom)
+      .then( (data) => {
+        this.selectedRoom.capacity = data;
+      });
       // Photo
       // this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
       //   if(!data){
@@ -339,9 +340,8 @@ export class HomePage {
 
 
   buttonPressed(time: moment.Moment) {
-
     if (!this.tappedButtons) {
-      this.tappedButtons = new Array();
+      this.tappedButtons = new Array<moment.Moment>();
     }
     this.tappedButtons.push(time);
     this.getHelperText();

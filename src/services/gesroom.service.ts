@@ -18,7 +18,7 @@ export class GesroomService {
   private apiKey: string;
   private tabletId: string;
 
-  private apiKey2: string = "B87K6ZZ8POQFZZ2BIBWJPRNLSLPZ";
+  private apiKey2: string = "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ";
   private endpoint2: string = "http://safeware-custk.hds-group.com/TelemaqueRestAPI";
   private authToken: string;
 
@@ -170,10 +170,12 @@ export class GesroomService {
   // TODO fix this on API side...
   async getRoomCapacity(room:Room){
     //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
-    this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, await this.setHeaders2()).subscribe( (data) => {
-      console.log(data.text());
-      console.log(data.text());
-    })
+    let cap=8;
+    await this.http.get(`${this.endpoint2}/api/RoomLayout?RoomId=${room.Id}`, await this.setHeaders2()).toPromise().then( (data) => {
+      cap = JSON.parse(data.text())[0].Capacity;
+    } );
+
+    return cap;
   }
   async getEmployeeDetails(corporateId: string, site: Site){
     return this.http.get(`${this.endpoint2}/api/PersonVisited?corporateId=${corporateId}`, await this.setHeaders2()).toPromise();
