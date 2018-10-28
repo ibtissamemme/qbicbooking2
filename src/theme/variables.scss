@@ -100,15 +100,22 @@ $toolbar-md-height:$header-size;
 // Fonts
 // --------------------------------------------------
 
-@import "roboto";
-@import "noto-sans";
+// @import "roboto";
+// @import "noto-sans";
 
+@font-face {
+  font-family: 'Source';
+  src:  url($font-path + '/SourceSansPro-Light.ttf') format('truetype'),  url($font-path + '/SourceSansPro-Light.otf') format('opentype');
+  }
+$font-family-base: 'Source', sans-serif !default;
 $font-size-buttons: 24px;
 $font-size-small: 1.5em;
 $font-size-normal: 2em;
 $font-size-big: 2.5em;
 $font-size-jumbo: 3em;
 $font-size-maxi-jumbo: 3.5em;
+$font-family-ios-base: $font-family-base;
+$font-family-md-base: $font-family-base;
 
 // @font-face {
 //   font-family: 'Montserrat';
@@ -116,5 +123,4 @@ $font-size-maxi-jumbo: 3.5em;
 //   font-weight: 400;
 //   src: url('assets/Monserrat-Medium.ttf') format("truetype");
 // }
-
 // $font-family-base: 'Montserrat', sans-serif !default;
