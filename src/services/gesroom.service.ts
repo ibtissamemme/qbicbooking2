@@ -139,8 +139,8 @@ export class GesroomService {
 
     await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
       this.authToken = JSON.parse(data.text())['access_token'];
-      console.log(data.text());
-      console.log(this.authToken );
+      // console.log(data.text());
+      // console.log(this.authToken );
     });
   }
 
@@ -164,14 +164,14 @@ export class GesroomService {
   // Data methods
   // **********************
   async getRoomPicture(room:Room){
-    return this.http.get(`${this.endpoint2}/api/RoomPhoto/${room.Id}`, await this.setHeaders2()).toPromise();
+    return this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Photo`, await this.setHeaders2()).toPromise();
   }
 
   // TODO fix this on API side...
   async getRoomCapacity(room:Room){
     //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
     let cap=8;
-    await this.http.get(`${this.endpoint2}/api/RoomLayout?RoomId=${room.Id}`, await this.setHeaders2()).toPromise().then( (data) => {
+    await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise().then( (data) => {
       cap = JSON.parse(data.text())[0].Capacity;
     } );
 

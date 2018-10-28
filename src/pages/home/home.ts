@@ -135,16 +135,16 @@ export class HomePage {
         this.selectedRoom.capacity = data;
       });
       // Photo
-      // this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
-      //   if(!data){
-      //     return;
-      //   }
-      //   const resp = JSON.parse(data.text());
-      //   const photo = JSON.stringify(resp.Photo).replace(/\\n/g, '');
-      //   this.imageSRC = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${photo}`);
-      //   console.log(this.imageSRC);
+      this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
+        if(!data){
+          return;
+        }
+        const resp = JSON.parse(data.text());
+        const photo = JSON.stringify(resp.Photo).replace(/\\n/g, '');
+        this.imageSRC = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${photo}`);
+        //console.log(this.imageSRC);
 
-      // });
+      });
 
       if (this.selectedRoom.roomType === RoomType.Training) {
         this.goToTrainingPage();
@@ -269,7 +269,7 @@ export class HomePage {
 
           if (this.headerTime.isBetween(start, end)) {
             this.currentMeeting = m;
-            console.log(this.currentMeeting.meetingName);
+            //console.log(this.currentMeeting.meetingName);
             this.changeStatus(States.OCCUPIED)
             //this.headerColor = 'danger';
           }
@@ -440,7 +440,7 @@ export class HomePage {
 
     this.gesroomService.putMeeting(this.meeting)
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
@@ -474,7 +474,7 @@ export class HomePage {
     loadingMeeting.present();
     this.gesroomService.putMeeting(this.meeting)
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
@@ -502,7 +502,7 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
-    console.log('ionViewWillLeave');
+    //console.log('ionViewWillLeave');
     // stop the refresh
     clearInterval(this.refreshLoop);
     this.events.unsubscribe('hourscrollbutton:clicked');
