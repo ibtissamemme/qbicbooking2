@@ -6,6 +6,12 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import * as moment from "moment";
 import { Events } from 'ionic-angular';
 
+export enum ButtonStates {
+  FREE = 'primary',
+  OCCUPIED = 'danger',
+  DISABLED = 'disabled',
+  TAPPED = 'primary-light'
+};
 
 @Component({
   selector: "hour-scroll-button",
@@ -65,7 +71,7 @@ export class HourScrollButtonComponent {
           const start = m.startDateTime;
           const end = m.endDateTime;
           if (this.date.isBetween(start, end, null, '[)')
-          || this.date.clone().add(this.hourScrollInterval-1, "minutes").isBetween(start, end, null, '[)')) {
+            || this.date.clone().add(this.hourScrollInterval - 1, "minutes").isBetween(start, end, null, '[)')) {
             this.buttonColor = "danger";
             return;
           }
@@ -77,9 +83,63 @@ export class HourScrollButtonComponent {
   // called whenever a button is tapped
   updateButtonColor(time: moment.Moment) {
     if (!this.tappedTimeArray) {
-      this.tappedTimeArray = new Array();
+      this.tappedTimeArray = new Array<moment.Moment>();
     }
     this.tappedTimeArray.push(time);
+
+    if (this.tappedTimeArray.length === 1) {
+      if (this.meetingList) {
+        if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
+
+
+          this.meetingList.meetingList.forEach(function (m, index) {
+            const start = m.startDateTime;
+            const end = m.endDateTime;
+
+            if (this.date.isBetween(start, end, null, '[)')
+              || this.date.clone().add(this.hourScrollInterval - 1, "minutes").isBetween(start, end, null, '[)')) {
+              this.buttonColor = "danger";
+              return;
+            }
+          }.bind(this));
+
+          if (this.buttonColor === "danger") {
+            return;
+          }
+
+          // case when multiple meetings
+          // Disable buttons that are not in an acceptable range
+          if (this.meetingList.meetingList.length > 0) {
+            const tapped = this.tappedTimeArray[0];
+            // if this is the tapped button => do nothing
+            if (tapped !== this.date) {
+              // find the closest before metting
+              const beforeMeeting: moment.Moment = this.meetingList.meetingList.reduce(function (before: moment.Moment, meeting: Meeting) {
+                if (meeting.endDateTime.isBetween(before, tapped) && meeting.endDateTime < tapped) {
+                  return meeting.endDateTime;
+                } else {
+                  return before;
+                }
+              }, moment(new Date(1970,1,1)));
+              // find the closest after meeting
+              const afterMeeting: moment.Moment = this.meetingList.meetingList.reduce(function (after: moment.Moment, meeting: Meeting) {
+                if (meeting.startDateTime.isBetween(tapped, after, null, "[]") && meeting.startDateTime > tapped) {
+                  return meeting.startDateTime;
+                } else {
+                  return after;
+                }
+              }, moment(new Date(2099,1,1)));
+
+              // if this button is not between the two meetings => should not be pressed
+              if (!this.date.isBetween(beforeMeeting, afterMeeting, null, "[]")) {
+                this.buttonColor = ButtonStates.DISABLED;
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
 
     if (this.tappedTimeArray.length >= 2) {
       // if the current button is between the 2 taps => [] is for inclusive comparison
@@ -103,14 +163,14 @@ export class HourScrollButtonComponent {
   }
 
   isDisabled() {
-    if ( this.date.clone().add(this.hourScrollInterval, "minutes") < moment())
+    if (this.date.clone().add(this.hourScrollInterval, "minutes") < moment())
       return true;
     return false;
   }
   // sends event to the home page and the other buttons...
   onClick() {
     if (this.buttonColor !== 'danger') {
-      this.buttonColor = 'primary-light';
+      this.buttonColor = ButtonStates.TAPPED;
       this.events.publish('hourscrollbutton:clicked', this.date);
     }
   }
