@@ -162,9 +162,14 @@ export class HourScrollButtonComponent {
     }
   }
 
+
   isDisabled() {
-    if (this.date.clone().add(this.hourScrollInterval, "minutes") < moment())
+    if ( this.date.clone().add(this.hourScrollInterval, "minutes") < moment() ) {
       return true;
+    }
+    if (this.buttonColor === ButtonStates.DISABLED) {
+      return true;
+    }
     return false;
   }
   // sends event to the home page and the other buttons...
