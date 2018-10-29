@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="44px" viewBox="0 0 51 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_Erase</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Meeting_v03" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="15_Occupied_SESA+" transform="translate(-792.000000, -552.000000)" stroke="#00C300" stroke-width="2.165">
+            <g id="Group" transform="translate(206.000000, 0.000000)">
+                <g id="Group-10" transform="translate(72.000000, 60.000000)">
+                    <g id="Group-6" transform="translate(163.000000, 110.000000)">
+                        <g id="Group-5" transform="translate(26.000000, 90.000000)">
+                            <g id="icon_Erase" transform="translate(326.000000, 293.000000)">
+                                <path d="M20.1665,29.6095 L36.8515,12.9245" id="Stroke-1"></path>
+                                <path d="M36.8515,29.6095 L20.1665,12.9245" id="Stroke-2"></path>
+                                <path d="M43.7378,0.0821 L15.1208,0.0821 C13.3928,0.0821 11.7868,0.9751 10.8748,2.4411 L0.8368,18.5841 C-0.1822,20.2231 -0.1682,22.3021 0.8748,23.9261 L10.8658,39.4911 C11.7858,40.9251 13.3718,41.7911 15.0738,41.7911 L43.7378,41.7911 C46.4988,41.7911 48.7378,39.5521 48.7378,36.7911 L48.7378,5.0821 C48.7378,2.3201 46.4988,0.0821 43.7378,0.0821 Z" id="Stroke-3"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="6px" viewBox="0 0 21 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_RightArrow</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Footer" transform="translate(-1290.000000, -43.000000)" stroke="#120F13">
+            <g id="Group-2-Copy" transform="translate(1300.000000, 43.500000) scale(-1, 1) translate(-1300.000000, -43.500000) translate(1270.000000, 22.000000)">
+                <g id="icon_RightArrow" transform="translate(20.000000, 22.000000)">
+                    <path d="M19,2 L0,2" id="Stroke-3"></path>
+                    <polyline id="Stroke-5" points="5 0 0 1.99979747 5 4"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

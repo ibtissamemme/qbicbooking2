@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="43px" height="46px" viewBox="0 0 43 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_Empty</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Meeting_v03" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="15_Occupied_SESA+" transform="translate(-466.000000, -551.000000)" stroke="#00C300" stroke-width="2.165">
+            <g id="Group" transform="translate(206.000000, 0.000000)">
+                <g id="Group-10" transform="translate(72.000000, 60.000000)">
+                    <g id="Group-6" transform="translate(163.000000, 110.000000)">
+                        <g id="Group-5" transform="translate(26.000000, 90.000000)">
+                            <g id="icon_Empty" transform="translate(0.000000, 292.000000)">
+                                <path d="M0.0822,23.0207 C0.0822,34.2377 9.1752,43.3317 20.3932,43.3317 C31.6092,43.3317 40.7032,34.2377 40.7032,23.0207 C40.7032,11.8037 31.6092,2.7097 20.3932,2.7097 C14.1042,2.7097 8.4832,5.5687 4.7582,10.0557" id="Stroke-1"></path>
+                                <polyline id="Stroke-3" points="5.1422 0.0822 4.7582 10.0562 14.7312 10.4392"></polyline>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

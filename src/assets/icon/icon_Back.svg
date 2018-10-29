@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_Back</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="BackButton" stroke="#120F13">
+            <g id="icon_Back">
+                <polyline id="Stroke-1" stroke-linecap="round" stroke-linejoin="round" points="28.58535 19.875 18.37485 30.08475 28.58535 40.29525"></polyline>
+                <path d="M19.874625,30.084975 L44.489625,30.084975" id="Stroke-3" stroke-linecap="round" stroke-linejoin="round"></path>
+                <rect id="Rectangle" fill-rule="nonzero" x="0.5" y="0.5" width="59" height="59" rx="10"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
