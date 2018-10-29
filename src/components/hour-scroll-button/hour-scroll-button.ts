@@ -60,7 +60,7 @@ export class HourScrollButtonComponent {
   // also called directly if a force refresh is needed
   refreshColor() {
     moment.locale("fr");
-    this.buttonColor = "primary";
+    //this.buttonColor = "primary";
     if (!this.date)
       return;
 
@@ -78,6 +78,11 @@ export class HourScrollButtonComponent {
         }.bind(this));
       }
     }
+    if(this.buttonColor === "danger"){
+      return;
+    }
+    this.buttonColor = "primary";
+
   }
 
   // called whenever a button is tapped
