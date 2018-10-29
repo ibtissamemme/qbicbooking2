@@ -193,7 +193,9 @@ page-home {
       }
     }
   }
-
+  .helper-text{
+    font-size: $font-size-small;
+  }
   .scroll{
     overflow-x: scroll!important;
   }

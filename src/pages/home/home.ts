@@ -113,7 +113,8 @@ export class HomePage {
       this.buttonPressed(time);
     });
 
-    moment.locale(this.language);
+    //moment.locale(this.language);
+    moment.locale('fr');
 
     // set the language button to the next language
     this.language = this.getNextLang(this.language);

@@ -217,13 +217,19 @@
     <div class="scroll-wrapper">
       <ion-row align-items-center>
         <ion-col class="arrows" text-left col-2>
-          <button class="left-button" ion-button (click)="this.scrollLeft()"> &larr;</button>
+          <button class="left-button" ion-button (click)="this.scrollLeft()">
+            <img src='../../assets/icon/icon_LeftArrow.svg' alt=""/>
+          </button>
+          <!-- <button class="left-button" ion-button (click)="this.scrollLeft()"> &larr;</button> -->
         </ion-col>
-        <ion-col text-center>
+        <ion-col text-center class="helper-text">
           {{ this.helperLabel }} &darr;
         </ion-col>
         <ion-col class="arrows" text-right col-2>
-          <button class="right-button" ion-button (click)="this.scrollRight()"> &rarr;</button>
+          <!-- <button class="right-button" ion-button (click)="this.scrollRight()"> &rarr;</button> -->
+          <button class="right-button" ion-button icon-end (click)="this.scrollRight()">
+            <img src='../../assets/icon/icon_LeftArrow.svg' style="transform: rotate(180deg);" alt=""/>
+          </button>
         </ion-col>
       </ion-row>
     </div>
