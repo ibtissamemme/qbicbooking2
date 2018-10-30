@@ -1,13 +1,13 @@
 //r: 61, g:205, b: 88
 export const ENV = {
-    mode: 'Development',
-    endpoint: 'http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API',
+    mode: 'Production',
+    endpoint: 'http://accueil.et.services.schneider-elecric.com/GesroomRestAPI/Gesroom/API',
     apiKey: 'MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ',
-    endpoint2: 'http://safeware-custk.hds-group.com/TelemaqueRestAPI/Gesroom/API',
+    endpoint2: 'http://accueil.et.services.schneider-elecric.com/TelemaqueRestAPI/Gesroom/API',
     apiKey2: 'MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ',
     adminId: 'SESA65737',
     tabletId: '123456',
-    logo: 'logo_white.png',
+    logo: 'schneider-white-logo.png',
     colors: {
       primary: {
         r: 90, g:187, b: 61
