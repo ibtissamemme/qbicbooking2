@@ -56,7 +56,7 @@ export class NfcCheckPage {
 
   onPinSubmit(pinCode: string) {
     console.log(pinCode);
-    if (this.adminService.isUserAuthorized(pinCode)) {
+    if (this.adminService.isAdminAuthorized(pinCode)) {
       this.navCtrl.push(AdminPage);
     }
     else {

@@ -7,6 +7,7 @@ import { Room } from 'app/shared/room';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ENV } from '@app/env';
 
 
 @Injectable()
@@ -141,11 +142,13 @@ export class AdminService {
     a.name.localeCompare(b.name);
   };
 
-
-  isUserAuthorized(corporateID: string): boolean {
-    if (corporateID === '123456') {
+  // check the admin code for admin access panel
+  // admin code is set in the environment params
+  isAdminAuthorized(corporateID: string): boolean {
+    if (corporateID === ENV.adminCode) {
+      return true;
+    } else {
       return false;
     }
-    else return true;
   }
 }

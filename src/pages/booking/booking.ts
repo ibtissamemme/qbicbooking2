@@ -71,9 +71,10 @@ export class BookingPage {
     }
   }
 
-
+  // called on the confirm booking page
   async confirmBooking() {
-    if (this.adminService.isUserAuthorized(this.emp._corporateId)) {
+    // TODO : maybe check the user rights again?
+    //if (this.adminService.isUserAuthorized(this.emp._corporateId)) {
       const loadingMeeting = this.loadingCtrl.create({
         spinner: 'dots',
         content: 'Réservation de votre réunion en cours...',
@@ -105,15 +106,15 @@ export class BookingPage {
       }
     )
 
-    }
-    else {
-      let alert = this.alertCtrl.create({
-        title: 'Non authorisé',
-        subTitle: "Vous n'êtes pas authorisé à accèder à l'administration",
-        buttons: ['retour']
-      });
-      alert.present();
-    }
+    // }
+    // else {
+    //   let alert = this.alertCtrl.create({
+    //     title: 'Non authorisé',
+    //     subTitle: "Vous n'êtes pas authorisé à accèder à l'administration",
+    //     buttons: ['retour']
+    //   });
+    //   alert.present();
+    // }
   }
 
 

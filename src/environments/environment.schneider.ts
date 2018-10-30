@@ -7,6 +7,7 @@ export const ENV = {
     apiKey2: 'MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ',
     adminId: 'SESA65737',
     tabletId: '123456',
+    adminCode: '1607',
     logo: 'schneider-white-logo.png',
     colors: {
       primary: {

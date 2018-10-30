@@ -3,10 +3,11 @@ export const ENV = {
     mode: 'Development',
     endpoint: 'http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API',
     apiKey: 'MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ',
-    endpoint2: 'http://safeware-custk.hds-group.com/TelemaqueRestAPI/Gesroom/API',
+    endpoint2: 'http://safeware-custk.hds-group.com/TelemaqueRestAPI',
     apiKey2: 'MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ',
     adminId: 'SESA65737',
     tabletId: '123456',
+    adminCode: '1607',
     logo: 'logo_white.png',
     colors: {
       primary: {
