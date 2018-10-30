@@ -18,8 +18,8 @@ export class GesroomService {
   private apiKey: string;
   private tabletId: string;
 
-  private apiKey2: string = "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ";
-  private endpoint2: string = "http://safeware-custk.hds-group.com/TelemaqueRestAPI";
+  private apiKey2: string; //= "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ";
+  private endpoint2: string; // = "http://safeware-custk.hds-group.com/TelemaqueRestAPI";
   private authToken: string;
 
   private endpointObs: BehaviorSubject<string>;
@@ -37,9 +37,21 @@ export class GesroomService {
     return this.userIdObs.asObservable();
   };
 
+  private endpoint2Obs: BehaviorSubject<string>;
+  get endpoint2$(): Observable<string> {
+    return this.endpoint2Obs.asObservable();
+  };
+
+  private apiKey2Obs: BehaviorSubject<string>;
+  get apiKey2$(): Observable<string> {
+    return this.apiKey2Obs.asObservable();
+  };
+
   constructor(private http: Http, private storage: Storage, ) {
     this.endpointObs = new BehaviorSubject(undefined)
     this.apiKeyObs = new BehaviorSubject(undefined)
+    this.endpoint2Obs = new BehaviorSubject(undefined)
+    this.apiKey2Obs = new BehaviorSubject(undefined)
     this.userIdObs = new BehaviorSubject(undefined)
   }
 
@@ -89,13 +101,21 @@ export class GesroomService {
     this.setToStorage("apiKey", key);
     this.apiKey = key;
   }
-
   setUserId(id: string) {
     this.userIdObs.next(id);
     this.setToStorage("userId", id);
     this.userId = id;
   }
-
+  setEndpoint2(end: string) {
+    this.endpoint2Obs.next(end);
+    this.setToStorage("endpoint2", end);
+    this.endpoint2 = end;
+  }
+  setApiKey2(key: string) {
+    this.apiKey2Obs.next(key);
+    this.setToStorage("apiKey2", key);
+    this.apiKey2 = key;
+  }
   // utility to store with key
   setToStorage(key: string, object: any) {
     this.storage.set(key, JSON.stringify(object));
@@ -104,15 +124,20 @@ export class GesroomService {
   // checks and load API parameters
   // called at startup by the app.module.ts
   async setup() {
-    if (!this.endpoint || !this.userId || !this.apiKey) {
+    if (!this.endpoint || !this.userId || !this.apiKey ||!this.endpoint2 || !this.apiKey2) {
       this.endpoint = await this.loadParam('endpoint');
       this.userId = await this.loadParam('adminId');
       this.apiKey = await this.loadParam('apiKey');
+
+      this.endpoint2 = await this.loadParam('endpoint2');
+      this.apiKey2 = await this.loadParam('apiKey2');
 
       this.endpointObs.next(this.endpoint);
       this.userIdObs.next(this.userId)
       this.apiKeyObs.next(this.apiKey)
       //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
+      this.endpoint2Obs.next(this.endpoint2);
+      this.apiKey2Obs.next(this.apiKey2)
 
       this.authenticate();
     }

@@ -1,4 +1,3 @@
-import { ENV } from './../../environments/environment';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TabletService } from './../../services/tablet.service';
 import { GesroomService } from './../../services/gesroom.service';
@@ -16,6 +15,7 @@ import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
 import { TrainingPage } from '../training/training';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ENV } from '@app/env';
 
 @Component({
   selector: "page-home",

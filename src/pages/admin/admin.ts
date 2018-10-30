@@ -23,6 +23,8 @@ export class AdminPage {
   apiKey: string;
   tabletId: string;
 
+  endpoint2: string;
+  apiKey2: string;
 
   constructor(
     public navCtrl: NavController,
@@ -39,6 +41,12 @@ export class AdminPage {
     });
     this.gesroomService.apiKey$.subscribe((data) => {
       this.apiKey = data;
+    });
+    this.gesroomService.endpoint2$.subscribe((data) => {
+      this.endpoint2 = data;
+    });
+    this.gesroomService.apiKey2$.subscribe((data) => {
+      this.apiKey2 = data;
     });
     this.gesroomService.userId$.subscribe((data) => {
       this.userId = data;
@@ -102,6 +110,12 @@ export class AdminPage {
     }
     if (this.apiKey) {
       this.gesroomService.setApiKey(this.apiKey);
+    }
+    if (this.endpoint2) {
+      this.gesroomService.setEndpoint2(this.endpoint2);
+    }
+    if (this.apiKey2) {
+      this.gesroomService.setApiKey2(this.apiKey2);
     }
     if (this.userId) {
       this.gesroomService.setUserId(this.userId);
