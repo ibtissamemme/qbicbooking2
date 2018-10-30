@@ -1,6 +1,3 @@
-import { GesroomService } from './../services/gesroom.service';
-import { BookingPageModule } from './../pages/booking/booking.module';
-import { AdminPageModule } from './../pages/admin/admin.module';
 import { TrainingPageModule } from './../pages/training/training.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -17,7 +14,11 @@ import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { BookingPageModule } from './../pages/booking/booking.module';
+import { AdminPageModule } from './../pages/admin/admin.module';
+import { CheckPincodePageModule } from './../pages/check-pincode/check-pincode.module';
 
+import { GesroomService } from './../services/gesroom.service';
 import { TabletService } from '../services/tablet.service';
 import { AdminService } from '../services/admin.service';
 
@@ -49,6 +50,7 @@ import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
     ComponentsModule,
     BookingPageModule,
     AdminPageModule,
+    CheckPincodePageModule,
     NfcCheckPageModule,
     TrainingPageModule,
     TranslateModule.forRoot({

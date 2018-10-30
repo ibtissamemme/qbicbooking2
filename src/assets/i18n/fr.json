@@ -47,5 +47,8 @@
     "CONFIRM": "Valider",
     "CANCEL": "Annuler",
     "INPUTID": "Saisir votre SESA :"
+  },
+  "CHECK": {
+    "TITLE": "Veuillez saisir votre SESA :"
   }
 }

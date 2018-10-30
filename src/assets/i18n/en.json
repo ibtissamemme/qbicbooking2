@@ -46,5 +46,8 @@
     "CONFIRM": "Confirm",
     "CANCEL": "Cancel",
     "INPUTID": "Please enter your ID:"
+  },
+  "CHECK": {
+    "TITLE": "Please enter your ID:"
   }
 }

@@ -1,3 +1,5 @@
+import { Employee } from './../../app/shared/employee';
+import { CheckPincodePage } from './../check-pincode/check-pincode';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TabletService } from './../../services/tablet.service';
 import { GesroomService } from './../../services/gesroom.service';
@@ -9,7 +11,7 @@ import { NfcCheckPage } from './../nfc-check/nfc-check';
 import { MeetingList } from '../../app/shared/meetingList';
 import { AdminService } from './../../services/admin.service';
 import { Component, ViewChild, ElementRef, trigger, state, style, transition, animate } from "@angular/core";
-import { NavController, Events, ModalController, LoadingController, Content } from "ionic-angular";
+import { NavController, Events, ModalController, LoadingController, Content, AlertController } from "ionic-angular";
 import * as moment from "moment";
 import { Room } from 'app/shared/room';
 import { Observable } from 'rxjs/Observable';
@@ -102,6 +104,7 @@ export class HomePage {
     private gesroomService: GesroomService,
     public events: Events,
     private modalCtrl: ModalController,
+    private alertController: AlertController,
     private translate: TranslateService,
     private loadingCtrl: LoadingController,
     private tabletService: TabletService,
@@ -138,12 +141,12 @@ export class HomePage {
       // Room capacity
       // TODO debug
       this.gesroomService.getRoomCapacity(this.selectedRoom)
-      .then( (data) => {
-        this.selectedRoom.capacity = data;
-      });
+        .then((data) => {
+          this.selectedRoom.capacity = data;
+        });
       // Photo
       this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
-        if(!data){
+        if (!data) {
           return;
         }
         const resp = JSON.parse(data.text());
@@ -286,14 +289,14 @@ export class HomePage {
             f = true;
             //this.headerColor = 'danger';
           }
-          if(f) {
+          if (f) {
             return;
           }
         }.bind(this));
       }
     }
 
-    if(f) {
+    if (f) {
       return;
     }
 
@@ -374,18 +377,10 @@ export class HomePage {
         end = this.tappedButtons[0].clone();
       }
       end = end.add(this.hourScrollInterval, 'minutes');
-      let obj = { start: start, end: end, room: this.selectedRoom };
-      let myModal = this.modalCtrl.create(BookingPage, obj);
-      this.tappedButtons = new Array();
 
-      myModal.onDidDismiss(() => {
-        this.isSomethingElseDisplayed = false;
-        this.refresh();
-        // force refresh of the button colors => remove the orange if cancelled
-        this.events.publish('refreshColor:clicked');
-      });
+      // loads the book meeting modal
+      this.bookMeeting(start, end);
 
-      myModal.present();
       this.isSomethingElseDisplayed = true;
       // when the modal goes up, we empty the array for the tapped buttons
       this.tappedButtons = [];
@@ -404,7 +399,7 @@ export class HomePage {
   }
 
   changeStatus(state: States) {
-    if(this.currentStatus !== state){
+    if (this.currentStatus !== state) {
       console.log("Changed status to ", state);
     }
     this.currentStatus = state;
@@ -441,9 +436,44 @@ export class HomePage {
     return '0%';
   }
 
+
+  bookMeeting(start: moment.Moment, end: moment.Moment) {
+
+    let obj = { start: start, end: end, room: this.selectedRoom };
+    let myModal = this.modalCtrl.create(BookingPage, obj);
+    this.tappedButtons = new Array();
+
+    myModal.onDidDismiss(() => {
+      this.isSomethingElseDisplayed = false;
+      this.refresh();
+      // force refresh of the button colors => remove the orange if cancelled
+      this.events.publish('refreshColor:clicked');
+    });
+
+    myModal.present();
+  }
+
+  // Presents the modal for pincode check
+  // launches the start now confirm if pincode OK
   async startNow() {
     this.isSomethingElseDisplayed = true;
 
+    let myModal = this.modalCtrl.create(CheckPincodePage);
+    this.tappedButtons = new Array();
+
+    myModal.onDidDismiss(async (emp: Employee) => this.confirmStartMeeting(emp));
+    myModal.present();
+  }
+
+  // Start now meeting loginc
+  // called after the pincode check
+  async confirmStartMeeting(emp: Employee) {
+    console.log(emp);
+
+    // TODO : proper identity check;
+    if (!emp || !emp._corporateId) {
+      return;
+    }
     this.meeting.startDateTime = moment();
     this.meeting.meetingStatus = MeetingStatus.Started;
     let updatePending: string = "Modification de votre réservation en cours...";
@@ -477,9 +507,29 @@ export class HomePage {
           this.isOverlayDisplayed = false;
         }, 3000);
       });
+    this.isSomethingElseDisplayed = false;
+    this.refresh();
+    // force refresh of the button colors => remove the orange if cancelled
+    this.events.publish('refreshColor:clicked');
   }
 
   async endNow() {
+    this.isSomethingElseDisplayed = true;
+
+    let myModal = this.modalCtrl.create(CheckPincodePage);
+    this.tappedButtons = new Array();
+
+    myModal.onDidDismiss(async (emp: Employee) => this.confirmEndNow(emp));
+    myModal.present();
+  }
+
+  async confirmEndNow(emp: Employee) {
+
+    // TODO : proper identity check;
+    if (!emp || !emp._corporateId) {
+      return;
+    }
+
     this.meeting.endDateTime = moment();
     let pendingMessage: string = "Modification de votre réservation en cours...";
     let doneMessage: string = "Modification de votre réservation effectuée.";
@@ -510,6 +560,19 @@ export class HomePage {
           this.refresh();
           this.isSomethingElseDisplayed = false;
         }, 3000);
+      }, (reason) => {
+        loadingMeeting.dismiss();
+        let alert = this.alertController.create({
+          title: 'Erreur',
+          subTitle: "Une erreur est survenue : "+reason,
+          buttons: ['retour']
+        });
+        alert.present();
+        setTimeout(() => {
+          alert.dismiss();
+        }, 3000);
+      }).catch((err) => {
+
       });
   }
 
