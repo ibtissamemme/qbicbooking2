@@ -1,16 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="21px" height="6px" viewBox="0 0 21 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
-    <title>icon_RightArrow</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Footer" transform="translate(-1290.000000, -43.000000)" stroke="#120F13">
-            <g id="Group-2-Copy" transform="translate(1300.000000, 43.500000) scale(-1, 1) translate(-1300.000000, -43.500000) translate(1270.000000, 22.000000)">
-                <g id="icon_RightArrow" transform="translate(20.000000, 22.000000)">
-                    <path d="M19,2 L0,2" id="Stroke-3"></path>
-                    <polyline id="Stroke-5" points="5 0 0 1.99979747 5 4"></polyline>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 21 11" style="enable-background:new 0 0 21 11;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#120F13;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<title>icon_LeftArrow</title>
+<desc>Created with Sketch.</desc>
+<g id="Symbols">
+	<g id="Footer" transform="translate(-69.000000, -38.000000)">
+		<g id="Group-2" transform="translate(50.000000, 22.000000)">
+			<g id="icon_LeftArrow" transform="translate(19.000000, 16.000000)">
+				<path id="Stroke-3" class="st0" d="M0.8,5.5l19.3-0.1"/>
+				<polyline id="Stroke-5" class="st0" points="15.2,10.4 20.1,5.5 15.1,0.5 				"/>
+			</g>
+		</g>
+	</g>
+</g>
 </svg>

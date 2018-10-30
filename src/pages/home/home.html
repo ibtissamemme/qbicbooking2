@@ -5,7 +5,7 @@
         <ion-row align-items-center>
           <!-- <ion-col></ion-col> -->
           <ion-col text-left>
-            <img class="logo" src="assets/imgs/logo_white.png" />
+            <img class="logo" src="{{this.logo}}" />
           </ion-col>
           <ion-col text-center align-item-center class="header-center-group">
             <div class="header-room">
@@ -74,7 +74,7 @@
 <!-- ************ -->
 <!-- MAIN CONTENT -->
 <!-- ************ -->
-<ion-content (click)="this.tapHandler()">
+<ion-content fullscreen (click)="this.tapHandler()">
 
   <div class="admin" (click)="onAdminClicked()" tappable></div>
 
@@ -94,7 +94,7 @@
   <!-- ************ -->
   <!--OCCUPIED PAGE CONTENT -->
   <!-- ************ -->
-  <div class="content-grid" [style.background-image]="this.getBackgroundImage()"  *ngIf="meeting && currentStatus === PageStates.OCCUPIED">
+  <div class="content-grid" [style.background-image]="this.getBackgroundImage()"  *ngIf="this.currentMeeting && currentStatus === PageStates.OCCUPIED">
     <ion-grid class="container-opacity">
 
       <ion-row class="padding-top">
@@ -143,16 +143,16 @@
 
       <ion-row text-center align-items-center class="padding-top-buttons">
         <ion-col col-1></ion-col>
-        <ion-col col-5 text-left>
+        <ion-col text-left>
           <button [color]="headerColor" ion-button (click)="endNow()">
             {{ 'HOME_PAGE.END_NOW' | translate }}
           </button>
         </ion-col>
-        <ion-col col-5 text-right>
+        <!-- <ion-col col-5 text-right>
           <button [color]="headerColor" ion-button>
             {{ 'HOME_PAGE.EXTEND' | translate }}
           </button>
-        </ion-col>
+        </ion-col> -->
         <ion-col col-1></ion-col>
       </ion-row>
     </ion-grid>
@@ -218,7 +218,7 @@
       <ion-row align-items-center>
         <ion-col class="arrows" text-left col-2>
           <button class="left-button" ion-button (click)="this.scrollLeft()">
-            <img src='../../assets/icon/icon_LeftArrow.svg' alt=""/>
+            <img src='assets/icon/icon_LeftArrow.svg' alt=""/>
           </button>
           <!-- <button class="left-button" ion-button (click)="this.scrollLeft()"> &larr;</button> -->
         </ion-col>
@@ -228,7 +228,7 @@
         <ion-col class="arrows" text-right col-2>
           <!-- <button class="right-button" ion-button (click)="this.scrollRight()"> &rarr;</button> -->
           <button class="right-button" ion-button icon-end (click)="this.scrollRight()">
-            <img src='../../assets/icon/icon_LeftArrow.svg' style="transform: rotate(180deg);" alt=""/>
+            <img src='assets/icon/icon_RightArrow.svg' alt=""/>
           </button>
         </ion-col>
       </ion-row>

@@ -1,3 +1,5 @@
+import { ENV } from './../../environments/environment';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TabletService } from './../../services/tablet.service';
 import { GesroomService } from './../../services/gesroom.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,6 +49,8 @@ export class HomePage {
 
   imageSRC: SafeResourceUrl;
   defaultImage: string = "../assets/imgs/room_Photo.png";
+
+  logo: string = `assets/imgs/${ENV.logo}`;
 
   isOverlayDisplayed: boolean = true;
   isSomethingElseDisplayed: boolean = false;
@@ -101,10 +105,12 @@ export class HomePage {
     private translate: TranslateService,
     private loadingCtrl: LoadingController,
     private tabletService: TabletService,
-    private _sanitizer: DomSanitizer) {
+    private _sanitizer: DomSanitizer,
+    private statusBar: StatusBar) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
-
+    this.statusBar.hide();
+    this.statusBar.overlaysWebView(true);
   }
 
   ionViewWillEnter() {
@@ -179,12 +185,13 @@ export class HomePage {
 
   // returns the default image if there is no room picture
   getBackgroundImage(): string | SafeResourceUrl {
-    if (!this.imageSRC) {
-      return this._sanitizer.bypassSecurityTrustStyle(`url(${this.defaultImage})`);
-    } else {
-      return this._sanitizer.bypassSecurityTrustStyle(`url(${this.imageSRC})`);
-    }
+    // if (!this.imageSRC) {
+    //   return this._sanitizer.bypassSecurityTrustStyle(`url(${this.defaultImage})`);
+    // } else {
+    //   return this._sanitizer.bypassSecurityTrustStyle(`url(${this.imageSRC})`);
+    // }
     //return this.imageSRC;
+    return this.defaultImage;
   }
 
   tapHandler() {
@@ -204,7 +211,6 @@ export class HomePage {
       //this.isOverlayDisplayed = true;
       this.overlayOpacityState = 'shown';
       this.overlayDisplayState = 'block';
-
     }
   }
 
@@ -258,11 +264,15 @@ export class HomePage {
     this.currentMeeting = null;
     this.meeting = null;
 
+    // found flag
+    let f: boolean = false;
+
     if (this.meetingList) {
       if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
         this.meetingList.meetingList.forEach(function (m, index) {
           const start = m.startDateTime;
           const end = m.endDateTime;
+
           // check upcoming meeting
           if (this.headerTime.isBetween(start.clone().subtract(this.hourScrollInterval, "minutes"), start)) {
             this.upcomingMeeting = m;
@@ -270,13 +280,21 @@ export class HomePage {
 
           if (this.headerTime.isBetween(start, end)) {
             this.currentMeeting = m;
+            this.meeting = m;
             //console.log(this.currentMeeting.meetingName);
             this.changeStatus(States.OCCUPIED)
+            f = true;
             //this.headerColor = 'danger';
           }
-
+          if(f) {
+            return;
+          }
         }.bind(this));
       }
+    }
+
+    if(f) {
+      return;
     }
 
     // if we are still here, it means that we have an upcoming meeting an nothing else
@@ -386,6 +404,9 @@ export class HomePage {
   }
 
   changeStatus(state: States) {
+    if(this.currentStatus !== state){
+      console.log("Changed status to ", state);
+    }
     this.currentStatus = state;
     switch (state) {
       case States.PENDING:
@@ -402,6 +423,8 @@ export class HomePage {
         this.subHeaderTheme = 'free'
         break;
     }
+    this.tabletService.changeLED(this.currentStatus);
+
   }
 
   // used to display the progress bar until the end of the meeting

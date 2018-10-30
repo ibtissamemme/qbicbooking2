@@ -44,7 +44,7 @@ import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
-    IonicModule.forRoot(MyApp, {mode: 'ios'}),
+    IonicModule.forRoot(MyApp, {mode: 'ios',statusbarPadding: false}),
     IonicStorageModule.forRoot(),
     ComponentsModule,
     BookingPageModule,
