@@ -1,107 +1,97 @@
-
 <ion-header>
   <ion-navbar>
-      <ion-title>admin</ion-title>
+    <ion-title>admin</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-grid>
-    <ion-list-header>
+  <ion-list>
+    <ion-item-divider>
       {{ 'ADMIN.SITE_CONFIGURATION' | translate }}
-      </ion-list-header>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label> {{ 'ADMIN.SITE' | translate }} </ion-label>
-          <ion-select [(ngModel)]="this.selectedSite" (ionChange)="onSiteChange()"  [compareWith]="compareSite">
-            <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite?.Id===sisite.Id" [value]="sisite">{{ sisite.name }}</ion-option>
-          </ion-select>
-        </ion-item>
+    </ion-item-divider>
+    <ion-item-group>
 
-        <ion-item>
-          <ion-label> {{ 'ADMIN.ROOM' | translate }}</ion-label>
-          <ion-select  [(ngModel)]="this.selectedRoom"  (ionChange)="onRoomChange()"  [compareWith]="compareRoom">
-            <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom?.Id===room.Id" [value]="room">{{ room.name }}</ion-option>
-          </ion-select>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+      <ion-item>
+        <ion-label> {{ 'ADMIN.SITE' | translate }} </ion-label>
+        <ion-select [(ngModel)]="this.selectedSite" (ionChange)="onSiteChange()" [compareWith]="compareSite">
+          <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite?.Id===sisite.Id" [value]="sisite">{{
+            sisite.name }}</ion-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-list-header>
+      <ion-item>
+        <ion-label> {{ 'ADMIN.ROOM' | translate }}</ion-label>
+        <ion-select [(ngModel)]="this.selectedRoom" (ionChange)="onRoomChange()" [compareWith]="compareRoom">
+          <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom?.Id===room.Id" [value]="room">{{
+            room.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+  <ion-list>
+    <ion-item-divider>
       {{ 'ADMIN.TABLET_CONFIGURATION' | translate }}
-      </ion-list-header>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label> {{ 'ADMIN.BOOKING_ENABLED' | translate }} </ion-label>
-          <ion-toggle [(ngModel)]="this.isBookingEnabled" (ionChange)="onBookingEnabledChange()" >
-          </ion-toggle>
-        </ion-item>
+    </ion-item-divider>
+    <ion-item-group>
+      <ion-item>
+        <ion-label> {{ 'ADMIN.BOOKING_ENABLED' | translate }} </ion-label>
+        <ion-toggle [(ngModel)]="this.isBookingEnabled" (ionChange)="onBookingEnabledChange()">
+        </ion-toggle>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+  <ion-list>
+    <ion-item-divider>
+      {{ 'ADMIN.API_CONFIGURATION' | translate }}
+    </ion-item-divider>
+    <ion-item-group>
 
-      </ion-col>
-      </ion-row>
+      <ion-item>
+        <ion-label stacked> {{ 'ADMIN.ENDPOINT' | translate }} </ion-label>
+        <ion-input [(ngModel)]="this.endpoint"></ion-input>
+      </ion-item>
 
-    <ion-list-header>
-        {{ 'ADMIN.API_CONFIGURATION' | translate }}
-        </ion-list-header>
-    <ion-row >
-        <ion-col>
-            <ion-item>
-              <ion-label> {{ 'ADMIN.ENDPOINT' | translate }} </ion-label>
-              <ion-input [(ngModel)]="this.endpoint"></ion-input>
-            </ion-item>
+      <ion-item>
+        <ion-label stacked> {{ 'ADMIN.API_KEY' | translate }}</ion-label>
+        <ion-input [(ngModel)]="this.apiKey"></ion-input>
+      </ion-item>
 
-            <ion-item>
-              <ion-label> {{ 'ADMIN.API_KEY' | translate }}</ion-label>
-              <ion-input [(ngModel)]="this.apiKey" ></ion-input>
-            </ion-item>
-          </ion-col>
+    </ion-item-group>
+    <ion-item-group>
 
-    </ion-row>
-    <ion-row >
-        <ion-col>
-            <ion-item>
-              <ion-label> {{ 'ADMIN.ENDPOINT2' | translate }} </ion-label>
-              <ion-input [(ngModel)]="this.endpoint2"></ion-input>
-            </ion-item>
+      <ion-item>
+        <ion-label stacked> {{ 'ADMIN.ENDPOINT2' | translate }} </ion-label>
+        <ion-input [(ngModel)]="this.endpoint2"></ion-input>
+      </ion-item>
 
-            <ion-item>
-              <ion-label> {{ 'ADMIN.API_KEY2' | translate }}</ion-label>
-              <ion-input [(ngModel)]="this.apiKey2" ></ion-input>
-            </ion-item>
-          </ion-col>
+      <ion-item>
+        <ion-label staked> {{ 'ADMIN.API_KEY2' | translate }}</ion-label>
+        <ion-input [(ngModel)]="this.apiKey2"></ion-input>
+      </ion-item>
 
-    </ion-row>
+    </ion-item-group>
 
 
-    <ion-row >
-        <ion-col text-center>
-          <button ion-button icon-start (click)="onSaveAPIParam()">
-            <ion-icon name="checkmark-circle"></ion-icon>
-            {{ 'ADMIN.CONFIRM_AND_TEST' | translate }}
-          </button>
-        </ion-col>
-      </ion-row>
+    <ion-item-group>
+      <button ion-button icon-start (click)="onSaveAPIParam()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        {{ 'ADMIN.CONFIRM_AND_TEST' | translate }}
+      </button>
+
+    </ion-item-group>
+
+    <ion-item-group>
+      <button ion-button icon-start (click)="onConfirmClicked()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        {{ 'ADMIN.CONFIRM' | translate }}
+      </button>
+      <button ion-button icon-start color="danger" (click)="onCancelClicked()">
+        <ion-icon name="close-circle"></ion-icon>
+        {{ 'ADMIN.CANCEL' | translate }}
+
+      </button>
+
+    </ion-item-group>
 
 
-
-    <ion-row >
-      <ion-col text-center>
-        <button ion-button icon-start (click)="onConfirmClicked()">
-          <ion-icon name="checkmark-circle"></ion-icon>
-          {{ 'ADMIN.CONFIRM' | translate }}
-        </button>
-      </ion-col>
-
-      <ion-col text-center>
-        <button ion-button icon-start color="danger" (click)="onCancelClicked()">
-          <ion-icon name="close-circle"></ion-icon>
-          {{ 'ADMIN.CANCEL' | translate }}
-
-        </button>
-      </ion-col>
-    </ion-row>
-
-
-  </ion-grid>
+  </ion-list>
 </ion-content>
