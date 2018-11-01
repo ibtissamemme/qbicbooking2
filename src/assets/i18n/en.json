@@ -11,7 +11,8 @@
     "END_NOW": "End your booking now",
     "EXTEND": "Extend booking",
     "NOT_CONFIGURED": "This device is not properly configured, please contact the support",
-    "OVERLAY_HELPER": "Touch the screen to make a reservation"
+    "OVERLAY_HELPER": "Touch the screen to make a reservation",
+    "BOOKING_DISABLED": "Booking is disabled on this device"
   },
   "UPDATE": {
     "PENDING": "Updating booking...",
@@ -36,7 +37,9 @@
     "API_KEY": "API Key",
     "ENDPOINT2": "URL2",
     "API_KEY2": "API Key2",
-    "CONFIRM_AND_TEST": "Confirm & test"
+    "CONFIRM_AND_TEST": "Confirm & test",
+    "TABLET_CONFIGURATION": "Device configuration",
+    "BOOKING_ENABLED": "Enable booking"
   },
   "BOOKING": {
     "TITLE": "Room booking",

@@ -27,6 +27,11 @@ export class HourScrollButtonComponent {
   private meetingList: MeetingList;
   private tappedTimeArray: moment.Moment[];
 
+
+  // flag to disabled booking from the tablet
+  private isBookingEnabled: boolean = true;
+
+
   constructor(private adminService: AdminService, public events: Events) {
     // this.buttonColor = this.getStateColor();
     this.hourScrollInterval = this.adminService.hourScrollInterval;
@@ -46,6 +51,16 @@ export class HourScrollButtonComponent {
     events.subscribe('refreshColor:clicked', () => {
       this.refreshColor();
     });
+
+
+    this.adminService.isBookingEnabled$.subscribe( (data) => {
+      if (data === undefined) {
+        return;
+      }
+      this.isBookingEnabled = data;
+      //console.log("button", this.isBookingEnabled );
+    })
+
   }
 
 
@@ -177,11 +192,14 @@ export class HourScrollButtonComponent {
     }
     return false;
   }
+
   // sends event to the home page and the other buttons...
   onClick() {
-    if (this.buttonColor !== 'danger') {
-      this.buttonColor = ButtonStates.TAPPED;
-      this.events.publish('hourscrollbutton:clicked', this.date);
+    if(this.isBookingEnabled){
+      if (this.buttonColor !== 'danger') {
+        this.buttonColor = ButtonStates.TAPPED;
+        this.events.publish('hourscrollbutton:clicked', this.date);
+      }
     }
   }
 }

@@ -15,6 +15,7 @@ export class AdminService {
   meetingList: MeetingList;
   selectedSite: Site;
   selectedRoom: Room;
+  isBookingEnabled: boolean;
   hourScrollInterval: number = 15;
 
   private selectedRoomObs: BehaviorSubject<Room>;
@@ -37,12 +38,21 @@ export class AdminService {
     return this.slidesAvailableObs.asObservable();
   }
 
+  private isBookingEnabledObs: BehaviorSubject<boolean>;
+  get isBookingEnabled$(): Observable<boolean> {
+    return this.isBookingEnabledObs.asObservable();
+  };
+
+
+
   constructor(private storage: Storage, private gesroomService: GesroomService) {
     this.selectedSiteObs = new BehaviorSubject(undefined);
     this.selectedRoomObs = new BehaviorSubject(undefined);
     this.meetingListObs = new BehaviorSubject(undefined);
     this.slidesAvailableObs = new BehaviorSubject(undefined);
     this.meetingList = new MeetingList();
+
+    this.isBookingEnabledObs = new BehaviorSubject(undefined);
 
     this.storage.get('selectedSite').then((data) => {
       if (!data) {
@@ -66,6 +76,18 @@ export class AdminService {
     }
     );
 
+
+
+    this.storage.get('isBookingEnabled').then((data) => {
+      if (!data) {
+        return;
+      }
+      //console.log('booking Storage : ' + data);
+      this.isBookingEnabled = data;
+      this.isBookingEnabledObs.next(this.isBookingEnabled);
+
+    }
+    );
   }
 
   setSelectedSite(site: Site) {
@@ -93,6 +115,12 @@ export class AdminService {
 
     this.selectedRoom = room;
     this.checkSlides();
+  }
+
+  setIsBookingEnabled(isBooking: boolean){
+    this.isBookingEnabledObs.next(isBooking);
+    this.setToStorage('isBookingEnabled', isBooking);
+    this.isBookingEnabled = isBooking;
   }
 
   // makes a call to get meetings based on the selected room

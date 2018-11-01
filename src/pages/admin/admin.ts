@@ -26,6 +26,10 @@ export class AdminPage {
   endpoint2: string;
   apiKey2: string;
 
+  // flag to enable or not the booking on the tablet
+  // default to true
+  isBookingEnabled: boolean = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -51,6 +55,7 @@ export class AdminPage {
     this.gesroomService.userId$.subscribe((data) => {
       this.userId = data;
     });
+
 
     // get site list
     this.gesroomService.getSites().then(data => {
@@ -83,6 +88,7 @@ export class AdminPage {
     }
     );
 
+
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
       if (!data) {
@@ -90,6 +96,13 @@ export class AdminPage {
       }
       this.selectedRoom = data;
     });
+
+    this.adminService.isBookingEnabled$.subscribe((data) => {
+      if(!data) {
+        return;
+      }
+      this.isBookingEnabled = data;
+    })
   }
 
   onSiteChange() {
@@ -130,6 +143,8 @@ export class AdminPage {
     if (this.selectedRoom) {
       this.adminService.setSelectedRoom(this.selectedRoom);
     }
+    this.adminService.setIsBookingEnabled(this.isBookingEnabled);
+
     // also save the api params
     this.onSaveAPIParam();
     // go back to the root page
@@ -139,6 +154,10 @@ export class AdminPage {
     // go back to the root page
     this.navCtrl.popToRoot();
   }
+  onBookingEnabledChange(){
+
+  }
+
 
   compareSite(c1: Site, c2: Site): boolean {
     return c1 && c2 ? c1.Id === c2.Id : c1 === c2;

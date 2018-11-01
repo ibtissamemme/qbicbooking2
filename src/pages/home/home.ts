@@ -54,11 +54,11 @@ export class HomePage {
 
   logo: string = `assets/imgs/${ENV.logo}`;
 
+  // overlay control
   isOverlayDisplayed: boolean = true;
   isSomethingElseDisplayed: boolean = false;
 
-
-  // handle over the timer
+  // handle over the timer for the overlay
   overlayTimer: any;
   overlayOpacityState = 'shown';
   overlayDisplayState = 'block';
@@ -71,7 +71,8 @@ export class HomePage {
   // hour scroll interval in minutes
   hourScrollInterval: number;
 
-
+  // flag to disabled booking from the tablet
+  isBookingEnabled: boolean = true;
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 30000;
   buttonNumber: number = 20;
@@ -114,21 +115,6 @@ export class HomePage {
 
     this.statusBar.hide();
     this.statusBar.overlaysWebView(true);
-  }
-
-  ionViewWillEnter() {
-
-    this.events.subscribe('hourscrollbutton:clicked', (time) => {
-      this.buttonPressed(time);
-    });
-
-    //moment.locale(this.language);
-    moment.locale('fr');
-
-    // set the language button to the next language
-    this.language = this.getNextLang(this.language);
-    this.buildHourScrollArray();
-
 
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
@@ -171,10 +157,33 @@ export class HomePage {
       this.getCurrentMeeting();
     });
 
+    this.adminService.isBookingEnabled$.subscribe( (data) => {
+      if (data === undefined) {
+        return;
+      }
+      this.isBookingEnabled = data;
+      //console.log("home",this.isBookingEnabled);
+    });
+
+  }
+
+  // init of the view
+  ionViewWillEnter() {
+
+    this.events.subscribe('hourscrollbutton:clicked', (time) => {
+      this.buttonPressed(time);
+    });
+
+    //moment.locale(this.language);
+    moment.locale('fr');
+
+    // set the language button to the next language
+    this.language = this.getNextLang(this.language);
+    this.buildHourScrollArray();
+
 
     // start the refresh loop
     // this.updateMeetingScrollList();
-
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
 
   }

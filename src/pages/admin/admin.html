@@ -27,6 +27,19 @@
       </ion-col>
     </ion-row>
 
+    <ion-list-header>
+      {{ 'ADMIN.TABLET_CONFIGURATION' | translate }}
+      </ion-list-header>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label> {{ 'ADMIN.BOOKING_ENABLED' | translate }} </ion-label>
+          <ion-toggle [(ngModel)]="this.isBookingEnabled" (ionChange)="onBookingEnabledChange()" >
+          </ion-toggle>
+        </ion-item>
+
+      </ion-col>
+      </ion-row>
 
     <ion-list-header>
         {{ 'ADMIN.API_CONFIGURATION' | translate }}
