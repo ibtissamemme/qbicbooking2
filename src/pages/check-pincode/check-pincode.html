@@ -16,10 +16,10 @@
 <ion-content padding>
 
   <div class="wrapper">
-      <div class="title">
-        {{'BOOKING.TITLE' | translate}}
-      </div>
+    <div class="title">
+      {{'BOOKING.TITLE' | translate}}
     </div>
+  </div>
 
-    <ion-pincode (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel()"></ion-pincode>
+  <ion-pincode (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel()"></ion-pincode>
 </ion-content>

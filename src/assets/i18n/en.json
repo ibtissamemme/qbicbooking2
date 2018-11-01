@@ -39,7 +39,8 @@
     "API_KEY2": "API Key2",
     "CONFIRM_AND_TEST": "Confirm & test",
     "TABLET_CONFIGURATION": "Device configuration",
-    "BOOKING_ENABLED": "Enable booking"
+    "BOOKING_ENABLED": "Enable booking",
+    "CONFIRM_BOOKING":"Continue"
   },
   "BOOKING": {
     "TITLE": "Room booking",

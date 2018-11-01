@@ -48,7 +48,8 @@
     "END": "Fin",
     "CONFIRM": "Valider",
     "CANCEL": "Annuler",
-    "INPUTID": "Saisir votre SESA :"
+    "INPUTID": "Saisir votre SESA :",
+    "CONFIRM_BOOKING":"Confirmer"
   },
   "CHECK": {
     "TITLE": "Veuillez saisir votre SESA :"
