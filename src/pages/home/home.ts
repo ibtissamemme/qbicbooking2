@@ -157,7 +157,7 @@ export class HomePage {
       this.getCurrentMeeting();
     });
 
-    this.adminService.isBookingEnabled$.subscribe( (data) => {
+    this.adminService.isBookingEnabled$.subscribe((data) => {
       if (data === undefined) {
         return;
       }
@@ -343,32 +343,6 @@ export class HomePage {
     }
   }
 
-  getHelperText() {
-    if (this.tappedButtons.length === 1) {
-      this.translate.get('HOME_PAGE.TOUCH_TO_CONTINUE').subscribe((res: string) => {
-        this.helperLabel = res;
-      });
-    }
-    else {
-      this.translate.get('HOME_PAGE.TOUCH_TO_BEGIN').subscribe((res: string) => {
-        this.helperLabel = res;
-      });
-    }
-  }
-
-  // cycles through the available langages
-  getNextLang(currentLanguage: string): string {
-    const langs = this.translate.getLangs();
-    return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
-  }
-  // changes to the next language
-  changeLangage() {
-    this.translate.use(this.language);
-    this.language = this.getNextLang(this.language);
-    this.getHelperText();
-    // langage displayed on the interface should be the next lang
-  }
-
 
   buttonPressed(time: moment.Moment) {
     if (!this.tappedButtons) {
@@ -394,17 +368,6 @@ export class HomePage {
       // when the modal goes up, we empty the array for the tapped buttons
       this.tappedButtons = [];
     }
-  }
-
-  goToTrainingPage() {
-    this.navCtrl.setRoot(TrainingPage);
-  }
-
-
-  // go to admin panel
-  onAdminClicked() {
-    // this.navCtrl.push(AdminPage);
-    this.navCtrl.push(NfcCheckPage);
   }
 
   changeStatus(state: States) {
@@ -452,7 +415,7 @@ export class HomePage {
     let myModal = this.modalCtrl.create(
       BookingPage,
       obj,
-      { cssClass:"my-modal" });
+      { cssClass: "my-modal" });
 
     this.tappedButtons = new Array();
 
@@ -466,12 +429,16 @@ export class HomePage {
     myModal.present();
   }
 
+
+  // -------------
+  // START NOW
+  // -------------
   // Presents the modal for pincode check
   // launches the start now confirm if pincode OK
   async startNow() {
     this.isSomethingElseDisplayed = true;
 
-    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass:"my-modal" });
+    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass: "my-modal" });
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(async (emp: Employee) => this.confirmStartMeeting(emp));
@@ -483,10 +450,32 @@ export class HomePage {
   async confirmStartMeeting(emp: Employee) {
     console.log(emp);
 
-    // TODO : proper identity check;
     if (!emp || !emp._corporateId) {
       return;
     }
+
+    // check meeting owner
+    if (!this.isOwner(emp, this.meeting)) {
+
+      let sorry: string = "Seul le réservant peut commencer cette réunion";
+
+      await this.translate.get('UPDATE.OWNER_ONLY').toPromise().then((res) => {
+        sorry = res;
+      })
+      const sorryAlert = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: sorry,
+      });
+      sorryAlert.present();
+      setTimeout(() => {
+        sorryAlert.dismiss();
+        this.refresh();
+        this.isOverlayDisplayed = false;
+      }, 3000);
+
+      return;
+    }
+
     this.meeting.startDateTime = moment();
     this.meeting.meetingStatus = MeetingStatus.Started;
     let updatePending: string = "Modification de votre réservation en cours...";
@@ -526,10 +515,13 @@ export class HomePage {
     this.events.publish('refreshColor:clicked');
   }
 
+  // -------------
+  // END NOW
+  // -------------
   async endNow() {
     this.isSomethingElseDisplayed = true;
 
-    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass:"my-modal" });
+    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass: "my-modal" });
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(async (emp: Employee) => this.confirmEndNow(emp));
@@ -538,11 +530,29 @@ export class HomePage {
 
   async confirmEndNow(emp: Employee) {
 
-    // TODO : proper identity check;
     if (!emp || !emp._corporateId) {
       return;
     }
+    // check meeting owner
 
+    if (!this.isOwner(emp, this.meeting)) {
+      let sorry: string = "Seul le réservant peut teminer cette réunion";
+      await this.translate.get('CANCEL.OWNER_ONLY').toPromise().then((res) => {
+        sorry = res;
+      })
+      const sorryAlert = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: sorry,
+      });
+      sorryAlert.present();
+      setTimeout(() => {
+        sorryAlert.dismiss();
+        this.refresh();
+        this.isOverlayDisplayed = false;
+      }, 3000);
+
+      return;
+    }
     this.meeting.endDateTime = moment();
     let pendingMessage: string = "Modification de votre réservation en cours...";
     let doneMessage: string = "Modification de votre réservation effectuée.";
@@ -577,7 +587,7 @@ export class HomePage {
         loadingMeeting.dismiss();
         let alert = this.alertController.create({
           title: 'Erreur',
-          subTitle: "Une erreur est survenue : "+reason,
+          subTitle: "Une erreur est survenue : " + reason,
           buttons: ['retour']
         });
         alert.present();
@@ -588,6 +598,10 @@ export class HomePage {
 
       });
   }
+
+  //-------------
+  // UTILS FUNCS
+  //-------------
 
   // used to display the number of minutes until the next meeting
   nextMeetingCountDown(): number {
@@ -600,6 +614,56 @@ export class HomePage {
       return 0;
     }
   }
+
+  getHelperText() {
+    if (this.tappedButtons.length === 1) {
+      this.translate.get('HOME_PAGE.TOUCH_TO_CONTINUE').subscribe((res: string) => {
+        this.helperLabel = res;
+      });
+    }
+    else {
+      this.translate.get('HOME_PAGE.TOUCH_TO_BEGIN').subscribe((res: string) => {
+        this.helperLabel = res;
+      });
+    }
+  }
+
+  // cycles through the available langages
+  getNextLang(currentLanguage: string): string {
+    const langs = this.translate.getLangs();
+    return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
+  }
+  // changes to the next language
+  changeLangage() {
+    this.translate.use(this.language);
+    this.language = this.getNextLang(this.language);
+    this.getHelperText();
+    // langage displayed on the interface should be the next lang
+  }
+
+  isOwner(emp: Employee, meeting: Meeting): boolean {
+    if (meeting.owner) {
+      const corporateId = meeting.owner.corporateID ? meeting.owner.corporateID : meeting.owner.CorporateId;
+      if (emp._corporateId === corporateId) {
+        return true;
+      }
+    }
+    return false;
+  }
+  //-----------------
+  // NAVIGATION
+  //-----------------
+  goToTrainingPage() {
+    this.navCtrl.setRoot(TrainingPage);
+  }
+
+
+  // go to admin panel
+  onAdminClicked() {
+    // this.navCtrl.push(AdminPage);
+    this.navCtrl.push(NfcCheckPage);
+  }
+
 
   ionViewWillLeave() {
     //console.log('ionViewWillLeave');

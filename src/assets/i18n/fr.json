@@ -16,11 +16,13 @@
   },
   "UPDATE": {
     "PENDING": "Modification de votre réservation en cours...",
-    "DONE": "Modification de votre réservation effectuée."
+    "DONE": "Modification de votre réservation effectuée.",
+    "OWNER_ONLY": "Seul l'organisateur peut démarrer cette réunion."
   },
   "CANCEL": {
     "PENDING": "Fin de votre réservation en cours...",
-    "DONE": "Fin de votre réservation effectuée."
+    "DONE": "Fin de votre réservation effectuée.",
+    "OWNER_ONLY": "Seul l'organisateur peut terminer cette réunion."
   },
   "EXTEND": {
     "PENDING": "Modification de votre réservation en cours...",

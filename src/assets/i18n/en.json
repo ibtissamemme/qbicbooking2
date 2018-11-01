@@ -16,11 +16,13 @@
   },
   "UPDATE": {
     "PENDING": "Updating booking...",
-    "DONE": "Booking update done."
+    "DONE": "Booking update done.",
+    "OWNER_ONLY": "Only the host can start this meeting"
   },
   "CANCEL": {
     "PENDING": "Updating booking...",
-    "DONE": "Booking update done."
+    "DONE": "Booking update done.",
+    "OWNER_ONLY": "Only the host can end this meeting"
   },
   "EXTEND": {
     "PENDING": "Updating booking...",
