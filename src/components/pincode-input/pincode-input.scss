@@ -11,6 +11,7 @@ ion-pincode{
     max-width: 500px;
     //height: 295px;
     margin: auto;
+
     //background-color: #fcfcfc;
     //border-top: 1px solid #c8c7cc;
     contain: content;
@@ -79,15 +80,15 @@ ion-pincode{
 
   .pincode-input .pincode-input-row {
     text-align: center;
-    height: 32px;
+    height: 50px;
 
   }
 
   .pincode-input .pincode-input-row ion-col {
     border-left: 1px solid #e4e4e4;
-    height: 32px;
+    height: 50px;
     width: 32px;
-    line-height: 32px;
+    line-height: 50px;
     padding: 0;
     text-align: center;
     &:nth-child(1){
