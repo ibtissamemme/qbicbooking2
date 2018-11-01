@@ -71,7 +71,17 @@ $toolbar-ios-height:$header-size;
 $navbar-md-height:$header-size;
 $toolbar-md-height:$header-size;
 
-
+  .my-modal {
+   .modal-wrapper {
+     position: absolute;
+     top: 0 !important;
+     left:15%;
+     display: block;
+     width: 70% !important;
+     height: 100% !important;
+     border-radius: 0% !important;
+    }
+ }
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here

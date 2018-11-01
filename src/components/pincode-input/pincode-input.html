@@ -4,7 +4,13 @@
       <ion-row class="pincode-input-row">
         <ion-col *ngFor="let item of codeArr; let i = index">
           <span *ngIf="!d.visibility || (!isNum(codeArr[i]))" class="obscured" [class.filling]="isNum(codeArr[i])"></span>
-          <span *ngIf="d.visibility" class="code">{{item}}</span>
+          <span *ngIf="d.visibility && this.codeArr.length > 0" class="code">{{item}}</span>
+        </ion-col>
+
+        <ion-col *ngIf="this.codeArr.length === 0">
+          <span class="place-holder">
+              {{ "BOOKING.INPUTID" | translate }}
+          </span>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -47,7 +53,8 @@
       <ion-row>
         <ion-col>
           <button ion-button color="light" icon-only (click)="restoreClick()">
-            <ion-icon ios="ios-refresh" name="md-refresh"></ion-icon>
+            <!-- <ion-icon ios="ios-refresh" name="md-refresh"></ion-icon> -->
+            <img src="../../assets/icon/icon_Empty.svg" alt="">
           </button>
         </ion-col>
         <ion-col>
@@ -55,11 +62,24 @@
         </ion-col>
         <ion-col>
           <button ion-button color="light" icon-only (click)="delClick()">
-            <ion-icon ios="ios-backspace" name="md-backspace"></ion-icon>
+            <!-- <ion-icon ios="ios-backspace" name="md-backspace"></ion-icon> -->
+            <img src="../../assets/icon/icon_Erase.svg" alt="">
+            <!-- <ion-icon ios="ios-backspace" name="md-backspace"></ion-icon> -->
           </button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
 </div>
-<button ion-button (click)="onSumbit()">Valider</button>
+    <ion-grid>
+      <ion-row align-items-center>
+        <ion-col col-2 text-center>
+          <div tappable id="cancel" (click)="onCancel()"> {{ "BOOKING.CANCEL" | translate }} </div>
+        </ion-col>
+        <ion-col col-8 text-center>
+          <button ion-button block id="confirm" (click)="onSumbit()">{{ "BOOKING.CONFIRM" | translate }} </button>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+    </ion-grid>

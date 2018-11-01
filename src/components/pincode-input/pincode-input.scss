@@ -11,8 +11,8 @@ ion-pincode{
     max-width: 500px;
     //height: 295px;
     margin: auto;
-    background-color: #fcfcfc;
-    border-top: 1px solid #c8c7cc;
+    //background-color: #fcfcfc;
+    //border-top: 1px solid #c8c7cc;
     contain: content;
     &.hide-toolbar {
       height: 295px - 44px;
@@ -26,7 +26,7 @@ ion-pincode{
   }
 
   .pincode-md .pincode-wrapper, .pincode-wp .pincode-wrapper {
-    background-color: #fff;
+    //background-color: #fff;
   }
 
   .pincode-toolbar {
@@ -35,8 +35,8 @@ ion-pincode{
     contain: strict;
     display: block;
     height: 44px;
-    border-bottom: 0.55px solid #c8c7cc;
-    background: #fff;
+    //border-bottom: 0.55px solid #c8c7cc;
+    //background: #fff;
   }
 
   .pincode-toolbar button {
@@ -110,6 +110,10 @@ ion-pincode{
   .pincode-input .pincode-input-row ion-col span.code {
     font-size: 1.2em;
   }
+  .pincode-input .pincode-input-row ion-col span.place-holder {
+    font-size: $font-size-small;
+    color: color($colors, disabled)
+  }
 
   .pincode-button-wrapper {
    // position: absolute;
@@ -125,6 +129,7 @@ ion-pincode{
     padding: 0;
   }
 
+  // pin number config
   .pincode-button-wrapper ion-col button {
     border: none;
     margin: 0;
@@ -133,6 +138,20 @@ ion-pincode{
     color: #000;
     box-shadow: none;
     border-radius: 0;
+    font-size: $font-size-big;
+  }
+
+  // confirm button config
+  button#confirm {
+    // background-color: color($colors, primary);
+    // color: white;
+    font-size: $font-size-normal;
+  }
+  #cancel{
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+    width:80%;
+    font-size: $font-size-small;
   }
 }
 

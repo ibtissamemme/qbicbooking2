@@ -22,7 +22,6 @@ export class CheckPincodePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService) {
   }
 
-
   async onPinSubmit(pinCode: string) {
     console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
@@ -66,6 +65,11 @@ export class CheckPincodePage {
     // return to the parent
     this.viewCtrl.dismiss(this.emp);
   }
+
+  async onPinCancel() {
+    this.viewCtrl.dismiss();
+  }
+
 
   isEmployeeReady(): boolean {
     if (!this.emp) {

@@ -71,6 +71,11 @@ export class BookingPage {
     }
   }
 
+  async onPinCancel(pinCode: string) {
+    this.onCancelClicked();
+  }
+
+
   // called on the confirm booking page
   async confirmBooking() {
     // TODO : maybe check the user rights again?

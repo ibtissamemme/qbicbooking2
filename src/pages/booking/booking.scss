@@ -4,5 +4,15 @@ page-booking {
     display: flex;
     justify-content: space-evenly;
   }
+  .wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+      font-size: $font-size-big;
+      padding: 0.5em;
+    }
+  }
 
 }

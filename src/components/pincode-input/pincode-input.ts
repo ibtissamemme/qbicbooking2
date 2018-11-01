@@ -43,6 +43,7 @@ export class PincodeInputComponent {
   gestureBlocker: BlockerDelegate;
 
   @Output() pincodeSubmitted = new EventEmitter<string>();
+  @Output() pincodeCancelled = new EventEmitter<string>();
 
   constructor(public _viewCtrl: ViewController,
     public _elementRef: ElementRef,
@@ -204,6 +205,10 @@ export class PincodeInputComponent {
 
   onSumbit(){
     this.pincodeSubmitted.emit(this.getValues());
+  }
+
+  onCancel(){
+    this.pincodeCancelled.emit(this.getValues());
   }
 
   ngOnDestroy() {

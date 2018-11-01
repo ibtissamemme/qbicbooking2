@@ -449,7 +449,11 @@ export class HomePage {
   bookMeeting(start: moment.Moment, end: moment.Moment) {
 
     let obj = { start: start, end: end, room: this.selectedRoom };
-    let myModal = this.modalCtrl.create(BookingPage, obj);
+    let myModal = this.modalCtrl.create(
+      BookingPage,
+      obj,
+      { cssClass:"my-modal" });
+
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(() => {
@@ -467,7 +471,7 @@ export class HomePage {
   async startNow() {
     this.isSomethingElseDisplayed = true;
 
-    let myModal = this.modalCtrl.create(CheckPincodePage);
+    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass:"my-modal" });
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(async (emp: Employee) => this.confirmStartMeeting(emp));
@@ -525,7 +529,7 @@ export class HomePage {
   async endNow() {
     this.isSomethingElseDisplayed = true;
 
-    let myModal = this.modalCtrl.create(CheckPincodePage);
+    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass:"my-modal" });
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(async (emp: Employee) => this.confirmEndNow(emp));
