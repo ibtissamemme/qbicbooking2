@@ -19,7 +19,11 @@ import { IonicPage, NavController, NavParams, LoadingController, ViewController,
 export class CheckPincodePage {
   emp:Employee;
 
+  timer:number = 3000;
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService) {
+
   }
 
   async onPinSubmit(pinCode: string) {
@@ -27,6 +31,7 @@ export class CheckPincodePage {
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
       content: 'Recherche de votre compte...',
+      cssClass: "prompt"
     });
     loadingEmployee.present();
 
@@ -46,7 +51,8 @@ export class CheckPincodePage {
       let alert = this.alertCtrl.create({
         title: 'Erreur',
         subTitle: "Une erreur est survenue : "+reason,
-        buttons: ['retour']
+        buttons: ['retour'],
+        cssClass: "alert"
       });
       alert.present();
     });
@@ -54,12 +60,13 @@ export class CheckPincodePage {
       const errorEmp = this.loadingCtrl.create({
         spinner: 'hide',
         content: 'Impossible de trouver votre compte.',
+        cssClass: "prompt"
       });
       errorEmp.present();
       setTimeout(() => {
         errorEmp.dismiss();
         loadingEmployee.dismiss();
-      }, 2000);
+      }, this.timer);
     }
 
     // return to the parent

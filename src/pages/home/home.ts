@@ -63,6 +63,7 @@ export class HomePage {
   overlayOpacityState = 'shown';
   overlayDisplayState = 'block';
   overlayIdleTime = 60000;
+  promptTimer:number = 3000;
 
   @ViewChild('buttonBar') buttonBar: ElementRef;
 
@@ -465,13 +466,14 @@ export class HomePage {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
         content: sorry,
+        cssClass: 'prompt'
       });
       sorryAlert.present();
       setTimeout(() => {
         sorryAlert.dismiss();
         this.refresh();
         this.isOverlayDisplayed = false;
-      }, 3000);
+      }, this.promptTimer);
 
       return;
     }
@@ -490,7 +492,8 @@ export class HomePage {
 
     const loadingMeeting = this.loadingCtrl.create({
       spinner: 'dots',
-      content: updatePending
+      content: updatePending,
+      cssClass: 'prompt'
     });
     loadingMeeting.present();
 
@@ -501,13 +504,14 @@ export class HomePage {
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
           content: updateDone,
+          cssClass: 'prompt'
         });
         confirm.present();
         setTimeout(() => {
           confirm.dismiss();
           this.refresh();
           this.isOverlayDisplayed = false;
-        }, 3000);
+        }, this.promptTimer);
       });
     this.isSomethingElseDisplayed = false;
     this.refresh();
@@ -543,13 +547,14 @@ export class HomePage {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
         content: sorry,
+        cssClass: 'prompt'
       });
       sorryAlert.present();
       setTimeout(() => {
         sorryAlert.dismiss();
         this.refresh();
         this.isOverlayDisplayed = false;
-      }, 3000);
+      }, this.promptTimer);
 
       return;
     }
@@ -566,7 +571,8 @@ export class HomePage {
 
     const loadingMeeting = this.loadingCtrl.create({
       spinner: 'dots',
-      content: pendingMessage
+      content: pendingMessage,
+      cssClass: 'prompt'
     });
     loadingMeeting.present();
     this.gesroomService.putMeeting(this.meeting)
@@ -576,13 +582,14 @@ export class HomePage {
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
           content: doneMessage,
+          cssClass: 'prompt'
         });
         confirm.present();
         setTimeout(() => {
           confirm.dismiss();
           this.refresh();
           this.isSomethingElseDisplayed = false;
-        }, 3000);
+        }, this.promptTimer);
       }, (reason) => {
         loadingMeeting.dismiss();
         let alert = this.alertController.create({
@@ -593,7 +600,7 @@ export class HomePage {
         alert.present();
         setTimeout(() => {
           alert.dismiss();
-        }, 3000);
+        }, this.promptTimer);
       }).catch((err) => {
 
       });

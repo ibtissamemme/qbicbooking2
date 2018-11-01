@@ -20,6 +20,7 @@ export class BookingPage {
   room: Room = this.navParams.get('room');
 
   emp: Employee = null;
+  timer:number = 3000;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService) {
   }
@@ -33,6 +34,7 @@ export class BookingPage {
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
       content: 'Recherche de votre compte...',
+      cssClass: 'prompt'
     });
     loadingEmployee.present();
 
@@ -53,7 +55,8 @@ export class BookingPage {
       let alert = this.alertCtrl.create({
         title: 'Erreur',
         subTitle: "Une erreur est survenue : "+reason,
-        buttons: ['retour']
+        buttons: ['retour'],
+        cssClass: "prompt"
       });
       alert.present();
     });
@@ -61,12 +64,13 @@ export class BookingPage {
       const errorEmp = this.loadingCtrl.create({
         spinner: 'hide',
         content: 'Impossible de trouver votre compte.',
+        cssClass: "prompt",
       });
       errorEmp.present();
       setTimeout(() => {
         errorEmp.dismiss();
         loadingEmployee.dismiss();
-      }, 2000);
+      }, this.timer);
 
     }
   }
@@ -83,6 +87,7 @@ export class BookingPage {
       const loadingMeeting = this.loadingCtrl.create({
         spinner: 'dots',
         content: 'Réservation de votre réunion en cours...',
+        cssClass: "prompt"
       });
       loadingMeeting.present();
       this.bookMeeting(this.start, this.end.subtract(1,"seconds"), this.emp, this.room).then( (data )=> {
@@ -90,24 +95,26 @@ export class BookingPage {
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
           content: 'Réservation effectuée.',
+          cssClass: "prompt"
         });
         confirm.present();
         setTimeout(() => {
           confirm.dismiss();
           this.onCancelClicked();
-        }, 3000);
+        }, this.timer);
       },(reason) => {
         loadingMeeting.dismiss();
         let alert = this.alertCtrl.create({
           title: 'Erreur',
           subTitle: "Une erreur est survenue : "+reason,
-          buttons: ['retour']
+          buttons: ['retour'],
+          cssClass: 'alert'
         });
         alert.present();
         setTimeout(() => {
           alert.dismiss();
           this.onCancelClicked();
-        }, 3000);
+        }, this.timer);
       }
     )
 

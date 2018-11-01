@@ -71,17 +71,6 @@ $toolbar-ios-height:$header-size;
 $navbar-md-height:$header-size;
 $toolbar-md-height:$header-size;
 
-  .my-modal {
-   .modal-wrapper {
-     position: absolute;
-     top: 0 !important;
-     left:15%;
-     display: block;
-     width: 70% !important;
-     height: 100% !important;
-     border-radius: 0% !important;
-    }
- }
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
@@ -134,3 +123,25 @@ $font-family-md-base: $font-family-base;
 //   src: url('assets/Monserrat-Medium.ttf') format("truetype");
 // }
 // $font-family-base: 'Montserrat', sans-serif !default;
+$loading-ios-max-width: 50%;
+
+.my-modal {
+  .modal-wrapper {
+    position: absolute;
+    top: 0 !important;
+    left:15%;
+    display: block;
+    width: 70% !important;
+    height: 100% !important;
+    border-radius: 0% !important;
+   }
+}
+ // for all the alerts and loading controllers
+ .prompt, .alert {
+   font-size: $font-size-small !important;
+   text-decoration: none;
+   color: color($colors, 'text');
+  }
+  .loading-ios .loading-content{
+    font-weight: 400 !important;
+ }
