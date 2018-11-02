@@ -10,7 +10,7 @@ export class TabletService {
   private serialNum: string;
   private headers: Headers;
   private options: RequestOptions;
-
+  private status: States;
   constructor(private http: Http) {
     this.headers = new Headers();
     this.headers.append( "Content-Type", "application/json" )
@@ -23,6 +23,11 @@ export class TabletService {
     if(!ENV.colors){
       return;
     }
+    if(this.status === bookingStatus){
+      return;
+    }
+
+    this.status = bookingStatus;
 
     let coco = ENV.ledColors.primary;
     switch (bookingStatus) {

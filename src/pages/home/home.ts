@@ -243,7 +243,13 @@ export class HomePage {
 
   buildHourScrollArray() {
     this.headerTime = moment();
-    this.dateArray = new Array();
+
+    // use another array to avoid flicker
+    let newDateArray = new Array();
+
+    if(!Array.isArray(this.dateArray)){
+      this.dateArray = new Array();
+    }
 
     // get the now moment
     const now = moment();
@@ -258,14 +264,23 @@ export class HomePage {
     // // get the next quarter hour
     // let rounded = now.subtract(remainer, "minutes").set("seconds", 0).set("milliseconds",0);
 
-    this.dateArray.push(rounded.clone());
+    // this.dateArray.push(rounded.clone());
+    newDateArray.push(rounded.clone());
 
     for (let i = 1; i < this.buttonNumber; i++) {
       // warning, we use the same 'rounded' variable
       const iterate = rounded.add(this.hourScrollInterval, "minutes");
-      this.dateArray.push(iterate.clone());
+      newDateArray.push(iterate.clone());
+      //this.dateArray.push(iterate.clone());
     }
 
+    for (let i=0; i < newDateArray.length; i++) {
+      if (!this.dateArray[i]) {
+        this.dateArray.push(newDateArray[i].clone())
+      } else if (this.dateArray[i].unix() !== newDateArray[i].unix()) {
+        this.dateArray[i] = newDateArray[i].clone();
+      }
+    }
   }
 
 

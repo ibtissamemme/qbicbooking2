@@ -79,6 +79,8 @@ export class HourScrollButtonComponent {
     if (!this.date)
       return;
 
+    let newColor: string = 'primary';
+
     if (this.meetingList) {
       if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
 
@@ -87,16 +89,20 @@ export class HourScrollButtonComponent {
           const end = m.endDateTime;
           if (this.date.isBetween(start, end, null, '[)')
             || this.date.clone().add(this.hourScrollInterval - 1, "minutes").isBetween(start, end, null, '[)')) {
-            this.buttonColor = "danger";
-            return;
+            newColor = "danger";
           }
         }.bind(this));
       }
     }
-    if(this.buttonColor === "danger"){
+    if(this.buttonColor === newColor) {
       return;
+    } else {
+      this.buttonColor = newColor;
     }
-    this.buttonColor = "primary";
+    // if(this.buttonColor === "danger"){
+    //   return;
+    // }
+    //this.buttonColor = "primary";
 
   }
 
