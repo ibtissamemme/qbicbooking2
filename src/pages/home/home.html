@@ -7,7 +7,7 @@
           <ion-col text-left>
             <img class="logo" src="{{this.logo}}" />
           </ion-col>
-          <ion-col text-right align-item-center class="header-center-group">
+          <ion-col class="header-center-group">
             <div class="header-room">
               {{ this.selectedRoom?.name }}
             </div>
@@ -22,7 +22,7 @@
 
           </ion-col>
 
-          <ion-col text-right>
+          <ion-col>
             <div class="header-right-group">
 
               <div class="header-date">
@@ -44,8 +44,8 @@
 <!-- ************ -->
 <!-- OVERLAY -->
 <!-- ************ -->
-<div class="overlay" [style.background-image]="this.getBackgroundImage()" [@opacityChange]="this.overlayOpacityState" [@displayChange]="this.overlayDisplayState" (click)="this.removeOverlay()"
-  tappable *ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
+<div class="overlay" [style.background-image]="this.getBackgroundImage()" [@opacityChange]="this.overlayOpacityState"
+  [@displayChange]="this.overlayDisplayState" (click)="this.removeOverlay()" tappable *ngIf="this.selectedRoom && currentStatus === PageStates.FREE && this.isOverlayDisplayed">
 
   <div class="overlay-opacity">
     <div class="overlay-container">
@@ -83,7 +83,7 @@
   <!-- ************ -->
   <!--FREE PAGE CONTENT -->
   <!-- ************ -->
-  <ion-grid class="content-grid" [style.background-image]="this.getBackgroundImage()"  *ngIf="this.selectedRoom && currentStatus === PageStates.FREE">
+  <ion-grid class="content-grid" [style.background-image]="this.getBackgroundImage()" *ngIf="this.selectedRoom && currentStatus === PageStates.FREE">
 
 
   </ion-grid>
@@ -94,7 +94,7 @@
   <!-- ************ -->
   <!--OCCUPIED PAGE CONTENT -->
   <!-- ************ -->
-  <div class="content-grid" [style.background-image]="this.getBackgroundImage()"  *ngIf="this.currentMeeting && currentStatus === PageStates.OCCUPIED">
+  <div class="content-grid" [style.background-image]="this.getBackgroundImage()" *ngIf="this.currentMeeting && currentStatus === PageStates.OCCUPIED">
     <ion-grid class="container-opacity">
 
       <ion-row class="padding-top">
@@ -162,11 +162,11 @@
   <!-- ************ -->
   <!--PENDING PAGE CONTENT -->
   <!-- ************ -->
-  <div class="content-grid " [style.background-image]="this.getBackgroundImage()"   *ngIf="currentStatus === PageStates.PENDING">
+  <div class="content-grid " [style.background-image]="this.getBackgroundImage()" *ngIf="currentStatus === PageStates.PENDING">
     <ion-grid class="container-opacity upcoming-padding">
       <ion-row text-center align-items-center>
         <ion-col class="big-text">
-          <div >
+          <div>
             {{ 'HOME_PAGE.NEXT_MEETING_IN' | translate }}
           </div>
           <div>
@@ -174,9 +174,9 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row text-center align-items-center  class="upcoming-button-padding" >
-        <ion-col >
-          <button color="primary"  class="upcoming-button-text" ion-button (click)="this.startNow()">
+      <ion-row text-center align-items-center class="upcoming-button-padding">
+        <ion-col>
+          <button color="primary" class="upcoming-button-text" ion-button (click)="this.startNow()">
             {{ 'HOME_PAGE.START_NOW' | translate }}
           </button>
         </ion-col>
@@ -200,8 +200,6 @@
       </ion-row>
     </ion-grid>
   </div>
-
-
 </ion-content>
 
 
@@ -218,12 +216,12 @@
       <ion-row align-items-center>
         <ion-col class="arrows" text-left col-2>
           <button class="left-button" ion-button (click)="this.scrollLeft()">
-            <img src='assets/icon/icon_LeftArrow.svg' alt=""/>
+            <img src='assets/icon/icon_LeftArrow.svg' alt="" />
           </button>
           <!-- <button class="left-button" ion-button (click)="this.scrollLeft()"> &larr;</button> -->
         </ion-col>
         <ion-col *ngIf="this.isBookingEnabled" text-center class="helper-text">
-          {{ this.helperLabel }} &darr;
+          {{ this.helperLabel }}
         </ion-col>
         <ion-col *ngIf="!this.isBookingEnabled" text-center class="helper-text">
           {{ 'HOME_PAGE.BOOKING_DISABLED' | translate }}
@@ -231,7 +229,7 @@
         <ion-col class="arrows" text-right col-2>
           <!-- <button class="right-button" ion-button (click)="this.scrollRight()"> &rarr;</button> -->
           <button class="right-button" ion-button icon-end (click)="this.scrollRight()">
-            <img src='assets/icon/icon_RightArrow.svg' alt=""/>
+            <img src='assets/icon/icon_RightArrow.svg' alt="" />
           </button>
         </ion-col>
       </ion-row>
