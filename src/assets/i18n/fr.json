@@ -59,7 +59,16 @@
     "BACK": "Retour",
     "ERROR_TITLE": "Erreur",
     "BOOKING_PENDING": "Réservation de votre réunion en cours...",
-    "BOOKING_DONE": "Réservation effectuée."
+    "BOOKING_DONE": "Réservation effectuée.",
+
+    "DETAILS_TITLE": "Détails de la réservation",
+    "CANCEL_BOOKING":"Annuler la réservation",
+    "CANCEL_TITLE": "Annulation",
+    "CANCEL_CONFIRM": "Êtes-vous sûr de vouloir annuler cette réservation ?",
+    "CANCEL_CONFIRM_BUTTON": "Confirmer",
+    "CANCEL_PENDING": "Annulation en cours",
+    "CANCEL_DONE": "Annulation effectuée."
+
   },
   "CHECK": {
     "TITLE": "Veuillez saisir votre SESA :"

@@ -1,3 +1,5 @@
+import { ViewMeetingPage } from './../../pages/view-meeting/view-meeting';
+import { ModalController } from 'ionic-angular';
 import { HomePage } from './../../pages/home/home';
 import { MeetingList } from './../../app/shared/meetingList';
 import { AdminService } from './../../services/admin.service';
@@ -32,7 +34,7 @@ export class HourScrollButtonComponent {
   private isBookingEnabled: boolean = true;
 
 
-  constructor(private adminService: AdminService, public events: Events) {
+  constructor(private adminService: AdminService, public events: Events,  private modalCtrl: ModalController) {
     // this.buttonColor = this.getStateColor();
     this.hourScrollInterval = this.adminService.hourScrollInterval;
     this.adminService.meetingList$.subscribe((data) => {
@@ -262,13 +264,26 @@ export class HourScrollButtonComponent {
         this.events.publish('hourscrollbutton:clicked', this.date);
       }
     }
+    this.checkAttachedMeeting();
   }
 
 
 
   checkAttachedMeeting(){
     if(this.attachedMeeting){
+      console.log(this.attachedMeeting);
 
+      let obj = { meeting: this.attachedMeeting  };
+      let myModal = this.modalCtrl.create(
+        ViewMeetingPage,
+        obj,
+        { cssClass: "my-modal" });
+
+
+      myModal.onDidDismiss(() => {
+    });
+
+      myModal.present();
     }
   }
 }

@@ -311,18 +311,12 @@ export class GesroomService {
   //     });
   // }
 
-  // deleteMeeting(meetingId, start, end) {
-  //   this.http.put(this.adminDataServ.serviceUrl + '/room_schedule/' + meetingId, {
-  //     startDateTime: start,
-  //     endDateTime: end,
-  //     meetingStatus: 'Cancelled'
-  //   }, this.headersService.setHeaders()).map(response => response.json()).subscribe((jsonData) => {
-  //     this.hourScrollServ.isendpointCheckedIn = false;
-  //     this.getMeetings();
-  //     this.broadcastOnClear();
-  //   }, (error) => {
-  //     this.toastr.error(error._body, 'Error!');
-  //   });
-  // }
+  deleteMeeting(meeting: Meeting) {
+    return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
+      startDateTime: meeting.startDateTime,
+      endDateTime: meeting.endDateTime,
+      meetingStatus: 'Cancelled'
+    },  this.setHeaders()).toPromise();
+  }
 
 }

@@ -1,11 +1,10 @@
-import { TrainingPageModule } from './../pages/training/training.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC, Ndef } from '@ionic-native/nfc';
 
@@ -17,6 +16,8 @@ import { HomePage } from '../pages/home/home';
 import { BookingPageModule } from './../pages/booking/booking.module';
 import { AdminPageModule } from './../pages/admin/admin.module';
 import { CheckPincodePageModule } from './../pages/check-pincode/check-pincode.module';
+import { ViewMeetingPageModule } from './../pages/view-meeting/view-meeting.module';
+import { TrainingPageModule } from './../pages/training/training.module';
 
 import { GesroomService } from './../services/gesroom.service';
 import { TabletService } from '../services/tablet.service';
@@ -53,6 +54,7 @@ import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
     CheckPincodePageModule,
     NfcCheckPageModule,
     TrainingPageModule,
+    ViewMeetingPageModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -90,7 +92,6 @@ export class AppModule { }
 // app init
 export function loadSettings(gesroomService: GesroomService){
   return () => gesroomService.setup();
-
 }
 
 export function createTranslateLoader(http: HttpClient) {

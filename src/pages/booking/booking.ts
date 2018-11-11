@@ -33,7 +33,7 @@ export class BookingPage {
   msgBookingDone: string = "Réservation de votre réunion en cours...";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
   }
 
   ionViewDidLoad() {
@@ -179,7 +179,6 @@ export class BookingPage {
 
   onCancelClicked(){
     // dismiss modal
-
     this.viewCtrl.dismiss();
   }
 

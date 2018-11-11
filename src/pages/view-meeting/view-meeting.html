@@ -1,0 +1,76 @@
+<ion-content padding>
+  <div class="wrapper">
+
+    <div class="title-wrapper">
+      <div class="title">
+        {{'BOOKING.DETAILS_TITLE' | translate}}
+      </div>
+    </div>
+
+    <div class="grid-wrapper" *ngIf="!displayPincode()">
+
+      <ion-grid class="grid-elem">
+
+        <ion-row>
+          <ion-col col-2></ion-col>
+          <ion-col col-3 text-left class="label">
+            {{'BOOKING.HOST' | translate}}
+          </ion-col>
+          <ion-col col-5 text-right class="value">
+            {{ this.meeting.owner._firstName }} {{ this.meeting.owner._lastName }}
+          </ion-col>
+          <ion-col col-2></ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-2></ion-col>
+          <ion-col col-3 text-left class="label">
+            {{'BOOKING.START' | translate}}
+          </ion-col>
+          <ion-col col-5 text-right class="value">
+            {{ this.meeting.startDateTime.format('LT') }}
+          </ion-col>
+          <ion-col col-2></ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-2></ion-col>
+          <ion-col col-3 text-left class="label">
+            {{'BOOKING.END' | translate}}
+          </ion-col>
+          <ion-col col-5 text-right class="value">
+            {{ this.meeting.endDateTime.format('LT') }}
+          </ion-col>
+          <ion-col col-2></ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <ion-grid>
+        <ion-row align-items-center>
+          <ion-col col-2 text-center>
+            <div tappable id="cancel" (click)="onBackClicked()"> {{ "BOOKING.BACK" | translate }} </div>
+          </ion-col>
+          <ion-col col-8 text-center>
+            <button ion-button outline id="confirm" (click)="onCancelBookingClick()">{{ "BOOKING.CANCEL_BOOKING" | translate }} </button>
+          </ion-col>
+          <ion-col col-2></ion-col>
+        </ion-row>
+      </ion-grid>
+  </div>
+
+
+
+  <div class="wrapper" *ngIf="displayPincode()">
+    <div class="title-wrapper">
+      <div class="title">
+        {{'BOOKING.TITLE' | translate}}
+      </div>
+    </div>
+
+    <ion-pincode (pincodeSubmitted)="onPinSubmit($event)" (pincodeCancelled)="onBackClicked($event)"></ion-pincode>
+
+    <!-- <button ion-button color='danger' (click)="onCancelClicked()">{{'BOOKING.CANCEL' | translate}} </button> -->
+  </div>
+
+</ion-content>

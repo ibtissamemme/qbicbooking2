@@ -1,0 +1,68 @@
+page-view-meeting {
+  .wrapper {
+    display: flex;
+    flex-flow: column;
+    // align-self: center;
+    // align-items: center;
+    // justify-items: auto;
+    height: 90%;
+    padding-top: 10%;
+  }
+
+  .button_container {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .title-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+      font-size: $font-size-big;
+      padding: 0.5em;
+      margin-bottom: 20px;
+    }
+  }
+  .grid-wrapper {
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    // align-self: center;
+    // justify-content: center;
+    .grid-elem {
+      align-self: center;
+      ion-row {
+      }
+    }
+  }
+  .label {
+    font-size: $font-size-small;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 30px;
+    padding-top: 30px;
+  }
+  .value {
+    font-size: $font-size-small;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    font-weight: 600;
+  }
+  // confirm button config
+  button#confirm {
+    // background-color: color($colors, primary);
+    // color: white;
+    font-size: $font-size-small;
+  }
+  #cancel {
+    border-bottom: 1px solid darkgray;
+    padding-bottom: 3px;
+    width: 80%;
+    font-size: $font-size-small;
+    color: darkgray;
+  }
+}
