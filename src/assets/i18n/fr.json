@@ -51,7 +51,15 @@
     "CONFIRM": "Valider",
     "CANCEL": "Annuler",
     "INPUTID": "Saisir votre SESA :",
-    "CONFIRM_BOOKING":"Confirmer"
+    "CONFIRM":"Confirmer",
+    "CONFIRM_BOOKING":"Confirmer la réservation",
+    "SEARCHING": "Recherche de votre compte...",
+    "ACCOUNT_NOT_FOUND": "Impossible de trouver votre compte",
+    "ERROR": "Une erreur est survenue : ",
+    "BACK": "Retour",
+    "ERROR_TITLE": "Erreur",
+    "BOOKING_PENDING": "Réservation de votre réunion en cours...",
+    "BOOKING_DONE": "Réservation effectuée."
   },
   "CHECK": {
     "TITLE": "Veuillez saisir votre SESA :"

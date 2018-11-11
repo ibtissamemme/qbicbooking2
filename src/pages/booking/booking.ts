@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Employee } from './../../app/shared/employee';
 import { Meeting, MeetingType, MeetingStatus } from './../../app/shared/meeting';
 import { GesroomService } from './../../services/gesroom.service';
@@ -22,18 +23,33 @@ export class BookingPage {
   emp: Employee = null;
   timer:number = 3000;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService) {
+
+  msgSearchingAccouunt: string = "Recherche de votre compte...";
+  msgAccountNotFound: string = "Impossible de trouver votre compte.";
+  msgBookingError: string = "Une erreur est survenue : ";
+  msgErrorTitle: string = "Erreur";
+  msgBack: string = "Une erreur est survenue : ";
+  msgPending: string = "Réservation de votre réunion en cours...";
+  msgBookingDone: string = "Réservation de votre réunion en cours...";
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
   }
 
   ionViewDidLoad() {
   }
 
+  ionViewWillEnter(){
+    this.updateTranslations();
+  }
 
   async onPinSubmit(pinCode: string) {
+
+
     console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Recherche de votre compte...',
+      content: this.msgSearchingAccouunt,
       cssClass: 'prompt'
     });
     loadingEmployee.present();
@@ -53,9 +69,9 @@ export class BookingPage {
       loadingEmployee.dismiss();
     }, (reason) => {
       let alert = this.alertCtrl.create({
-        title: 'Erreur',
-        subTitle: "Une erreur est survenue : "+reason,
-        buttons: ['retour'],
+        title: this.msgErrorTitle,
+        subTitle: this.msgBookingError+reason,
+        buttons: [this.msgBack],
         cssClass: "prompt"
       });
       alert.present();
@@ -63,7 +79,7 @@ export class BookingPage {
     if(!this.isEmployeeReady()){
       const errorEmp = this.loadingCtrl.create({
         spinner: 'hide',
-        content: 'Impossible de trouver votre compte.',
+        content: this.msgAccountNotFound,
         cssClass: "prompt",
       });
       errorEmp.present();
@@ -86,7 +102,7 @@ export class BookingPage {
     //if (this.adminService.isUserAuthorized(this.emp._corporateId)) {
       const loadingMeeting = this.loadingCtrl.create({
         spinner: 'dots',
-        content: 'Réservation de votre réunion en cours...',
+        content: this.msgPending,
         cssClass: "prompt"
       });
       loadingMeeting.present();
@@ -94,7 +110,7 @@ export class BookingPage {
         loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
-          content: 'Réservation effectuée.',
+          content: this.msgBookingDone,
           cssClass: "prompt"
         });
         confirm.present();
@@ -105,9 +121,9 @@ export class BookingPage {
       },(reason) => {
         loadingMeeting.dismiss();
         let alert = this.alertCtrl.create({
-          title: 'Erreur',
-          subTitle: "Une erreur est survenue : "+reason,
-          buttons: ['retour'],
+          title: this.msgErrorTitle,
+          subTitle: this.msgBookingError+reason,
+          buttons: [this.msgBack],
           cssClass: 'alert'
         });
         alert.present();
@@ -165,5 +181,31 @@ export class BookingPage {
     // dismiss modal
 
     this.viewCtrl.dismiss();
+  }
+
+
+  async updateTranslations(){
+    await this.translate.get('BOOKING.SEARCHING').toPromise().then((res) => {
+      this.msgSearchingAccouunt = res;
+    });
+    await this.translate.get('BOOKING.ACCOUNT_NOT_FOUND').toPromise().then((res) => {
+      this.msgAccountNotFound = res;
+    });
+    await this.translate.get('BOOKING.ERROR').toPromise().then((res) => {
+      this.msgBookingError = res;
+    });
+    await this.translate.get('BOOKING.ERROR_TITLE').toPromise().then((res) => {
+      this.msgErrorTitle = res;
+    });
+    await this.translate.get('BOOKING.BACK').toPromise().then((res) => {
+      this.msgBack = res;
+    });
+    await this.translate.get('BOOKING.BOOKING_PENDING').toPromise().then((res) => {
+      this.msgPending = res;
+    });
+    await this.translate.get('BOOKING.BOOKING_DONE').toPromise().then((res) => {
+      this.msgBookingDone = res;
+    });
+
   }
 }

@@ -15,18 +15,18 @@
     "BOOKING_DISABLED": "Booking is disabled on this device"
   },
   "UPDATE": {
-    "PENDING": "Updating booking...",
-    "DONE": "Booking update done.",
+    "PENDING": "Updating your booking...",
+    "DONE": "Booking update successfully done.",
     "OWNER_ONLY": "Only the host can start this meeting"
   },
   "CANCEL": {
-    "PENDING": "Updating booking...",
-    "DONE": "Booking update done.",
+    "PENDING": "Updating your booking...",
+    "DONE": "Booking update successfully done.",
     "OWNER_ONLY": "Only the host can end this meeting"
   },
   "EXTEND": {
-    "PENDING": "Updating booking...",
-    "DONE": "Booking update done."
+    "PENDING": "Updating your booking...",
+    "DONE": "Booking update successfully done."
   },
   "ADMIN": {
     "SITE_CONFIGURATION": "Site configuration",
@@ -50,8 +50,16 @@
     "START": "Start",
     "END": "End",
     "CONFIRM": "Confirm",
+    "CONFIRM_BOOKING": "Confirm your booking",
     "CANCEL": "Cancel",
-    "INPUTID": "Please enter your ID:"
+    "INPUTID": "Please enter your ID:",
+    "SEARCHING": "Verifying account...",
+    "ACCOUNT_NOT_FOUND": "Unable to find your account",
+    "ERROR": "An error has occured: ",
+    "BACK": "Back",
+    "ERROR_TITLE": "Error",
+    "BOOKING_PENDING": "Booking your meeting",
+    "BOOKING_DONE": "Booking successfully done."
   },
   "CHECK": {
     "TITLE": "Please enter your ID:"

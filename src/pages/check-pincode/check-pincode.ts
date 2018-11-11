@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Employee } from './../../app/shared/employee';
 import { GesroomService } from './../../services/gesroom.service';
 import { AdminService } from './../../services/admin.service';
@@ -21,16 +22,25 @@ export class CheckPincodePage {
 
   timer:number = 3000;
 
+  msgSearching: string = "Recherche de votre compte...";
+  msgNotFound: string = "Impossible de trouver votre compte.";
+  msgError: string = "Une erreur est survenue : ";
+  msgErrorTitle: string = "Erreur";
+  msgBack: string = "Retour";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
 
+  }
+
+  ionViewWillEnter(){
+    this.updateTranslations();
   }
 
   async onPinSubmit(pinCode: string) {
     console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Recherche de votre compte...',
+      content: this.msgSearching,
       cssClass: "prompt"
     });
     loadingEmployee.present();
@@ -49,9 +59,9 @@ export class CheckPincodePage {
       loadingEmployee.dismiss();
     }, (reason) => {
       let alert = this.alertCtrl.create({
-        title: 'Erreur',
-        subTitle: "Une erreur est survenue : "+reason,
-        buttons: ['retour'],
+        title: this.msgErrorTitle,
+        subTitle: this.msgError+reason,
+        buttons: [this.msgBack],
         cssClass: "alert"
       });
       alert.present();
@@ -59,7 +69,7 @@ export class CheckPincodePage {
     if(!this.isEmployeeReady()){
       const errorEmp = this.loadingCtrl.create({
         spinner: 'hide',
-        content: 'Impossible de trouver votre compte.',
+        content: this.msgNotFound,
         cssClass: "prompt"
       });
       errorEmp.present();
@@ -88,4 +98,24 @@ export class CheckPincodePage {
     return true;
   }
 
+  async updateTranslations(){
+
+    await this.translate.get('BOOKING.SEARCHING').toPromise().then((res) => {
+      this.msgSearching = res;
+    });
+
+    await this.translate.get('BOOKING.ACCOUNT_NOT_FOUND').toPromise().then((res) => {
+      this.msgNotFound = res;
+    });
+    await this.translate.get('BOOKING.ERROR').toPromise().then((res) => {
+      this.msgError = res;
+    });
+    await this.translate.get('BOOKING.ERROR_TITLE').toPromise().then((res) => {
+      this.msgErrorTitle = res;
+    });
+    await this.translate.get('BOOKING.BACK').toPromise().then((res) => {
+      this.msgBack = res;
+    });
+
+  }
 }
