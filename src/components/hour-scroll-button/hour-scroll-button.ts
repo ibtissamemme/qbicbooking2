@@ -59,7 +59,6 @@ export class HourScrollButtonComponent {
         return;
       }
       this.isBookingEnabled = data;
-      //console.log("button", this.isBookingEnabled );
     })
 
   }
@@ -214,15 +213,14 @@ export class HourScrollButtonComponent {
     }
   }
 
-
+  // color update logic
+  // meeting stores the meeting related to this button, needed to display upcoming meeting
+  // on tap on the red buttons
   updateStatus(newStatus:ButtonStates, attMeeting:Meeting ){
-
     this.attachedMeeting = attMeeting;
     if(this.buttonStatus === newStatus){
       return;
     } else {
-      console.log('newStatus/buttonstatus:',newStatus, '/', this.buttonStatus);
-
       this.buttonStatus = newStatus;
       switch (this.buttonStatus) {
         case ButtonStates.FREE:
@@ -239,7 +237,6 @@ export class HourScrollButtonComponent {
           break;
       }
     }
-    console.log(this.buttonColor, this.buttonStatus);
   }
 
   isDisabled() {
