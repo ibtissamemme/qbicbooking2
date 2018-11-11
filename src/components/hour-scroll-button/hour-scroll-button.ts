@@ -26,8 +26,8 @@ export class HourScrollButtonComponent {
   hourScrollInterval: number;
   private meetingList: MeetingList;
   private tappedTimeArray: moment.Moment[];
-
-
+  private attachedMeeting: Meeting;
+  private buttonStatus: ButtonStates = ButtonStates.FREE;
   // flag to disabled booking from the tablet
   private isBookingEnabled: boolean = true;
 
@@ -45,6 +45,7 @@ export class HourScrollButtonComponent {
 
     events.subscribe('hourscrollbutton:clicked', (time) => {
       this.updateButtonColor(time);
+
     });
 
     // called from the home in order to refresh the color and remove the orange color when cancelling a booking
@@ -75,11 +76,12 @@ export class HourScrollButtonComponent {
   // also called directly if a force refresh is needed
   refreshColor() {
     moment.locale("fr");
-    //this.buttonColor = "primary";
     if (!this.date)
       return;
 
-    let newColor: string = 'primary';
+   // let newColor: string = 'primary';
+    let newStatus: ButtonStates = ButtonStates.FREE;
+    let newMeeting: Meeting = undefined;
 
     if (this.meetingList) {
       if (this.meetingList.meetingList && this.meetingList.meetingList.length > 0) {
@@ -89,20 +91,32 @@ export class HourScrollButtonComponent {
           const end = m.endDateTime;
           if (this.date.isBetween(start, end, null, '[)')
             || this.date.clone().add(this.hourScrollInterval - 1, "minutes").isBetween(start, end, null, '[)')) {
-            newColor = "danger";
+            // newColor = "danger";
+            // this.attachedMeeting = m;
+            newStatus = ButtonStates.OCCUPIED;
+            newMeeting = m;
           }
         }.bind(this));
       }
     }
-    if(this.buttonColor === newColor) {
+
+    if(this.buttonStatus === newStatus){
       return;
     } else {
-      this.buttonColor = newColor;
+      this.updateStatus(newStatus, newMeeting);
+
     }
+
+    // if(this.buttonColor === newColor) {
+    //   return;
+    // } else {
+    //   this.buttonColor = newColor;
+    // }
     // if(this.buttonColor === "danger"){
     //   return;
     // }
     //this.buttonColor = "primary";
+
 
   }
 
@@ -124,12 +138,15 @@ export class HourScrollButtonComponent {
 
             if (this.date.isBetween(start, end, null, '[)')
               || this.date.clone().add(this.hourScrollInterval - 1, "minutes").isBetween(start, end, null, '[)')) {
-              this.buttonColor = "danger";
+              //this.buttonColor = "danger";
+              this.updateStatus(ButtonStates.OCCUPIED, m);
+
               return;
             }
           }.bind(this));
 
-          if (this.buttonColor === "danger") {
+          // if (this.buttonColor === "danger") {
+          if (this.buttonStatus === ButtonStates.OCCUPIED) {
             return;
           }
 
@@ -158,7 +175,9 @@ export class HourScrollButtonComponent {
 
               // if this button is not between the two meetings => should not be pressed
               if (!this.date.isBetween(beforeMeeting, afterMeeting, null, "[]")) {
-                this.buttonColor = ButtonStates.DISABLED;
+                // this.buttonColor = ButtonStates.DISABLED;
+                this.updateStatus(ButtonStates.DISABLED, undefined);
+                // this.buttonColor = ButtonStates.DISABLED;
                 return;
               }
             }
@@ -169,31 +188,70 @@ export class HourScrollButtonComponent {
 
     if (this.tappedTimeArray.length >= 2) {
       // if the current button is between the 2 taps => [] is for inclusive comparison
-      if (this.date.isBetween(this.tappedTimeArray[0], this.tappedTimeArray[1], null, '[]')) {
-        this.buttonColor = 'primary-light';
+      if (this.date.isBetween(this.tappedTimeArray[0], this.tappedTimeArray[1], null, '[]') || this.date.isBetween(this.tappedTimeArray[1], this.tappedTimeArray[0], null, '[]')) {
+         this.buttonColor = 'primary-light';
+        this.updateStatus( ButtonStates.TAPPED, undefined);
       }
       else {
-        if (this.buttonColor !== 'danger') {
-          this.buttonColor = 'primary';
+        // if (this.buttonColor !== 'danger') {
+        //   this.buttonColor = 'primary';
+        // }
+        if (this.buttonStatus !== ButtonStates.OCCUPIED) {
+          this.updateStatus(ButtonStates.FREE, undefined);
         }
       }
       this.tappedTimeArray = new Array();
     }
     else {
       if (this.date !== time) {
-        if (this.buttonColor !== 'danger') {
-          this.buttonColor = 'primary';
+        // if (this.buttonColor !== 'danger') {
+        //   this.buttonColor = 'primary';
+        // }
+        if (this.buttonStatus !== ButtonStates.OCCUPIED) {
+          this.updateStatus(ButtonStates.FREE, undefined);
         }
       }
     }
   }
 
 
+  updateStatus(newStatus:ButtonStates, attMeeting:Meeting ){
+
+    this.attachedMeeting = attMeeting;
+    if(this.buttonStatus === newStatus){
+      return;
+    } else {
+      console.log('newStatus/buttonstatus:',newStatus, '/', this.buttonStatus);
+
+      this.buttonStatus = newStatus;
+      switch (this.buttonStatus) {
+        case ButtonStates.FREE:
+          this.buttonColor = ButtonStates.FREE;
+          break;
+        case ButtonStates.DISABLED:
+          this.buttonColor = ButtonStates.DISABLED;
+          break;
+        case ButtonStates.OCCUPIED:
+          this.buttonColor = ButtonStates.OCCUPIED;
+          break;
+        case ButtonStates.TAPPED:
+          this.buttonColor = ButtonStates.TAPPED;
+          break;
+      }
+    }
+    console.log(this.buttonColor, this.buttonStatus);
+  }
+
   isDisabled() {
+    // disable buttons before now
+    // normally not necessary since the refresh loop rebuilds the array with fresh datetimes regularly
     if ( this.date.clone().add(this.hourScrollInterval, "minutes") < moment() ) {
       return true;
     }
-    if (this.buttonColor === ButtonStates.DISABLED) {
+    // if (this.buttonColor === ButtonStates.DISABLED) {
+    //   return true;
+    // }
+    if (this.buttonStatus === ButtonStates.DISABLED) {
       return true;
     }
     return false;
@@ -206,6 +264,14 @@ export class HourScrollButtonComponent {
         this.buttonColor = ButtonStates.TAPPED;
         this.events.publish('hourscrollbutton:clicked', this.date);
       }
+    }
+  }
+
+
+
+  checkAttachedMeeting(){
+    if(this.attachedMeeting){
+
     }
   }
 }
