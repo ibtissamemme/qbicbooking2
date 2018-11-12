@@ -1,3 +1,4 @@
+import { MeetingStatus } from './../app/shared/meeting';
 import { Meeting } from 'app/shared/meeting';
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions } from "@angular/http";
@@ -311,12 +312,16 @@ export class GesroomService {
   //     });
   // }
 
-  deleteMeeting(meeting: Meeting) {
+  deleteMeetingOld(meeting: Meeting) {
     return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
       startDateTime: meeting.startDateTime,
       endDateTime: meeting.endDateTime,
-      meetingStatus: 'Cancelled'
+      meetingStatus: MeetingStatus.Cancelled
     },  this.setHeaders()).toPromise();
+  }
+
+  deleteMeeting(meeting: Meeting) {
+    return this.http.delete(this.endpoint + '/room_schedule/' + meeting.id,  this.setHeaders()).toPromise();
   }
 
 }

@@ -1,5 +1,5 @@
 <ion-content padding>
-  <div class="wrapper">
+  <div class="wrapper" *ngIf="!displayPincode()">
 
     <div class="title-wrapper">
       <div class="title">
@@ -7,7 +7,7 @@
       </div>
     </div>
 
-    <div class="grid-wrapper" *ngIf="!displayPincode()">
+    <div class="grid-wrapper" >
 
       <ion-grid class="grid-elem">
 
@@ -64,7 +64,7 @@
   <div class="wrapper" *ngIf="displayPincode()">
     <div class="title-wrapper">
       <div class="title">
-        {{'BOOKING.TITLE' | translate}}
+        {{'BOOKING.CANCEL_BOOKING' | translate}}
       </div>
     </div>
 

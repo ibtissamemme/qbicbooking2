@@ -60,6 +60,7 @@
     "ERROR_TITLE": "Erreur",
     "BOOKING_PENDING": "Réservation de votre réunion en cours...",
     "BOOKING_DONE": "Réservation effectuée.",
+    "OWNER_ONLY": "Seul l'organisateur peut annuler cette réunion.",
 
     "DETAILS_TITLE": "Détails de la réservation",
     "CANCEL_BOOKING":"Annuler la réservation",

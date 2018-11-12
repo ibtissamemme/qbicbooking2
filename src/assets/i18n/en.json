@@ -60,11 +60,12 @@
     "ERROR_TITLE": "Error",
     "BOOKING_PENDING": "Booking your meeting",
     "BOOKING_DONE": "Booking successfully done.",
+    "OWNER_ONLY": "Only the host can cancel this meeting",
 
     "DETAILS_TITLE": "Booking details",
     "CANCEL_BOOKING": "Cancel your booking",
     "CANCEL_TITLE": "Cancellation",
-    "CANCEL_CONFIRM": "Are you sure to delete this booking?",
+    "CANCEL_CONFIRM": "Are you sure to cancel this booking?",
     "CANCEL_CONFIRM_BUTTON": "Confirm",
 
     "CANCEL_PENDING": "Cancelling your booking...",

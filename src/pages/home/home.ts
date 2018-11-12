@@ -166,6 +166,11 @@ export class HomePage {
       //console.log("home",this.isBookingEnabled);
     });
 
+
+    // envent recieved from the hourscrollbuttons when someone cancel a meeting
+    events.subscribe('forcerefresh', (time) => {
+      this.refresh();
+    });
   }
 
   // init of the view

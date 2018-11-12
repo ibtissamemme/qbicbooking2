@@ -269,19 +269,22 @@ export class HourScrollButtonComponent {
 
 
 
-  checkAttachedMeeting(){
-    if(this.attachedMeeting){
+  checkAttachedMeeting() {
+    if (this.attachedMeeting) {
       console.log(this.attachedMeeting);
 
-      let obj = { meeting: this.attachedMeeting  };
+      let obj = { meeting: this.attachedMeeting };
       let myModal = this.modalCtrl.create(
         ViewMeetingPage,
         obj,
         { cssClass: "my-modal" });
 
 
-      myModal.onDidDismiss(() => {
-    });
+      myModal.onDidDismiss((ret: boolean) => {
+        if (ret) {
+          this.events.publish('forcerefresh', true);
+        }
+      });
 
       myModal.present();
     }

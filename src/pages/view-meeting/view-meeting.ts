@@ -1,5 +1,8 @@
 import { HomePage } from './../home/home';
+
 import { GesroomService } from './../../services/gesroom.service';
+import { AdminService } from './../../services/admin.service';
+
 import { CheckPincodePage } from './../check-pincode/check-pincode';
 import { TranslateService } from '@ngx-translate/core';
 import { Component } from '@angular/core';
@@ -37,28 +40,32 @@ export class ViewMeetingPage {
   msgConfirmCancelText: string = "Êtes-vous sûr de vouloir annuler cette réservation ?";
   msgConfirmCancelTextConfirm: string = "Confirmer";
 
+  msgOwnerOnly: string = "Seul l'organisateur peut annuler cette réunion"
+
   msgCancellationPending: string = "Annulation en cours...";
   msgCancellationDone: string = "Annulation effectuée."
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private translate: TranslateService, private alertCtrl: AlertController, private modalCtrl2: ModalController,    private gesroomService: GesroomService, private loadingCtrl: LoadingController
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private translate: TranslateService, private alertCtrl: AlertController, private adminService: AdminService, private gesroomService: GesroomService, private loadingCtrl: LoadingController
     ) {
   }
 
   ionViewDidLoad() {
-    if(!this.meeting){
 
+    this.updateTranslations();
+
+    if(!this.meeting){
       this.viewCtrl.dismiss();
     }
       if(this.meeting.owner) {
         let emp = new Employee();
         this.meeting.owner = Object.assign(emp, this.meeting.owner);
-        console.log('ionViewDidLoad ViewMeetingPage', this.meeting.owner);
-        console.log('ionViewDidLoad emp', emp);
-
-
     }
   }
+
+  // first cancel button
+  // displays the confirm alert
   onCancelBookingClick(){
+    let self = this;
 
     let alert = this.alertCtrl.create({
       title: this.msgConfirmCancelTitle,
@@ -71,21 +78,23 @@ export class ViewMeetingPage {
           this.viewCtrl.dismiss();
         }
       },
-    {
-      // confirm button
-      text: this.msgConfirmCancelTextConfirm,
-      handler: () => {
-        this.displayPincodeAttr = true;
-      }
-    }],
-      cssClass: "alert"
+      {
+        // confirm button
+        text: this.msgConfirmCancelTextConfirm,
+        handler: () => {
+          self.displayPincodeAttr = true;
+        }
+      }],
+      cssClass: "prompt"
     });
     alert.present();
   }
 
+  // not really used...
   onBackClicked(){
     this.viewCtrl.dismiss();
   }
+
 
   cancelBookingHandler(){
     this.displayPincodeAttr = true;
@@ -93,10 +102,76 @@ export class ViewMeetingPage {
   displayPincode(): boolean{
     return this.displayPincodeAttr;
   }
-  onPinSubmit(event){
+
+
+  async onPinSubmit(pinCode: string) {
+    let emp:Employee;
+
+    const loadingEmployee = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: this.msgSearchingAccouunt,
+      cssClass: 'prompt'
+    });
+    loadingEmployee.present();
+
+    const corporateId = 'SESA' + pinCode;
+    const site=this.adminService.selectedSite;
+    //await this.gesroomService.getEmployeeById(pinCode).then( (data) => {
+    await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
+      if(data){
+        // for some reason we get back an array
+          const _emp = JSON.parse(data.text())[0];
+          emp = new Employee();
+          Object.assign(emp, _emp);
+          //that.emp = Object.setPrototypeOf(_emp, Employee);
+      }
+
+      loadingEmployee.dismiss();
+    }, (reason) => {
+      let alert = this.alertCtrl.create({
+        title: this.msgErrorTitle,
+        subTitle: this.msgBookingError+reason,
+        buttons: [this.msgBack],
+        cssClass: "prompt"
+      });
+      alert.present();
+    });
+
+    if(!emp){
+      const errorEmp = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: this.msgAccountNotFound,
+        cssClass: "prompt"
+      });
+      errorEmp.present();
+      setTimeout(() => {
+        errorEmp.dismiss();
+        loadingEmployee.dismiss();
+      }, this.promptTimer);
+    } else {
+      // check that the found employee is the owner
+      // check is done on the corporate id
+      if(emp._corporateId !== this.meeting.owner._corporateId){
+        const errorEmp = this.loadingCtrl.create({
+          spinner: 'hide',
+          content: this.msgOwnerOnly,
+          cssClass: "alert"
+        });
+        errorEmp.present();
+        setTimeout(() => {
+          errorEmp.dismiss();
+          loadingEmployee.dismiss();
+        }, this.promptTimer);
+        // hide the moddal
+        this.viewCtrl.dismiss();
+      } else {
+        this.cancelBooking(emp);
+      }
+    }
 
   }
 
+  // launch the cancel on the API
   cancelBooking(emp:Employee){
     const loadingMeeting = this.loadingCtrl.create({
       spinner: 'dots',
@@ -131,6 +206,9 @@ export class ViewMeetingPage {
           alert.dismiss();
         }, this.promptTimer);
       });
+
+      // hide the modal, send something to the hone.ts to trigger a refresh
+      this.viewCtrl.dismiss(true);
   }
 
   async updateTranslations(){
@@ -139,6 +217,9 @@ export class ViewMeetingPage {
     });
     await this.translate.get('BOOKING.ACCOUNT_NOT_FOUND').toPromise().then((res) => {
       this.msgAccountNotFound = res;
+    });
+    await this.translate.get('BOOKING.OWNER_ONLY').toPromise().then((res) => {
+      this.msgOwnerOnly = res;
     });
     await this.translate.get('BOOKING.ERROR').toPromise().then((res) => {
       this.msgBookingError = res;
