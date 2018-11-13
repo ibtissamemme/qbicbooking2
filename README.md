@@ -4,6 +4,7 @@
 Launch: `yarn ionic:serve`
 
 Release: `yarn ionic:release`
+Release for the Schneider version: `yarn ionic:releaseschneider`
 
 You will need a certificate store for the release on android and a ios dev env for the ios release.
 
@@ -64,9 +65,11 @@ The translate module must be imported in all components modules which use transl
 ## Sentry
 Sentry is configured in this project but for some reason, the sourcemaps are not correctly generated.
 
-# update on the device
+# Installation
 This version needs the updated version of the firmware
 QbicWebview-Flex-ota-2018_07_26-17_15_22-signed.zip
+The firmware is here: 
+https://app.box.com/s/gtm6xj23uoeabaqrxu5el66q426cb9g4
 
 Update can be done via the RCC
 http://share.qbictechnology.com/external_share/qrc/index.html#/configuration/
@@ -74,3 +77,4 @@ http://share.qbictechnology.com/external_share/qrc/index.html#/configuration/
 Start content should be
 fr.safeware.qbicbooking2/.MainActivity
 
+The tablet should be in fullscreen mode, without the Android native mode activated.
