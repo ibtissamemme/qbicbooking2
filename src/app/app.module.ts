@@ -1,3 +1,4 @@
+import { AndroidFullScreen } from '@ionic-native/android-full-screen';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -76,6 +77,7 @@ import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
   providers: [
     StatusBar,
     SplashScreen,
+    AndroidFullScreen,
     {provide: ErrorHandler, useClass: SentryIonicErrorHandler},
     NFC,
     Ndef,

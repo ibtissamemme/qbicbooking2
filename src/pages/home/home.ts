@@ -1,3 +1,4 @@
+import { AndroidFullScreen } from '@ionic-native/android-full-screen';
 import { Employee } from './../../app/shared/employee';
 import { CheckPincodePage } from './../check-pincode/check-pincode';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -111,11 +112,20 @@ export class HomePage {
     private loadingCtrl: LoadingController,
     private tabletService: TabletService,
     private _sanitizer: DomSanitizer,
-    private statusBar: StatusBar) {
+    private statusBar: StatusBar,
+    private androidFullScreen: AndroidFullScreen) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
     this.statusBar.hide();
     this.statusBar.overlaysWebView(true);
+
+
+    this.androidFullScreen.isImmersiveModeSupported()
+    .then(() => console.log('Immersive mode supported'))
+    .then(() => androidFullScreen.immersiveMode())
+    .catch(err => console.log(err));
+
+    this.androidFullScreen.showUnderSystemUI().catch(err => console.log(err));
 
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {

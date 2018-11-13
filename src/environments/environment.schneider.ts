@@ -37,7 +37,7 @@ export const ENV = {
     },
     secondary: {
       r: 228,
-      g: 127,
+      g: 100,
       b: 0
     },
     danger: {
