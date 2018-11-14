@@ -189,7 +189,7 @@
   <!-- ************ -->
   <!--ERROR PAGE CONTENT -->
   <!-- ************ -->
-  <div class="upcoming-container" *ngIf="!this.selectedRoom">
+  <div class="upcoming-container" *ngIf="!this.selectedRoom || !this.bookingStartHour || !this.bookingEndHour">
     <ion-grid class="upcoming-grid">
       <ion-row text-center align-items-center>
         <ion-col>

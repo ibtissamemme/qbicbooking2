@@ -42,7 +42,11 @@
     "CONFIRM_AND_TEST": "Confirm & test",
     "TABLET_CONFIGURATION": "Device configuration",
     "BOOKING_ENABLED": "Enable booking",
-    "CONFIRM_BOOKING":"Continue"
+    "CONFIRM_BOOKING":"Continue",
+    "BOOKING_RANGE": "Booking range, start and end hours",
+    "BOOKING_START": "Starting hour",
+    "BOOKING_END": "Ending hour"
+
   },
   "BOOKING": {
     "TITLE": "Room booking",

@@ -38,6 +38,19 @@
         </ion-toggle>
       </ion-item>
     </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider>
+        {{ 'ADMIN.BOOKING_RANGE' | translate }}
+      </ion-item-divider>
+      <ion-item>
+        <ion-label class="hour"> {{ 'ADMIN.BOOKING_START' | translate }} </ion-label>
+        <ion-input text-right  type="tel" min=0 max=24 [(ngModel)]="this.bookingStartHour"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label class="hour"> {{ 'ADMIN.BOOKING_END' | translate }} </ion-label>
+        <ion-input text-right type="tel" min=0 max=24 [(ngModel)]="this.bookingEndHour"></ion-input>
+      </ion-item>
+    </ion-item-group>
   </ion-list>
   <ion-list>
     <ion-item-divider>

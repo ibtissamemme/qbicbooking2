@@ -9,6 +9,8 @@ export const ENV = {
   tabletId: "123456",
   adminCode: "1607",
   logo: "logo_white.png",
+  bookingStartHour:7,
+  bookingEndHour:20,
   colors: {
     primary: {
       r: 90,

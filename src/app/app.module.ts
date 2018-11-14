@@ -83,7 +83,7 @@ import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
     Ndef,
     GesroomService,
     { provide: APP_INITIALIZER, useFactory: loadSettings,
-        deps:[ GesroomService],
+        deps:[GesroomService],
         multi: true},
     TabletService,
     AdminService

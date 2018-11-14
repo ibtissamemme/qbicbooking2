@@ -78,6 +78,8 @@ export class HomePage {
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 30000;
   buttonNumber: number = 20;
+  bookingStartHour:number;
+  bookingEndHour:number;
   // declaration in order to force label change in the header
   selectedRoom: Room;
 
@@ -173,7 +175,28 @@ export class HomePage {
         return;
       }
       this.isBookingEnabled = data;
-      //console.log("home",this.isBookingEnabled);
+    });
+
+    const that=this;
+
+    this.adminService.bookingStartHour$.subscribe((data) => {
+      if (data === undefined) {
+        return;
+      }
+      that.bookingStartHour= data;
+      // for this update, we need to completely rebuild the array
+      that.dateArray = new Array();
+      // and launch a refresh
+      that.refresh();
+    });
+    this.adminService.bookingEndHour$.subscribe((data) => {
+      if (data === undefined) {
+        return;
+      }
+      that.bookingEndHour= data;
+      // for this update, we need to completely rebuild the array
+      that.dateArray = new Array();
+      that.refresh();
     });
 
 
@@ -201,7 +224,6 @@ export class HomePage {
     // start the refresh loop
     // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
-
   }
 
   scrollLeft() {
@@ -259,6 +281,12 @@ export class HomePage {
   buildHourScrollArray() {
     this.headerTime = moment();
 
+    // we wait for the app to init...
+    // the signal will come from the admin service through the observable
+    if(!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)){
+      return;
+    }
+
     // use another array to avoid flicker
     let newDateArray = new Array();
 
@@ -272,8 +300,30 @@ export class HomePage {
     // get the offset to the next quarter hour
     const remainer = this.hourScrollInterval - now.minute() % this.hourScrollInterval;
     // get the next quarter hour
-    let rounded = now.add(remainer, "minutes").set("seconds", 0);
+    let rounded = now.add(remainer, "minutes").set("seconds", 0).milliseconds(0);
 
+    // if we are before the start time, start at the start time
+    // don't change anything if we are after
+
+    let startInterval = moment(now);
+    startInterval.hours(this.bookingStartHour);
+    startInterval.minutes(0);
+    startInterval.seconds(0);
+    startInterval.milliseconds(0);
+    if(now.isBefore(startInterval)){
+      rounded = moment().hours(this.bookingStartHour).minutes(0).seconds(0).milliseconds(0);
+    }
+
+
+    let endInterval = moment(now);
+    endInterval.hours(this.bookingEndHour);
+    console.log(this.bookingEndHour);
+
+    endInterval.minutes(0);
+    endInterval.seconds(0);
+    endInterval.milliseconds(0);
+    let timeToEnd = moment.duration(endInterval.diff(rounded));
+    const number = Math.ceil(timeToEnd.asMinutes() / this.hourScrollInterval);
     // // get the offset to the previous quarter hour
     // const remainer = now.minute() % this.hourScrollInterval;
     // // get the next quarter hour
@@ -282,7 +332,8 @@ export class HomePage {
     // this.dateArray.push(rounded.clone());
     newDateArray.push(rounded.clone());
 
-    for (let i = 1; i < this.buttonNumber; i++) {
+    // for (let i = 1; i < this.buttonNumber; i++) {
+    for (let i = 1; i < number; i++) {
       // warning, we use the same 'rounded' variable
       const iterate = rounded.add(this.hourScrollInterval, "minutes");
       newDateArray.push(iterate.clone());

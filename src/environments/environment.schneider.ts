@@ -11,6 +11,8 @@ export const ENV = {
   tabletId: "123456",
   adminCode: "1607",
   logo: "schneider-white-logo.png",
+  bookingStartHour:7,
+  bookingEndHour:20,
   colors: {
     primary: {
       r: 90,

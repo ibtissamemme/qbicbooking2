@@ -41,7 +41,10 @@
     "API_KEY2": "API Key2",
     "CONFIRM_AND_TEST": "Sauver et tester",
     "TABLET_CONFIGURATION": "Configuration tablette",
-    "BOOKING_ENABLED": "Autoriser les réservations depuis cette tablette"
+    "BOOKING_ENABLED": "Autoriser les réservations depuis cette tablette",
+    "BOOKING_RANGE": "Plage horaire, heure de début et de fin possible de réservation (en heures)",
+    "BOOKING_START": "Début",
+    "BOOKING_END": "Fin"
   },
   "BOOKING": {
     "TITLE": "Réservation de salle",

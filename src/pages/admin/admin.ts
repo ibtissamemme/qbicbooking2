@@ -1,6 +1,7 @@
+import { StatusBar } from '@ionic-native/status-bar';
 import { MeetingList } from './../../app/shared/meetingList';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, LoadingController } from "ionic-angular";
 import { Site } from "../../app/shared/site";
 import { Room } from "../../app/shared/room";
 import { GesroomService } from "../../services/gesroom.service";
@@ -26,6 +27,9 @@ export class AdminPage {
   endpoint2: string;
   apiKey2: string;
 
+  bookingStartHour;
+  bookingEndHour;
+
   // flag to enable or not the booking on the tablet
   // default to true
   isBookingEnabled: boolean = true;
@@ -35,6 +39,7 @@ export class AdminPage {
     public navParams: NavParams,
     private gesroomService: GesroomService,
     private adminService: AdminService,
+    private loadingCtrl:LoadingController
   ) {
 
   }
@@ -54,6 +59,12 @@ export class AdminPage {
     });
     this.gesroomService.userId$.subscribe((data) => {
       this.userId = data;
+    });
+    this.adminService.bookingStartHour$.subscribe((data) => {
+      this.bookingStartHour = data;
+    });
+    this.adminService.bookingEndHour$.subscribe((data) => {
+      this.bookingEndHour = data;
     });
 
 
@@ -145,10 +156,43 @@ export class AdminPage {
     }
     this.adminService.setIsBookingEnabled(this.isBookingEnabled);
 
+    this.bookingStartHour = Number.parseInt(this.bookingStartHour);
+    this.bookingEndHour = Number.parseInt(this.bookingEndHour);
+
+    if(!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)){
+      const sorryAlert = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: "Merci de rentrer un chiffre pour l'heure de début et de fin de plage horaire",
+        cssClass: 'prompt'
+      });
+      sorryAlert.present();
+      setTimeout(() => {
+        sorryAlert.dismiss();
+      }, 3000);
+      return;
+    }
+
+
+    if(!this.checkHourRange(this.bookingStartHour) || !this.checkHourRange(this.bookingEndHour)){
+      const sorryAlert = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: "Merci de rentrer un chiffre entre 0 et 23 pour l'heure de début et de fin de plage horaire",
+        cssClass: 'prompt'
+      });
+      sorryAlert.present();
+      setTimeout(() => {
+        sorryAlert.dismiss();
+      }, 3000);
+      return;
+    }
+    this.adminService.setBookingStartHour(this.bookingStartHour);
+    this.adminService.setBookingEndHour(this.bookingEndHour);
+
     // also save the api params
     this.onSaveAPIParam();
     // go back to the root page
-    this.navCtrl.popToRoot();
+    setTimeout(() => this.navCtrl.popToRoot(),500);
+
   }
   onCancelClicked() {
     // go back to the root page
@@ -167,4 +211,10 @@ export class AdminPage {
     return c1 && c2 ? c1.Id === c2.Id : c1 === c2;
   }
 
+  checkHourRange(input:number): boolean{
+    if(input<0 || input>23){
+      return false;
+    }
+    return true;
+  }
 }
