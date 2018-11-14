@@ -1,1 +1,1 @@
-{"plugins":["cordova-plugin-whitelist","cordova-plugin-device","cordova-plugin-splashscreen","cordova-plugin-ionic-webview","cordova-plugin-ionic-keyboard","cordova-sqlite-storage","phonegap-nfc","sentry-cordova"]}
+{"plugins":["cordova-plugin-whitelist","cordova-plugin-device","cordova-plugin-splashscreen","cordova-plugin-ionic-webview","cordova-plugin-ionic-keyboard","cordova-sqlite-storage","phonegap-nfc","sentry-cordova","cordova-plugin-statusbar","cordova-plugin-fullscreen"]}
