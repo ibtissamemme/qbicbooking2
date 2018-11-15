@@ -209,6 +209,7 @@ page-home {
     font-size: $font-size-small;
   }
   .scroll{
+    //width: fit-content;
     overflow-x: scroll!important;
   }
   .scroll::-webkit-scrollbar {

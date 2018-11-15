@@ -91,9 +91,9 @@
 
 
 
-  <!-- ************ -->
+  <!-- ***************** -->
   <!--OCCUPIED PAGE CONTENT -->
-  <!-- ************ -->
+  <!-- ***************** -->
   <div class="content-grid" [style.background-image]="this.getBackgroundImage()" *ngIf="this.currentMeeting && currentStatus === PageStates.OCCUPIED">
     <ion-grid class="container-opacity">
 
@@ -234,10 +234,13 @@
         </ion-col>
       </ion-row>
     </div>
+  </ion-grid>
+
+  <ion-grid class="bottom-elements" background>
     <div class="scroll-wrapper">
       <ion-row nowrap #buttonBar class="scroll">
         <ion-col text-center *ngFor="let dadate of dateArray">
-          <hour-scroll-button [date]="dadate"></hour-scroll-button>
+          <hour-scroll-button [date]="dadate" [upperRange]="this.upperRange" ></hour-scroll-button>
         </ion-col>
       </ion-row>
     </div>

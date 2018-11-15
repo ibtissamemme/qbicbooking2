@@ -80,6 +80,8 @@ export class HomePage {
   buttonNumber: number = 20;
   bookingStartHour:number;
   bookingEndHour:number;
+  // used for the hour-scroll-buttons, to handle the end range
+  upperRange:moment.Moment;
   // declaration in order to force label change in the header
   selectedRoom: Room;
 
@@ -188,15 +190,27 @@ export class HomePage {
       that.dateArray = new Array();
       // and launch a refresh
       that.refresh();
+      console.log("bookingStartHour",that.bookingStartHour);
     });
+
     this.adminService.bookingEndHour$.subscribe((data) => {
       if (data === undefined) {
         return;
       }
-      that.bookingEndHour= data;
+      that.bookingEndHour = data;
+
+      that.upperRange = moment();
+      that.upperRange.hours(that.bookingEndHour);
+      that.upperRange.minutes(0);
+      that.upperRange.seconds(0);
+      that.upperRange.milliseconds(0);
+
       // for this update, we need to completely rebuild the array
       that.dateArray = new Array();
       that.refresh();
+
+      console.log("upperRange",that.upperRange);
+
     });
 
 
@@ -220,7 +234,7 @@ export class HomePage {
     this.language = this.getNextLang(this.language);
     this.buildHourScrollArray();
 
-
+    this.refresh();
     // start the refresh loop
     // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
@@ -316,10 +330,11 @@ export class HomePage {
 
 
     let endInterval = moment(now);
-    endInterval.hours(this.bookingEndHour);
-    console.log(this.bookingEndHour);
+    endInterval.hours(23);
+    // endInterval.hours(this.bookingEndHour);
+    // console.log(this.bookingEndHour);
 
-    endInterval.minutes(0);
+    endInterval.minutes(59);
     endInterval.seconds(0);
     endInterval.milliseconds(0);
     let timeToEnd = moment.duration(endInterval.diff(rounded));
