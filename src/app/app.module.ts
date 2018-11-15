@@ -5,7 +5,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC, Ndef } from '@ionic-native/nfc';
 
@@ -30,8 +30,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-import * as Sentry from 'sentry-cordova';
-import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
+// import * as Sentry from 'sentry-cordova';
+// import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
 
 @NgModule({
   declarations: [
@@ -78,7 +78,11 @@ import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
     StatusBar,
     SplashScreen,
     AndroidFullScreen,
-    {provide: ErrorHandler, useClass: SentryIonicErrorHandler},
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+      // useClass: SentryIonicErrorHandler
+    },
     NFC,
     Ndef,
     GesroomService,
@@ -100,4 +104,4 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-Sentry.init({ dsn: 'https://d541f884f4be4551aad041a2ad3b1f6f@sentry.io/1306802' });
+// Sentry.init({ dsn: 'https://d541f884f4be4551aad041a2ad3b1f6f@sentry.io/1306802' });

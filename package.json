@@ -9,6 +9,8 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
+    "ionic:releaseweb": "CUSTOM_ENV=prod ionic cordova build --release browser --prod",
+    "ionic:releasewebschneider": "CUSTOM_ENV=schneider ionic cordova build --release browser --prod",
     "ionic:serve": "CUSTOM_ENV=dev ionic-app-scripts serve",
     "ionic:serveschneider": "CUSTOM_ENV=schneider ionic-app-scripts serve",
     "preionic:release": "rm ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk || exit 0",
@@ -40,6 +42,7 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
     "cordova-android": "7.0.0",
+    "cordova-browser": "5.0.4",
     "cordova-ios": "4.5.5",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
@@ -51,9 +54,10 @@
     "ionicons": "3.0.0",
     "moment": "^2.22.1",
     "rxjs": "5.5.10",
-    "sentry-cordova": "^0.12.3",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.26"
+    "zone.js": "0.8.26",
+    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-fullscreen": "~1.1.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.9",
@@ -72,11 +76,12 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-fullscreen": {},
-      "sentry-cordova": {}
+      "cordova-plugin-statusbar": {}
     },
     "platforms": [
       "android",
-      "ios"
+      "ios",
+      "browser"
     ]
   }
 }
