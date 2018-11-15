@@ -44,7 +44,9 @@
     "BOOKING_ENABLED": "Autoriser les réservations depuis cette tablette",
     "BOOKING_RANGE": "Plage horaire, heure de début et de fin possible de réservation (en heures)",
     "BOOKING_START": "Début",
-    "BOOKING_END": "Fin"
+    "BOOKING_END": "Fin",
+    "PIN_VISIBILITY":"Afficher le code pin en clair"
+
   },
   "BOOKING": {
     "TITLE": "Réservation de salle",

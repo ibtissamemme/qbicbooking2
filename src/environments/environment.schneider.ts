@@ -13,6 +13,7 @@ export const ENV = {
   logo: "schneider-white-logo.png",
   bookingStartHour:7,
   bookingEndHour:20,
+  isPinInClearText:"true",
   colors: {
     primary: {
       r: 90,

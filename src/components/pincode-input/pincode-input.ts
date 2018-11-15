@@ -2,12 +2,8 @@ import {
   Component,
   ElementRef,
   ViewEncapsulation,
-  trigger,
-  state,
-  animate,
-  transition,
-  style,
   Renderer2,
+  Input,
   Output,
   EventEmitter
 } from '@angular/core';
@@ -42,6 +38,7 @@ export class PincodeInputComponent {
   mode: string;
   gestureBlocker: BlockerDelegate;
 
+  @Input() isPinInClearText:boolean;
   @Output() pincodeSubmitted = new EventEmitter<string>();
   @Output() pincodeCancelled = new EventEmitter<string>();
 

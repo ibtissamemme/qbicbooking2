@@ -16,6 +16,7 @@ export class AdminService {
   selectedSite: Site;
   selectedRoom: Room;
   isBookingEnabled: boolean;
+  isPinInClearText: boolean;
   private _bookingStartHour: number;
   private _bookingEndHour: number = 20;
 
@@ -46,6 +47,11 @@ export class AdminService {
     return this.isBookingEnabledObs.asObservable();
   };
 
+  private isPinInClearTextObs: BehaviorSubject<boolean>;
+  get isPinInClearText$(): Observable<boolean> {
+    return this.isPinInClearTextObs.asObservable();
+  };
+
   private bookingStartHourObs: BehaviorSubject<number>;
   get bookingStartHour$(): Observable<number> {
     return this.bookingStartHourObs.asObservable();
@@ -65,6 +71,7 @@ export class AdminService {
     this.meetingList = new MeetingList();
 
     this.isBookingEnabledObs = new BehaviorSubject(undefined);
+    this.isPinInClearTextObs = new BehaviorSubject(undefined);
     this.bookingStartHourObs = new BehaviorSubject(undefined);
     this.bookingEndHourObs = new BehaviorSubject(undefined);
 
@@ -92,6 +99,25 @@ export class AdminService {
 
 
 
+    this.storage.get('isPinInClearText').then((data:string) => {
+      console.log('isPinInClearText  Storage : ' + data);
+      if (data === null) {
+        let that = this;
+        that.loadParam('isPinInClearText').then((data2) => {
+          that.isPinInClearText = data2.toLowerCase() == 'true' ? true : false;
+
+          console.log('isPinInClearText  Storage : ' + that.isPinInClearText, "/", data2);
+
+          that.isPinInClearTextObs.next(that.isPinInClearText);
+        })
+        return;
+      }
+      this.isPinInClearText = data.toLowerCase() == 'true' ? true : false;
+      this.isPinInClearTextObs.next(this.isPinInClearText);
+    }
+    );
+
+
     this.storage.get('isBookingEnabled').then((data) => {
       if (!data) {
         return;
@@ -112,7 +138,7 @@ export class AdminService {
         //console.log('booking Storage : ' + data);
         that._bookingStartHour = Number.parseInt(data);
         that.bookingStartHourObs.next(that._bookingStartHour);
-        console.log("_bookingStartHour", that._bookingStartHour);
+        //console.log("_bookingStartHour", that._bookingStartHour);
 
       }
       ).catch((e) => {
@@ -180,6 +206,12 @@ export class AdminService {
     this.isBookingEnabledObs.next(isBooking);
     this.setToStorage('isBookingEnabled', isBooking);
     this.isBookingEnabled = isBooking;
+  }
+
+  setisPinInClearText(isBooking: boolean) {
+    this.isPinInClearTextObs.next(isBooking);
+    this.setToStorage('isPinInClearText', isBooking);
+    this.isPinInClearText = isBooking;
   }
 
   setBookingStartHour(hour: number) {

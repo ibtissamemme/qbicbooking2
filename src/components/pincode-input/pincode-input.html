@@ -3,8 +3,8 @@
     <ion-grid class="pincode-input-grid">
       <ion-row class="pincode-input-row">
         <ion-col *ngFor="let item of codeArr; let i = index">
-          <span *ngIf="!d.visibility || (!isNum(codeArr[i]))" class="obscured" [class.filling]="isNum(codeArr[i])"></span>
-          <span *ngIf="d.visibility && this.codeArr.length > 0" class="code">{{item}}</span>
+          <span *ngIf="!this.isPinInClearText || (!isNum(codeArr[i]))" class="obscured" [class.filling]="isNum(codeArr[i])"></span>
+          <span *ngIf="this.isPinInClearText && this.codeArr.length > 0" class="code">{{item}}</span>
         </ion-col>
 
         <ion-col *ngIf="this.codeArr.length === 0">

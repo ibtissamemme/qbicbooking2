@@ -99,7 +99,7 @@
       </div>
     </div>
 
-    <ion-pincode (pincodeSubmitted)="onPinSubmit($event)" (pincodeCancelled)="onPinCancel($event)"></ion-pincode>
+    <ion-pincode [isPinInClearText]="this.isPinInClearText" (pincodeSubmitted)="onPinSubmit($event)" (pincodeCancelled)="onPinCancel($event)"></ion-pincode>
 
     <!-- <button ion-button color='danger' (click)="onCancelClicked()">{{'BOOKING.CANCEL' | translate}} </button> -->
   </div>

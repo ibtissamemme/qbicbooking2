@@ -21,6 +21,7 @@ export class CheckPincodePage {
   emp:Employee;
 
   timer:number = 3000;
+  isPinInClearText:boolean;
 
   msgSearching: string = "Recherche de votre compte...";
   msgNotFound: string = "Impossible de trouver votre compte.";
@@ -33,11 +34,19 @@ export class CheckPincodePage {
   }
 
   ionViewWillEnter(){
+
+    this.adminService.isPinInClearText$.subscribe((data) => {
+      if(!data) {
+        return;
+      }
+      this.isPinInClearText = data;
+    });
+
     this.updateTranslations();
   }
 
   async onPinSubmit(pinCode: string) {
-    console.log(pinCode);
+    //console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
       content: this.msgSearching,

@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col text-center>
         <h2>Saisir un code pin</h2>
-        <ion-pincode  (pincodeSubmitted)="onPinSubmit($event)"></ion-pincode>
+        <ion-pincode [isPinInClearText]="false" (pincodeSubmitted)="onPinSubmit($event)"></ion-pincode>
       </ion-col>
 
       <ion-col>

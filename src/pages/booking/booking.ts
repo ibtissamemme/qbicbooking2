@@ -32,8 +32,10 @@ export class BookingPage {
   msgPending: string = "Réservation de votre réunion en cours...";
   msgBookingDone: string = "Réservation de votre réunion en cours...";
 
+  isPinInClearText:boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
+
   }
 
   ionViewDidLoad() {
@@ -41,12 +43,19 @@ export class BookingPage {
 
   ionViewWillEnter(){
     this.updateTranslations();
+
+    this.adminService.isPinInClearText$.subscribe((data) => {
+      if(!data) {
+        return;
+      }
+      this.isPinInClearText = data;
+    });
   }
 
   async onPinSubmit(pinCode: string) {
 
 
-    console.log(pinCode);
+    //console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
       content: this.msgSearchingAccouunt,

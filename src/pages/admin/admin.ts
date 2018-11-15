@@ -30,6 +30,8 @@ export class AdminPage {
   bookingStartHour;
   bookingEndHour;
 
+  isPinInClearText:boolean = true;
+
   // flag to enable or not the booking on the tablet
   // default to true
   isBookingEnabled: boolean = true;
@@ -113,7 +115,14 @@ export class AdminPage {
         return;
       }
       this.isBookingEnabled = data;
-    })
+    });
+
+    this.adminService.isPinInClearText$.subscribe((data) => {
+      if(!data) {
+        return;
+      }
+      this.isPinInClearText = data;
+    });
   }
 
   onSiteChange() {
@@ -155,6 +164,7 @@ export class AdminPage {
       this.adminService.setSelectedRoom(this.selectedRoom);
     }
     this.adminService.setIsBookingEnabled(this.isBookingEnabled);
+    this.adminService.setisPinInClearText(this.isPinInClearText);
 
     this.bookingStartHour = Number.parseInt(this.bookingStartHour);
     this.bookingEndHour = Number.parseInt(this.bookingEndHour);
@@ -202,6 +212,9 @@ export class AdminPage {
 
   }
 
+  onBookingPinVisibilityChange(){
+
+  }
 
   compareSite(c1: Site, c2: Site): boolean {
     return c1 && c2 ? c1.Id === c2.Id : c1 === c2;

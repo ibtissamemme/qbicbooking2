@@ -109,7 +109,7 @@ ion-pincode{
   }
 
   .pincode-input .pincode-input-row ion-col span.code {
-    font-size: 1.2em;
+    font-size: $font-size-normal;
   }
   .pincode-input .pincode-input-row ion-col span.place-holder {
     font-size: $font-size-small;

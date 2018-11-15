@@ -37,6 +37,11 @@
         <ion-toggle [(ngModel)]="this.isBookingEnabled" (ionChange)="onBookingEnabledChange()">
         </ion-toggle>
       </ion-item>
+      <ion-item>
+        <ion-label> {{ 'ADMIN.PIN_VISIBILITY' | translate }} </ion-label>
+        <ion-toggle [(ngModel)]="this.isPinInClearText" (ionChange)="onBookingPinVisibilityChange()">
+        </ion-toggle>
+      </ion-item>
     </ion-item-group>
     <ion-item-group>
       <ion-item-divider>

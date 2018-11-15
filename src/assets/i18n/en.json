@@ -45,8 +45,8 @@
     "CONFIRM_BOOKING":"Continue",
     "BOOKING_RANGE": "Booking range, start and end hours",
     "BOOKING_START": "Starting hour",
-    "BOOKING_END": "Ending hour"
-
+    "BOOKING_END": "Ending hour",
+    "PIN_VISIBILITY":"Display the pin code in clear text"
   },
   "BOOKING": {
     "TITLE": "Room booking",

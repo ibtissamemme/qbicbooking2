@@ -21,5 +21,5 @@
     </div>
   </div>
 
-  <ion-pincode (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel()"></ion-pincode>
+  <ion-pincode [isPinInClearText]="isPinInClearText" (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel()"></ion-pincode>
 </ion-content>

@@ -209,7 +209,7 @@ export class HomePage {
       that.dateArray = new Array();
       that.refresh();
 
-      console.log("upperRange",that.upperRange);
+      //console.log("upperRange",that.upperRange);
 
     });
 

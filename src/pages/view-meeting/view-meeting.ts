@@ -27,6 +27,7 @@ export class ViewMeetingPage {
   meeting: Meeting=this.navParams.get('meeting');
   promptTimer:number = 3000;
   displayPincodeAttr: boolean = false;
+  isPinInClearText:boolean;
 
   msgSearchingAccouunt: string = "Recherche de votre compte...";
   msgAccountNotFound: string = "Impossible de trouver votre compte.";
@@ -60,6 +61,13 @@ export class ViewMeetingPage {
         let emp = new Employee();
         this.meeting.owner = Object.assign(emp, this.meeting.owner);
     }
+
+    this.adminService.isPinInClearText$.subscribe((data) => {
+      if(!data) {
+        return;
+      }
+      this.isPinInClearText = data;
+    });
   }
 
   // first cancel button

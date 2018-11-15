@@ -11,6 +11,7 @@ export const ENV = {
   logo: "logo_white.png",
   bookingStartHour:7,
   bookingEndHour:20,
+  isPinInClearText:"true",
   colors: {
     primary: {
       r: 90,
