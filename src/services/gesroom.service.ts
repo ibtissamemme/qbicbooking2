@@ -235,20 +235,6 @@ export class GesroomService {
     else return null;
   }
 
-  /**
-   * Used upon pin entering for the booking screen
-   * @param corporateId
-   */
-  getEmployeeById(corporateId: string) {
-    const _corporateId = 'SESA' + corporateId;
-    return this.http
-      .get(this.endpoint + "/persons/persons?email=saf-mat%40safewarehds.onmicrosoft.com", this.setHeaders())
-      .toPromise();
-    // return this.http
-    //   .get(this.endpoint + "/persons/corporate/" + _corporateId , this.setHeaders())
-    //   .toPromise();
-  }
-
 
   // only for the training page, get the URLs of the images to display of no training is available
   // TODO : refactor to call from the admin service

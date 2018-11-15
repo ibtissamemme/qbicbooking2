@@ -124,7 +124,6 @@ export class ViewMeetingPage {
 
     const corporateId = 'SESA' + pinCode;
     const site=this.adminService.selectedSite;
-    //await this.gesroomService.getEmployeeById(pinCode).then( (data) => {
     await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
       if(data){
         // for some reason we get back an array

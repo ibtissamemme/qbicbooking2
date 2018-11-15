@@ -1,14 +1,13 @@
-import { RoomType } from './../app/shared/room';
-import { GesroomService } from './gesroom.service';
-import { MeetingList } from '../../src/app/shared/meetingList';
-import { Injectable } from '@angular/core';
-import { Site } from 'app/shared/site';
-import { Room } from 'app/shared/room';
-import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ENV } from '@app/env';
-
+import { RoomType } from "./../app/shared/room";
+import { GesroomService } from "./gesroom.service";
+import { MeetingList } from "../../src/app/shared/meetingList";
+import { Injectable } from "@angular/core";
+import { Site } from "app/shared/site";
+import { Room } from "app/shared/room";
+import { Storage } from "@ionic/storage";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { ENV } from "@app/env";
 
 @Injectable()
 export class AdminService {
@@ -25,17 +24,17 @@ export class AdminService {
   private selectedRoomObs: BehaviorSubject<Room>;
   get selectedRoom$(): Observable<Room> {
     return this.selectedRoomObs.asObservable();
-  };
+  }
 
   private selectedSiteObs: BehaviorSubject<Site>;
   get selectedSite$(): Observable<Site> {
     return this.selectedSiteObs.asObservable();
-  };
+  }
 
   private meetingListObs: BehaviorSubject<MeetingList>;
   get meetingList$(): Observable<MeetingList> {
     return this.meetingListObs.asObservable();
-  };
+  }
 
   private slidesAvailableObs: BehaviorSubject<Site>;
   get slidesAvailable$(): Observable<Site> {
@@ -45,25 +44,26 @@ export class AdminService {
   private isBookingEnabledObs: BehaviorSubject<boolean>;
   get isBookingEnabled$(): Observable<boolean> {
     return this.isBookingEnabledObs.asObservable();
-  };
+  }
 
   private isPinInClearTextObs: BehaviorSubject<boolean>;
   get isPinInClearText$(): Observable<boolean> {
     return this.isPinInClearTextObs.asObservable();
-  };
+  }
 
   private bookingStartHourObs: BehaviorSubject<number>;
   get bookingStartHour$(): Observable<number> {
     return this.bookingStartHourObs.asObservable();
-  };
+  }
   private bookingEndHourObs: BehaviorSubject<number>;
   get bookingEndHour$(): Observable<number> {
     return this.bookingEndHourObs.asObservable();
-  };
+  }
 
-
-
-  constructor(private storage: Storage, private gesroomService: GesroomService) {
+  constructor(
+    private storage: Storage,
+    private gesroomService: GesroomService
+  ) {
     this.selectedSiteObs = new BehaviorSubject(undefined);
     this.selectedRoomObs = new BehaviorSubject(undefined);
     this.meetingListObs = new BehaviorSubject(undefined);
@@ -75,18 +75,16 @@ export class AdminService {
     this.bookingStartHourObs = new BehaviorSubject(undefined);
     this.bookingEndHourObs = new BehaviorSubject(undefined);
 
-    this.storage.get('selectedSite').then((data) => {
+    this.storage.get("selectedSite").then(data => {
       if (!data) {
         return;
       }
       // console.log('selectedRoom Storage : ' + data);
       this.selectedSite = JSON.parse(data);
       this.selectedSiteObs.next(this.selectedSite);
-    }
-    );
+    });
 
-
-    this.storage.get('selectedRoom').then((data) => {
+    this.storage.get("selectedRoom").then(data => {
       if (!data) {
         return;
       }
@@ -94,84 +92,82 @@ export class AdminService {
       this.selectedRoom = JSON.parse(data);
       this.selectedRoomObs.next(this.selectedRoom);
       this.checkSlides();
-    }
-    );
+    });
 
+    this.storage.get("isPinInClearText").then((data: string) => {
+      console.log("isPinInClearText storage", data);
 
-
-    this.storage.get('isPinInClearText').then((data:string) => {
-      console.log('isPinInClearText  Storage : ' + data);
       if (data === null) {
         let that = this;
-        that.loadParam('isPinInClearText').then((data2) => {
-          that.isPinInClearText = data2.toLowerCase() == 'true' ? true : false;
-
-          console.log('isPinInClearText  Storage : ' + that.isPinInClearText, "/", data2);
-
+        that.loadParam("isPinInClearText").then(data2 => {
+          that.isPinInClearText = data2.toLowerCase() == "true" ? true : false;
           that.isPinInClearTextObs.next(that.isPinInClearText);
-        })
+        });
         return;
       }
-      this.isPinInClearText = data.toLowerCase() == 'true' ? true : false;
+      this.isPinInClearText = data.toLowerCase() == "true" ? true : false;
       this.isPinInClearTextObs.next(this.isPinInClearText);
-    }
-    );
+    });
 
-
-    this.storage.get('isBookingEnabled').then((data) => {
+    this.storage.get("isBookingEnabled").then(data => {
       if (!data) {
         return;
       }
       //console.log('booking Storage : ' + data);
       this.isBookingEnabled = data;
       this.isBookingEnabledObs.next(this.isBookingEnabled);
-    }
-    );
-    const that=this;
-    this.storage.get('bookingStartHour').then(async (data) => {
-      if (!data) {
-        return await that.loadParam('bookingStartHour');
-      }
-      return data;
-    })
-      .then((data) => {
+    });
+    const that = this;
+    this.storage
+      .get("bookingStartHour")
+      .then(async data => {
+        if (!data) {
+          return await that.loadParam("bookingStartHour");
+        }
+        return data;
+      })
+      .then(data => {
         //console.log('booking Storage : ' + data);
         that._bookingStartHour = Number.parseInt(data);
         that.bookingStartHourObs.next(that._bookingStartHour);
         //console.log("_bookingStartHour", that._bookingStartHour);
-
-      }
-      ).catch((e) => {
+      })
+      .catch(e => {
         console.error(e);
       });
 
-      this.storage.get('bookingEndHour').then(async (data) => {
+    this.storage
+      .get("bookingEndHour")
+      .then(async data => {
         if (!data) {
-          return await that.loadParam('bookingEndHour');
+          return await that.loadParam("bookingEndHour");
         }
         return data;
       })
-      .then((data) => {
+      .then(data => {
         //console.log('booking Storage : ' + data);
         that._bookingEndHour = Number.parseInt(data);
         that.bookingEndHourObs.next(that._bookingEndHour);
         console.log("_bookingEndHour", that._bookingEndHour);
-      }
-      ).catch((e) => {
+      })
+      .catch(e => {
         console.error(e);
       });
   }
-
 
   // checks and load API parameters
   // called at startup by the app.module.ts
   async setup() {
     if (!this._bookingStartHour || !this._bookingEndHour) {
-      this._bookingStartHour = Number.parseInt(await this.loadParam('bookingStartHour'));
-      this._bookingEndHour = Number.parseInt(await this.loadParam('bookingEndHour'));
+      this._bookingStartHour = Number.parseInt(
+        await this.loadParam("bookingStartHour")
+      );
+      this._bookingEndHour = Number.parseInt(
+        await this.loadParam("bookingEndHour")
+      );
 
       this.bookingStartHourObs.next(this._bookingStartHour);
-      this.bookingEndHourObs.next(this._bookingEndHour)
+      this.bookingEndHourObs.next(this._bookingEndHour);
     }
   }
 
@@ -181,7 +177,7 @@ export class AdminService {
 
     // push to all
     this.selectedSiteObs.next(site);
-    this.setToStorage('selectedSite', this.selectedSite);
+    this.setToStorage("selectedSite", this.selectedSite);
     console.log("set to storage SITE => " + this.selectedSite.name);
 
     // this.gesroomService.getRooms(this.selectedSite).then(data => {
@@ -192,11 +188,10 @@ export class AdminService {
     // return rooms;
   }
 
-
   setSelectedRoom(room: Room) {
     this.selectedRoomObs.next(room);
     this.refreshMeetings();
-    this.setToStorage('selectedRoom', room);
+    this.setToStorage("selectedRoom", room);
 
     this.selectedRoom = room;
     this.checkSlides();
@@ -204,46 +199,54 @@ export class AdminService {
 
   setIsBookingEnabled(isBooking: boolean) {
     this.isBookingEnabledObs.next(isBooking);
-    this.setToStorage('isBookingEnabled', isBooking);
+    this.setToStorage("isBookingEnabled", isBooking);
     this.isBookingEnabled = isBooking;
   }
 
   setisPinInClearText(isBooking: boolean) {
     this.isPinInClearTextObs.next(isBooking);
-    this.setToStorage('isPinInClearText', isBooking);
+    this.setToStorage("isPinInClearText", isBooking);
     this.isPinInClearText = isBooking;
   }
 
   setBookingStartHour(hour: number) {
     this.bookingStartHourObs.next(hour);
-    this.setToStorage('bookingStartHour', hour);
+    this.setToStorage("bookingStartHour", hour);
     this._bookingStartHour = hour;
   }
 
   setBookingEndHour(hour: number) {
     this.bookingEndHourObs.next(hour);
-    this.setToStorage('bookingEndHour', hour);
+    this.setToStorage("bookingEndHour", hour);
     this._bookingEndHour = hour;
   }
-
 
   // makes a call to get meetings based on the selected room
   refreshMeetings() {
     if (this.selectedRoomObs.getValue()) {
-      this.gesroomService.getMeetings(this.selectedRoomObs.getValue()).then(data => {
-        if (data && data.ok) {
-          this.meetingList.meetingList = data.json();
-          this.meetingList.sort();
-          this.meetingListObs.next(this.meetingList);
-          if (Array.isArray(this.meetingList.meetingList)) {
-            this.meetingList.meetingList.map((m) => console.log(m.id, m.meetingStatus, m.startDateTime.format("lll"), "=>", m.endDateTime.format("lll")));
+      this.gesroomService
+        .getMeetings(this.selectedRoomObs.getValue())
+        .then(data => {
+          if (data && data.ok) {
+            this.meetingList.meetingList = data.json();
+            this.meetingList.sort();
+            this.meetingListObs.next(this.meetingList);
+            if (Array.isArray(this.meetingList.meetingList)) {
+              this.meetingList.meetingList.map(m =>
+                console.log(
+                  m.id,
+                  m.meetingStatus,
+                  m.startDateTime.format("lll"),
+                  "=>",
+                  m.endDateTime.format("lll")
+                )
+              );
+            }
           }
-        }
-        return this.meetingList.meetingList;
-      });
+          return this.meetingList.meetingList;
+        });
     }
   }
-
 
   // utility to store with key
   setToStorage(key: string, object: any) {
@@ -253,15 +256,19 @@ export class AdminService {
   checkSlides() {
     if (this.selectedRoom.roomType === RoomType.Training) {
       try {
-        this.gesroomService.getBackgroundImageForSite(this.selectedSite)
-          .then((data) => {
+        this.gesroomService
+          .getBackgroundImageForSite(this.selectedSite)
+          .then(data => {
             this.selectedSite.slides = new Array();
-            if (data && data.ok && typeof (data) == typeof (this.selectedSite.slides)) {
+            if (
+              data &&
+              data.ok &&
+              typeof data == typeof this.selectedSite.slides
+            ) {
               this.selectedSite.slides = JSON.parse(data.text());
               this.slidesAvailableObs.next(this.selectedSite);
             }
           });
-
       } catch (error) {
         console.error(error);
       }
@@ -291,15 +298,14 @@ export class AdminService {
     const data = await this.storage.get(param);
     if (!data) {
       if (!ENV[param]) {
-        console.log(param, 'env : bad config');
+        console.log(param, "env : bad config");
         return;
       }
       res = ENV[param];
-      console.log(param, 'storage : no data');
+      console.log(param, "storage : no data");
     } else {
       res = JSON.parse(data);
     }
     return res;
   }
-
 }
