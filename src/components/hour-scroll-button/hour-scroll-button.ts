@@ -77,6 +77,7 @@ export class HourScrollButtonComponent {
       that.upperRange.minutes(0);
       that.upperRange.seconds(0);
       that.upperRange.milliseconds(0);
+
       // if out of range, just retur
       if (moment.isMoment(that.upperRange) && moment.isMoment(that.date)) {
         if (that.date.isAfter(that.upperRange)) {
@@ -86,8 +87,6 @@ export class HourScrollButtonComponent {
         }
       }
     });
-
-
   }
 
 
@@ -105,7 +104,6 @@ export class HourScrollButtonComponent {
     if (!this.date) {
       return;
     }
-
 
     // if out of range, just return
     if (moment.isMoment(this.upperRange) && moment.isMoment(this.date)) {
@@ -296,10 +294,11 @@ export class HourScrollButtonComponent {
   onClick() {
     if (this.isBookingEnabled) {
       if (this.buttonColor !== 'danger') {
-        this.buttonColor = ButtonStates.TAPPED;
+        this.updateStatus(ButtonStates.TAPPED, null);
         this.events.publish('hourscrollbutton:clicked', this.date);
       }
     }
+    // if button is an occupied slot, launch details modal
     this.checkAttachedMeeting();
   }
 

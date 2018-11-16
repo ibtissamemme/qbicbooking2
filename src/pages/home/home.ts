@@ -338,7 +338,7 @@ export class HomePage {
     endInterval.seconds(0);
     endInterval.milliseconds(0);
     let timeToEnd = moment.duration(endInterval.diff(rounded));
-    const number = Math.ceil(timeToEnd.asMinutes() / this.hourScrollInterval);
+    const number = Math.floor(timeToEnd.asMinutes() / this.hourScrollInterval);
     // // get the offset to the previous quarter hour
     // const remainer = now.minute() % this.hourScrollInterval;
     // // get the next quarter hour

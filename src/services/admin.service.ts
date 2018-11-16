@@ -122,7 +122,11 @@ export class AdminService {
       .get("bookingStartHour")
       .then(async data => {
         if (!data) {
-          return await that.loadParam("bookingStartHour");
+          let value = Number.parseInt(await that.loadParam("bookingStartHour"));
+          if(!Number.isInteger(value)){
+            value = 7;
+          }
+          return value;
         }
         return data;
       })
@@ -140,7 +144,11 @@ export class AdminService {
       .get("bookingEndHour")
       .then(async data => {
         if (!data) {
-          return await that.loadParam("bookingEndHour");
+          let value = Number.parseInt(await that.loadParam("bookingEndHour"));
+          if(!Number.isInteger(value)){
+            value = 20;
+          }
+          return value;
         }
         return data;
       })
@@ -155,21 +163,7 @@ export class AdminService {
       });
   }
 
-  // checks and load API parameters
-  // called at startup by the app.module.ts
-  async setup() {
-    if (!this._bookingStartHour || !this._bookingEndHour) {
-      this._bookingStartHour = Number.parseInt(
-        await this.loadParam("bookingStartHour")
-      );
-      this._bookingEndHour = Number.parseInt(
-        await this.loadParam("bookingEndHour")
-      );
 
-      this.bookingStartHourObs.next(this._bookingStartHour);
-      this.bookingEndHourObs.next(this._bookingEndHour);
-    }
-  }
 
   setSelectedSite(site: Site) {
     let rooms: Room[] = [];
