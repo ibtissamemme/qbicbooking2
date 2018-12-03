@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Employee } from './../../app/shared/employee';
-import { Meeting, MeetingType, MeetingStatus } from './../../app/shared/meeting';
+import { Meeting, MeetingType, MeetingStatus, MeetingConstructorInput } from './../../app/shared/meeting';
 import { GesroomService } from './../../services/gesroom.service';
 import { Room } from 'app/shared/room';
 import { LoadingController, ViewController } from 'ionic-angular';
@@ -8,6 +8,7 @@ import { AdminService } from './../../services/admin.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import * as moment from "moment";
+import { toTypeScript } from '@angular/compiler';
 
 
 @IonicPage()
@@ -31,6 +32,7 @@ export class BookingPage {
   msgBack: string = "Une erreur est survenue : ";
   msgPending: string = "Réservation de votre réunion en cours...";
   msgBookingDone: string = "Réservation de votre réunion en cours...";
+  msgUnauthorized: string = "Vous n'êtes pas authorisé à réserver cette salle";
 
   isPinInClearText:boolean;
 
@@ -54,7 +56,6 @@ export class BookingPage {
 
   async onPinSubmit(pinCode: string) {
 
-
     //console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
@@ -63,27 +64,74 @@ export class BookingPage {
     });
     loadingEmployee.present();
 
-    const corporateId = 'SESA' + pinCode;
+    const corporateId = this.adminService.corporateIdRadical + pinCode;
     const site=this.adminService.selectedSite;
-    await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
-      if(data){
-        // for some reason we get back an array
-          const _emp = JSON.parse(data.text())[0];
-          that.emp = new Employee();
-          Object.assign(that.emp, _emp);
-          //that.emp = Object.setPrototypeOf(_emp, Employee);
-      }
+    this.emp = null;
+    try {
+      // get employee info based on the corporate ID
+      this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
 
-      loadingEmployee.dismiss();
-    }, (reason) => {
+      // if something went wrong...
+      if(!this.emp){
+        const errorEmp = this.loadingCtrl.create({
+          spinner: 'hide',
+          content: this.msgAccountNotFound,
+          cssClass: "prompt",
+        });
+        errorEmp.present();
+        setTimeout(() => {
+          errorEmp.dismiss();
+          loadingEmployee.dismiss();
+        }, this.timer);
+      } else {
+        // if OK, check if employee can book a meeting on this room
+        const isEmployeeOk: Boolean = await this.gesroomService.checkRoomRights(this.room, this.emp);
+        if(!isEmployeeOk){
+          const errorEmp = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: this.msgUnauthorized,
+            cssClass: "prompt",
+          });
+          errorEmp.present();
+          setTimeout(() => {
+            errorEmp.dismiss();
+            loadingEmployee.dismiss();
+          }, this.timer);
+        }
+      }
+    } catch (error) {
       let alert = this.alertCtrl.create({
         title: this.msgErrorTitle,
-        subTitle: this.msgBookingError+reason,
+        subTitle: this.msgBookingError+error,
         buttons: [this.msgBack],
         cssClass: "prompt"
       });
       alert.present();
-    });
+    }
+
+
+    loadingEmployee.dismiss();
+
+
+
+
+
+    // await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
+    //   if(data){
+    //       that.emp = data;
+    //   }
+    //   loadingEmployee.dismiss();
+    // }, (reason) => {
+    //   let alert = this.alertCtrl.create({
+    //     title: this.msgErrorTitle,
+    //     subTitle: this.msgBookingError+reason,
+    //     buttons: [this.msgBack],
+    //     cssClass: "prompt"
+    //   });
+    //   alert.present();
+    // });
+
+
     if(!this.isEmployeeReady()){
       const errorEmp = this.loadingCtrl.create({
         spinner: 'hide',
@@ -95,7 +143,6 @@ export class BookingPage {
         errorEmp.dismiss();
         loadingEmployee.dismiss();
       }, this.timer);
-
     }
   }
 
@@ -157,20 +204,32 @@ export class BookingPage {
 
   async bookMeeting(start: moment.Moment, end: moment.Moment, employee: Employee, room: Room) {
     const title:string = "Réservation depuis tablette";
+    const input: MeetingConstructorInput = {
+      id:null,
+      meetingType: MeetingType.Meeting,
+      meetingStatus: MeetingStatus.NotStarted,
+      meetingDescription: title,
+      startDateTime: start,
+      endDateTime:end,
+      owner: employee,
+      room: room
+    };
+    let meeting: Meeting = new Meeting(input);
 
-    let meeting: Meeting = new Meeting(
-      null,
-      null,
-      null,
-      title,
-      "",
-      MeetingType.Meeting /*meetintype*/,
-      MeetingStatus.NotStarted /* meeting status*/,
-      start,
-      end,
-      employee,
-      room,
-      '');
+
+
+      // null,
+      // null,
+      // null,
+      // title,
+      // "",
+      // MeetingType.Meeting /*meetintype*/,
+      // MeetingStatus.NotStarted /* meeting status*/,
+      // start,
+      // end,
+      // employee,
+      // room,
+      // '');
 
     await this.gesroomService.postMeeting(meeting);
   }
@@ -179,7 +238,7 @@ export class BookingPage {
     if(!this.emp){
       return false;
     }
-    else if(!this.emp._corporateId){
+    else if(!this.emp.id){
       return false;
     }
     return true;
@@ -212,6 +271,9 @@ export class BookingPage {
     });
     await this.translate.get('BOOKING.BOOKING_DONE').toPromise().then((res) => {
       this.msgBookingDone = res;
+    });
+    await this.translate.get('BOOKING.UNAUTHORIZED').toPromise().then((res) => {
+      this.msgUnauthorized = res;
     });
 
   }

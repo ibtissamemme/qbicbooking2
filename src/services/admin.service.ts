@@ -18,8 +18,10 @@ export class AdminService {
   isPinInClearText: boolean;
   private _bookingStartHour: number;
   private _bookingEndHour: number = 20;
-
   hourScrollInterval: number = 15;
+
+  // TODO put that in the env file
+  corporateIdRadical: string = "SESA";
 
   private selectedRoomObs: BehaviorSubject<Room>;
   get selectedRoom$(): Observable<Room> {
@@ -221,8 +223,8 @@ export class AdminService {
       this.gesroomService
         .getMeetings(this.selectedRoomObs.getValue())
         .then(data => {
-          if (data && data.ok) {
-            this.meetingList.meetingList = data.json();
+          if (data ) {
+            this.meetingList.meetingList = data;
             this.meetingList.sort();
             this.meetingListObs.next(this.meetingList);
             if (Array.isArray(this.meetingList.meetingList)) {

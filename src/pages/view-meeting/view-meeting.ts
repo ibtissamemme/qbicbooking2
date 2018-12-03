@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, ModalController, LoadingController } from 'ionic-angular';
 
-import { Employee } from './../../app/shared/employee';
+import { Employee, EmployeeFromJSON } from './../../app/shared/employee';
 import { Meeting } from './../../app/shared/meeting';
 /**
  * Generated class for the ViewMeetingPage page.
@@ -58,7 +58,7 @@ export class ViewMeetingPage {
       this.viewCtrl.dismiss();
     }
       if(this.meeting.owner) {
-        let emp = new Employee();
+        let emp = new Employee(this.meeting.owner);
         this.meeting.owner = Object.assign(emp, this.meeting.owner);
     }
 
@@ -122,27 +122,25 @@ export class ViewMeetingPage {
     });
     loadingEmployee.present();
 
-    const corporateId = 'SESA' + pinCode;
+    const corporateId = this.adminService.corporateIdRadical + pinCode;
     const site=this.adminService.selectedSite;
-    await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
-      if(data){
-        // for some reason we get back an array
-          const _emp = JSON.parse(data.text())[0];
-          emp = new Employee();
-          Object.assign(emp, _emp);
-          //that.emp = Object.setPrototypeOf(_emp, Employee);
-      }
+    // await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
+    //   if(data){
+    //     // for some reason we get back an array
+    //       const _emp = JSON.parse(data.text())[0];
+    //       emp = EmployeeFromJSON(_emp);
+    //   }
 
-      loadingEmployee.dismiss();
-    }, (reason) => {
-      let alert = this.alertCtrl.create({
-        title: this.msgErrorTitle,
-        subTitle: this.msgBookingError+reason,
-        buttons: [this.msgBack],
-        cssClass: "prompt"
-      });
-      alert.present();
-    });
+    //   loadingEmployee.dismiss();
+    // }, (reason) => {
+    //   let alert = this.alertCtrl.create({
+    //     title: this.msgErrorTitle,
+    //     subTitle: this.msgBookingError+reason,
+    //     buttons: [this.msgBack],
+    //     cssClass: "prompt"
+    //   });
+    //   alert.present();
+    // });
 
     if(!emp){
       const errorEmp = this.loadingCtrl.create({

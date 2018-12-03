@@ -10,7 +10,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NFC, Ndef } from '@ionic-native/nfc';
 
 import { StatusBar } from '@ionic-native/status-bar';
-import { HttpModule } from '@angular/http';
+//import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -28,7 +28,8 @@ import { ComponentsModule } from './../components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './utils/timeoutInterceptor';
 
 // import * as Sentry from 'sentry-cordova';
 // import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
@@ -43,7 +44,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     // BookingPage,
   ],
   imports: [
-    HttpModule,
+   // HttpModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -90,7 +91,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
         deps:[GesroomService],
         multi: true},
     TabletService,
-    AdminService
+    AdminService,
+    { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
+    { provide: DEFAULT_TIMEOUT, useValue: 30000},
   ]
 })
 export class AppModule { }

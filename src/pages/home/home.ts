@@ -145,17 +145,18 @@ export class HomePage {
         .then((data) => {
           this.selectedRoom.capacity = data;
         });
-      // Photo
-      this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
-        if (!data) {
-          return;
-        }
-        const resp = JSON.parse(data.text());
-        const photo = JSON.stringify(resp.Photo).replace(/\\n/g, '');
-        this.imageSRC = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${photo}`);
-        //console.log(this.imageSRC);
 
-      });
+      // // Photo
+      // this.gesroomService.getRoomPicture(this.selectedRoom).then((data) => {
+      //   if (!data) {
+      //     return;
+      //   }
+      //   const resp = JSON.parse(data.text());
+      //   const photo = JSON.stringify(resp.Photo).replace(/\\n/g, '');
+      //   this.imageSRC = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${photo}`);
+      //   //console.log(this.imageSRC);
+
+      // });
 
       if (this.selectedRoom.roomType === RoomType.Training) {
         this.goToTrainingPage();

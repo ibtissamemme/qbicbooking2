@@ -1,5 +1,5 @@
 import { States } from './../app/shared/meeting';
-import { RequestOptions, Headers, Http } from "@angular/http";
+import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ENV } from '@app/env';
 
@@ -8,13 +8,13 @@ export class TabletService {
   private modelId;
   private timezone;
   private serialNum: string;
-  private headers: Headers;
-  private options: RequestOptions;
+  private headers: HttpHeaders;
+  private options;
   private status: States;
-  constructor(private http: Http) {
-    this.headers = new Headers();
+  constructor(private http: HttpClient) {
+    this.headers = new HttpHeaders();
     this.headers.append( "Content-Type", "application/json" )
-    this.options = new RequestOptions({ headers: this.headers });
+    this.options = { headers: this.headers };
 
   }
 
@@ -106,7 +106,7 @@ export class TabletService {
         .get("http://localhost:8080/v1/public/info", this.options)
         .subscribe(
           data => {
-            this.modelId = data.text;
+            this.modelId = data;
           },
           err => {
             console.log(err);

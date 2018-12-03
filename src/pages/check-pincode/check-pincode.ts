@@ -54,38 +54,38 @@ export class CheckPincodePage {
     });
     loadingEmployee.present();
 
-    const corporateId = 'SESA' + pinCode;
+    const corporateId = this.adminService.corporateIdRadical + pinCode;
     const site=this.adminService.selectedSite;
-    await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
-      if(data){
-        // for some reason we get back an array
-          const _emp = JSON.parse(data.text())[0];
-          that.emp = new Employee();
-          Object.assign(that.emp, _emp);
-      }
+    // this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
+    //   if(data){
+    //     // for some reason we get back an array
+    //       const _emp = JSON.parse(data.text())[0];
+    //       that.emp = new Employee(_emp);
+    //       Object.assign(that.emp, _emp);
+    //   }
 
-      loadingEmployee.dismiss();
-    }, (reason) => {
-      let alert = this.alertCtrl.create({
-        title: this.msgErrorTitle,
-        subTitle: this.msgError+reason,
-        buttons: [this.msgBack],
-        cssClass: "alert"
-      });
-      alert.present();
-    });
-    if(!this.isEmployeeReady()){
-      const errorEmp = this.loadingCtrl.create({
-        spinner: 'hide',
-        content: this.msgNotFound,
-        cssClass: "prompt"
-      });
-      errorEmp.present();
-      setTimeout(() => {
-        errorEmp.dismiss();
-        loadingEmployee.dismiss();
-      }, this.timer);
-    }
+    //   loadingEmployee.dismiss();
+    // }, (reason) => {
+    //   let alert = this.alertCtrl.create({
+    //     title: this.msgErrorTitle,
+    //     subTitle: this.msgError+reason,
+    //     buttons: [this.msgBack],
+    //     cssClass: "alert"
+    //   });
+    //   alert.present();
+    // });
+    // if(!this.isEmployeeReady()){
+    //   const errorEmp = this.loadingCtrl.create({
+    //     spinner: 'hide',
+    //     content: this.msgNotFound,
+    //     cssClass: "prompt"
+    //   });
+    //   errorEmp.present();
+    //   setTimeout(() => {
+    //     errorEmp.dismiss();
+    //     loadingEmployee.dismiss();
+    //   }, this.timer);
+    // }
 
     // return to the parent
     this.viewCtrl.dismiss(this.emp);

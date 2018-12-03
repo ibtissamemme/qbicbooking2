@@ -1,14 +1,15 @@
-import { MeetingStatus } from './../app/shared/meeting';
-import { Meeting } from 'app/shared/meeting';
 import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptions } from "@angular/http";
-import { Site } from "../app/shared/site";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+// import { Http, Headers, RequestOptions } from "@angular/http";
+import { Site, siteFromJson } from "../app/shared/site";
+import { MeetingStatus, Meeting, meetingFromJSON } from '../app/shared/meeting';
 import { Storage } from '@ionic/storage';
-import { Room } from '../app/shared/room';
+import { Room, roomFromJSON } from '../app/shared/room';
 import { ENV } from '@app/env';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { ThrowStmt } from '@angular/compiler';
+import * as moment from "moment";
+import { Employee, EmployeeFromJSON } from "../app/shared/employee";
 
 @Injectable()
 export class GesroomService {
@@ -48,7 +49,7 @@ export class GesroomService {
     return this.apiKey2Obs.asObservable();
   };
 
-  constructor(private http: Http, private storage: Storage, ) {
+  constructor(private http: HttpClient, private storage: Storage, ) {
     this.endpointObs = new BehaviorSubject(undefined)
     this.apiKeyObs = new BehaviorSubject(undefined)
     this.endpoint2Obs = new BehaviorSubject(undefined)
@@ -74,16 +75,17 @@ export class GesroomService {
     return res;
   }
 
-  setHeaders(): RequestOptions {
-    const reqHeaders = new Headers();
+  setHeaders(): HttpHeaders {
+    // const reqHeaders = new Headers();
     // this.broadcaster.on("serialNumber").subscribe(ges_tablet => {
     //   this.ges_tablet = ges_tablet;
     // });
-    reqHeaders.append("GES_USERID", this.userId);
-    reqHeaders.append("GES_APIKEY", this.apiKey);
-    reqHeaders.append("GES_TABLET", "123456");
-    reqHeaders.append("Accept", "application/json");
-    const options = new RequestOptions({ headers: reqHeaders });
+    const options = new HttpHeaders();
+    options.append("GES_USERID", this.userId);
+    options.append("GES_APIKEY", this.apiKey);
+    options.append("GES_TABLET", "123456");
+    options.append("Accept", "application/json");
+
     // headers.append("GES_USERID", this.sesaId);
     // headers.append("GES_APIKEY", this.adminDataServ.apiKey);
     // headers.append("GES_TABLET", this.ges_tablet);
@@ -125,7 +127,7 @@ export class GesroomService {
   // checks and load API parameters
   // called at startup by the app.module.ts
   async setup() {
-    if (!this.endpoint || !this.userId || !this.apiKey ||!this.endpoint2 || !this.apiKey2) {
+    if (!this.endpoint || !this.userId || !this.apiKey || !this.endpoint2 || !this.apiKey2) {
       this.endpoint = await this.loadParam('endpoint');
       this.userId = await this.loadParam('adminId');
       this.apiKey = await this.loadParam('apiKey');
@@ -152,10 +154,13 @@ export class GesroomService {
   // authentification
   // **********************
   async authenticate() {
-    const reqHeaders = new Headers();
+
+    let reqHeaders = new HttpHeaders();
     // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
-    reqHeaders.append("Accept", "application/json");
-    const options = new RequestOptions({ headers: reqHeaders });
+    reqHeaders = reqHeaders.append("Accept", "application/json");
+    const options = {
+      headers: reqHeaders
+    };
 
     let body = new URLSearchParams();
     body.set('grant_type', 'password');
@@ -164,7 +169,9 @@ export class GesroomService {
     body.set('APIKeys', this.apiKey2);
 
     await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
-      this.authToken = JSON.parse(data.text())['access_token'];
+      if(data){
+        this.authToken = data['access_token'];
+      }
       // console.log(data.text());
       // console.log(this.authToken );
     });
@@ -173,74 +180,150 @@ export class GesroomService {
   // **********************
   // new API authorization header helper
   // **********************
-  async setHeaders2(): Promise<RequestOptions>{
-    if(!this.authToken){
+  async setHeaders2()  {
+    if (!this.authToken) {
       await this.authenticate();
     }
-    const reqHeaders = new Headers();
-    // reqHeaders.append("Content-Type", 'application/x-www-form-urlencoded')
-    reqHeaders.append("Accept", "application/json");
-    reqHeaders.append("Authorization", "bearer " + this.authToken);
-    const options = new RequestOptions({ headers: reqHeaders });
-    return options;
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Accept': 'application/json',
+    //     'Authorization': `bearer ${this.authToken}`
+    //   })
+    // };
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/json');
+    headers = headers.set('Authorization', `bearer ${this.authToken}`);
+    const httpOptions = { headers: headers };
+    return httpOptions;
   }
+
 
 
   // **********************
   // Data methods
   // **********************
-  async getRoomPicture(room:Room){
+  async getRoomPicture(room: Room) {
     return this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Photo`, await this.setHeaders2()).toPromise();
   }
 
   // TODO fix this on API side...
-  async getRoomCapacity(room:Room){
+  async getRoomCapacity(room: Room) {
     //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
-    let cap=8;
-    await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise().then( (data) => {
-      cap = JSON.parse(data.text())[0].Capacity;
-    } );
+    let cap = 8;
+    await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise().then((data) => {
+      cap = data['Capacity'];
+    });
 
     return cap;
   }
-  async getEmployeeDetails(corporateId: string, site: Site){
-    return this.http.get(`${this.endpoint2}/api/PersonVisited?corporateId=${corporateId}`, await this.setHeaders2()).toPromise();
+
+  async getEmployeeDetails(corporateId: string, site: Site) {
+    const resp = await this.http.get(`${this.endpoint2}/api/User?UserName=${corporateId}`, await this.setHeaders2()).toPromise();
+
+    // if (resp.json()) {
+    //   let ret: Employee
+    //   if (Array.isArray(resp.json())) {
+    //     // for some reason we get back an array
+    //     ret = EmployeeFromJSON(resp.json()[0]);
+    //   } else {
+    //     ret = EmployeeFromJSON(resp.json());
+    //   }
+    //   return ret;
+    // }
+    return null;
   }
 
-
-  // OLD API Methods
-  getSites() {
-    return this.http.get(this.endpoint + "/sites", this.setHeaders()).toPromise();
-  }
-  getSitesObs() {
-    return this.http.get(this.endpoint + "/sites", this.setHeaders());
-  }
-  getRooms(site: Site) {
-
-    return this.http
-      .get(this.endpoint + "/" + site.Id + "/rooms", this.setHeaders())
-      .toPromise();
-  }
-  getRoomsIbs(site: Site) {
-    return this.http
-      .get(this.endpoint + "/" + site.Id + "/rooms", this.setHeaders());
+  async checkEmployeeRights(action: string, meeting: Meeting, emp: Employee): Promise<boolean> {
+    const resp = await this.http.get(`${this.endpoint2}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
+    // if (resp.json()) {
+    //   let ret: boolean = resp.json();
+    //   return ret;
+    // }
+    return undefined;
   }
 
-  getMeetings(room: Room) {
-    if (room) {
-      return this.http
-        .get(this.endpoint + "/room_schedule/" + room.Id, this.setHeaders())
+  async checkRoomRights(room: Room, emp: Employee): Promise<boolean> {
+    const resp = await this.http.get(`${this.endpoint2}/api/CheckRightRoom?roomId=${room.Id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
+    // if (resp.json()) {
+    //   let ret: boolean = resp.json();
+    //   return ret;
+    // }
+    return undefined;
+  }
+
+  async getSites() {
+    const sites = new Array<Site>();
+    const resp = await this.http.get(`${this.endpoint2}/api/Site`, await this.setHeaders2()).toPromise();
+    // if (resp.json() && Array.isArray(resp.json())) {
+    //   resp.json().forEach(element => {
+    //     sites.push(siteFromJson(element));
+    //   });
+    // }
+    return sites;
+  }
+
+  async getRooms(site: Site) {
+    const rooms = new Array<Room>();
+    try {
+      const resp = await this.http
+        .get(`${this.endpoint2}/api/Room?siteId=${site.Id}`, await this.setHeaders2())
         .toPromise();
+
+
+      // if (resp.json() && Array.isArray(resp.json())) {
+      //   resp.json().forEach(element => {
+      //     rooms.push(roomFromJSON(element));
+      //   });
+      // }
+    } catch (error) {
+      if(error.status !== 404){
+        throw error;
+      }
     }
-    else return null;
+    return rooms;
   }
+
+  async getMeetings(room: Room) {
+    const meetings = new Array<Meeting>();
+    if (room) {
+      const start = moment().startOf("day").format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+      const end = moment().endOf("day").format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+      try {
+        const resp = await this.http
+          .get(`${this.endpoint2}/api/Meeting?roomId=${room.Id}&dateFrom=${start}&dateTo=${end}`, await this.setHeaders2())
+          .toPromise();
+
+        if (resp && Array.isArray(resp)) {
+          resp.forEach(element => {
+            meetings.push(meetingFromJSON(element));
+          });
+        }
+      } catch (error) {
+        // for the API, a 404 equals to no meeting
+        if(error.status !== 404){
+          throw error;
+        }
+      }
+      return meetings;
+    }
+  }
+
+  // getMeetings(room: Room) {
+  //   if (room) {
+  //     return this.http
+  //       .get(this.endpoint + "/room_schedule/" + room.Id, this.setHeaders())
+  //       .toPromise();
+  //   }
+  //   else return null;
+  // }
 
 
   // only for the training page, get the URLs of the images to display of no training is available
   // TODO : refactor to call from the admin service
   getBackgroundImageForSite(site: Site) {
-    return this.http
-      .get(this.endpoint + "/sites/uris/", this.setHeaders()).toPromise();
+    return null;
+    // return this.http
+    //   .get(this.endpoint + "/sites/uris/", this.setHeaders()).toPromise();
   }
 
 
@@ -248,42 +331,104 @@ export class GesroomService {
    * Creates a meeting
    * @param meeting
    */
-  postMeeting(meeting: Meeting) {
+  async postMeeting(meeting: Meeting) {
     const owner = meeting.owner;
     const room = meeting.room;
-    return this.http.post(this.endpoint + '/room_schedule', {
-      meetingName: meeting.meetingName,
-      meetingDescription: meeting.meetingDescription,
+    return this.http.post(`${this.endpoint2}/api/Meeting`, {
+      description: meeting.meetingDescription,
       meetingType: meeting.meetingType,
-      startDateTime: meeting.startDateTime,
-      endDateTime: meeting.endDateTime,
-      owner: {
-        id: owner._id,
-        corporateID: owner._corporateId,
-        firstName: owner._firstName,
-        lastName: owner._lastName,
-        company: owner.company,
-        type: owner.type,
-        status: owner.status
+      completeStartDate: meeting.startDateTime,
+      completeEndDate: meeting.endDateTime,
+      host: {
+        employeeId: owner._id,
+        // corporateID: owner._corporateId,
+        // firstName: owner._firstName,
+        // lastName: owner._lastName,
+        // company: owner.company
       },
-      meetingStatus: meeting.meetingStatus,
+      organizer: {
+        employeeId: owner._id,
+        // corporateID: owner._corporateId,
+        // firstName: owner._firstName,
+        // lastName: owner._lastName,
+        // company: owner.company
+      },
+      createdBy: {
+        employeeId: owner._id,
+        // corporateID: owner._corporateId,
+        // firstName: owner._firstName,
+        // lastName: owner._lastName,
+        // company: owner.company
+      },
       room: {
-        Id: room.Id,
-        name: room.name,
-        localization: room.localization
+        roomId: room.Id,
       },
-      meetingReference: meeting.meetingReference
-    }, this.setHeaders()).toPromise();
+      reference: meeting.meetingReference
+    }, await this.setHeaders2()).toPromise();
   }
 
-  putMeeting(meeting: Meeting) {
-    return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
+  async putMeeting(meeting: Meeting) {
+    await this.http.put(`${this.endpoint2}/api/Meeting/` + meeting.id, {
       startDateTime: meeting.startDateTime,
       endDateTime: meeting.endDateTime,
       meetingStatus: meeting.meetingStatus,
-    }, this.setHeaders()).toPromise();
+    }, await this.setHeaders2()).toPromise();
 
   }
+
+  // deleteMeetingOld(meeting: Meeting) {
+  //   return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
+  //     startDateTime: meeting.startDateTime,
+  //     endDateTime: meeting.endDateTime,
+  //     meetingStatus: MeetingStatus.Cancelled
+  //   }, this.setHeaders()).toPromise();
+  // }
+
+  async deleteMeeting(meeting: Meeting) {
+    return this.http.delete(`${this.endpoint2}/api/Meeting/` + meeting.id, await this.setHeaders2()).toPromise();
+  }
+
+}
+
+
+
+
+  // postMeeting(meeting: Meeting) {
+  //   const owner = meeting.owner;
+  //   const room = meeting.room;
+  //   return this.http.post(this.endpoint + '/room_schedule', {
+  //     meetingName: meeting.meetingName,
+  //     meetingDescription: meeting.meetingDescription,
+  //     meetingType: meeting.meetingType,
+  //     startDateTime: meeting.startDateTime,
+  //     endDateTime: meeting.endDateTime,
+  //     owner: {
+  //       id: owner._id,
+  //       corporateID: owner._corporateId,
+  //       firstName: owner._firstName,
+  //       lastName: owner._lastName,
+  //       company: owner.company,
+  //       type: owner.type,
+  //       status: owner.status
+  //     },
+  //     meetingStatus: meeting.meetingStatus,
+  //     room: {
+  //       Id: room.Id,
+  //       name: room.name,
+  //       localization: room.localization
+  //     },
+  //     meetingReference: meeting.meetingReference
+  //   }, this.setHeaders()).toPromise();
+  // }
+
+  // putMeeting(meeting: Meeting) {
+  //   return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
+  //     startDateTime: meeting.startDateTime,
+  //     endDateTime: meeting.endDateTime,
+  //     meetingStatus: meeting.meetingStatus,
+  //   }, this.setHeaders()).toPromise();
+
+  // }
 
   // putMeeting(meetingId, start, end) {
   //   this.http.put(this.adminDataServ.serviceUrl + '/room_schedule/' + meetingId, {
@@ -297,17 +442,3 @@ export class GesroomService {
   //       this.toastr.error(error._body, 'Error!');
   //     });
   // }
-
-  deleteMeetingOld(meeting: Meeting) {
-    return this.http.put(this.endpoint + '/room_schedule/' + meeting.id, {
-      startDateTime: meeting.startDateTime,
-      endDateTime: meeting.endDateTime,
-      meetingStatus: MeetingStatus.Cancelled
-    },  this.setHeaders()).toPromise();
-  }
-
-  deleteMeeting(meeting: Meeting) {
-    return this.http.delete(this.endpoint + '/room_schedule/' + meeting.id,  this.setHeaders()).toPromise();
-  }
-
-}

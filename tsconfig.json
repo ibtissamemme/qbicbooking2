@@ -5,10 +5,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["dom", "es2015"],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "baseUrl": "./src",
     "paths": {
       "@app/env": ["environments/environment"]

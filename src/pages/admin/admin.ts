@@ -2,8 +2,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MeetingList } from './../../app/shared/meetingList';
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, LoadingController } from "ionic-angular";
-import { Site } from "../../app/shared/site";
-import { Room } from "../../app/shared/room";
+import { Site, siteFromJson } from "../../app/shared/site";
+import { Room, roomFromJSON } from "../../app/shared/room";
 import { GesroomService } from "../../services/gesroom.service";
 import { AdminService } from "../../services/admin.service";
 
@@ -46,7 +46,7 @@ export class AdminPage {
 
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.gesroomService.endpoint$.subscribe((data) => {
       this.endpoint = data;
     });
@@ -70,36 +70,56 @@ export class AdminPage {
     });
 
 
-    // get site list
-    this.gesroomService.getSites().then(data => {
+    this.sites = await this.gesroomService.getSites();
+    this.adminService.selectedSite$.subscribe((data) => {
       if (!data) {
-        return console.error('no site list data');
+        return console.error('no room list data');
       }
-      this.sites = data.json();
-      // this.sites.map((res) => console.log(res.name + "/" + res.Id));
+      this.selectedSite = data;
+      this.updateRooms();
+    });
 
-    }).then(() => {
 
-      // get selected site
-      this.adminService.selectedSite$.subscribe((data) => {
-        if (!data) {
-          return console.error('no room list data');
-        }
-        this.selectedSite = data;
-      })
-    }).then(() => {
-      if (this.selectedSite) {
-        // get room list
-        this.gesroomService.getRooms(this.selectedSite).then(data => {
-          if (!data) {
-            return console.log('no selected room data');
-          }
+    // // get site list
+    // this.gesroomService.getSites().then(data => {
+    //   if (!data) {
+    //     return console.error('no site list data');
+    //   }
+    //   this.sites = new Array<Site>();
+    //   const input = data.json().sort();
 
-          this.rooms = data.json().sort();
-        });
-      }
-    }
-    );
+    //   input.forEach(element => {
+    //     this.sites.push(siteFromJson(element));
+    //   });
+    //   // this.sites = data.json();
+    //   // this.sites.map((res) => console.log(res.name + "/" + res.Id));
+
+    // }).then(() => {
+
+    //   // get selected site
+    //   this.adminService.selectedSite$.subscribe((data) => {
+    //     if (!data) {
+    //       return console.error('no room list data');
+    //     }
+    //     this.selectedSite = data;
+    //   })
+    // }).then(() => {
+    //   if (this.selectedSite) {
+    //     // get room list
+    //     this.gesroomService.getRooms(this.selectedSite).then(data => {
+    //       if (!data) {
+    //         return console.log('no selected room data');
+    //       }
+    //       this.rooms = data;
+    //       // this.rooms = new Array<Room>();
+    //       // const input = data.json().sort();
+    //       // input.forEach(element => {
+    //       //   this.rooms.push(roomFromJSON(element));
+    //       // });
+    //     });
+    //   }
+    // }
+    // );
 
 
     // get selected room
@@ -128,9 +148,15 @@ export class AdminPage {
   onSiteChange() {
     console.log("new site: " + this.selectedSite.name);
     // set and store + returns the room list
-    this.gesroomService.getRoomsIbs(this.selectedSite).subscribe((data) => {
-      this.rooms = data.json().sort((a, b) => a.name.localeCompare(b.name));
-    });
+
+    this.updateRooms();
+    // this.gesroomService.getRooms(this.selectedSite).then((data) => {
+    //   if(data && Array.isArray(data)){
+
+    //     this.rooms = data;
+    //     // this.rooms = data.json().sort((a, b) => a.name.localeCompare(b.name));
+    //   }
+    // });
   }
 
   onRoomChange() {
@@ -169,6 +195,7 @@ export class AdminPage {
     this.bookingStartHour = Number.parseInt(this.bookingStartHour);
     this.bookingEndHour = Number.parseInt(this.bookingEndHour);
 
+    // TODO: translate this....
     if(!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)){
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
@@ -204,6 +231,16 @@ export class AdminPage {
     setTimeout(() => this.navCtrl.popToRoot(),500);
 
   }
+
+  // updates rooms on site change
+  async updateRooms(){
+    if (this.selectedSite) {
+      // get room list
+      this.rooms = await this.gesroomService.getRooms(this.selectedSite);
+    }
+  }
+
+
   onCancelClicked() {
     // go back to the root page
     this.navCtrl.popToRoot();

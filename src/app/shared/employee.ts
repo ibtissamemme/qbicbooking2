@@ -1,3 +1,13 @@
+interface ConstructorType {
+  id: number
+  corporateID: string
+  firstName: string
+  lastName: string
+  company: string
+  type: any
+  status: any
+}
+
 export class Employee {
 
   // Old API
@@ -19,6 +29,14 @@ export class Employee {
   PersonVisitedId: string;
   SiteId: string;
 
+  constructor(input:ConstructorType){
+    this.id = input.id;
+    this.corporateID = input.corporateID;
+    this.firstName = input.firstName;
+    this.lastName = input.lastName;
+    this.type = input.type;
+    this.status = input.status;
+  }
 
   // constructor(id: number, corporateID: string, firstName: string, lastName: string, company: string, type: any, status: any) {
   //   this.id = id;
@@ -44,4 +62,18 @@ export class Employee {
   get _id(){
     return this.id ? this.id : this.PersonVisitedId;
   }
+}
+
+export function EmployeeFromJSON(json: Object): Employee {
+
+  let input:ConstructorType = {
+    id: json['userId']?json['userId']:json['employeeId'],
+    corporateID: json['corporateId'],
+    firstName: json['firstName'],
+    lastName: json['lastName'],
+    company: json['company'],
+    type: json['attendeeType'],
+    status: json['attendeeStatus']
+  }
+  return new Employee(input);
 }
