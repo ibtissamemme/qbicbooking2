@@ -220,45 +220,45 @@ export class GesroomService {
   async getEmployeeDetails(corporateId: string, site: Site) {
     const resp = await this.http.get(`${this.endpoint2}/api/User?UserName=${corporateId}`, await this.setHeaders2()).toPromise();
 
-    // if (resp.json()) {
-    //   let ret: Employee
-    //   if (Array.isArray(resp.json())) {
-    //     // for some reason we get back an array
-    //     ret = EmployeeFromJSON(resp.json()[0]);
-    //   } else {
-    //     ret = EmployeeFromJSON(resp.json());
-    //   }
-    //   return ret;
-    // }
+    if (resp) {
+      let ret: Employee
+      if (Array.isArray(resp)) {
+        // for some reason we get back an array
+        ret = EmployeeFromJSON(resp[0]);
+      } else {
+        ret = EmployeeFromJSON(resp);
+      }
+      return ret;
+    }
     return null;
   }
 
   async checkEmployeeRights(action: string, meeting: Meeting, emp: Employee): Promise<boolean> {
-    const resp = await this.http.get(`${this.endpoint2}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
-    // if (resp.json()) {
-    //   let ret: boolean = resp.json();
-    //   return ret;
-    // }
+    const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
+    if (resp) {
+      let ret: boolean = resp;
+      return ret;
+    }
     return undefined;
   }
 
   async checkRoomRights(room: Room, emp: Employee): Promise<boolean> {
     const resp = await this.http.get(`${this.endpoint2}/api/CheckRightRoom?roomId=${room.Id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
-    // if (resp.json()) {
-    //   let ret: boolean = resp.json();
-    //   return ret;
-    // }
+    if (resp) {
+      let ret: boolean = resp=="true" ? true : false;
+      return ret;
+    }
     return undefined;
   }
 
   async getSites() {
     const sites = new Array<Site>();
     const resp = await this.http.get(`${this.endpoint2}/api/Site`, await this.setHeaders2()).toPromise();
-    // if (resp.json() && Array.isArray(resp.json())) {
-    //   resp.json().forEach(element => {
-    //     sites.push(siteFromJson(element));
-    //   });
-    // }
+    if (resp && Array.isArray(resp)) {
+      resp.forEach(element => {
+        sites.push(siteFromJson(element));
+      });
+    }
     return sites;
   }
 
@@ -269,12 +269,11 @@ export class GesroomService {
         .get(`${this.endpoint2}/api/Room?siteId=${site.Id}`, await this.setHeaders2())
         .toPromise();
 
-
-      // if (resp.json() && Array.isArray(resp.json())) {
-      //   resp.json().forEach(element => {
-      //     rooms.push(roomFromJSON(element));
-      //   });
-      // }
+        if (resp && Array.isArray(resp)) {
+        resp.forEach(element => {
+          rooms.push(roomFromJSON(element));
+        });
+      }
     } catch (error) {
       if(error.status !== 404){
         throw error;
