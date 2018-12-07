@@ -307,6 +307,7 @@ export class GesroomService {
       } catch (error) {
         if(error.name === "TimeoutError"){
           console.error(error);
+          return;
         }
         // for the API, a 404 equals to no meeting
         if(error.status !== 404){

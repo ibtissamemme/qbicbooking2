@@ -22,7 +22,7 @@ export class BookingPage {
   room: Room = this.navParams.get('room');
 
   emp: Employee = null;
-  timer:number = 3000;
+  timer: number = 3000;
 
 
   msgSearchingAccouunt: string = "Recherche de votre compte...";
@@ -34,7 +34,7 @@ export class BookingPage {
   msgBookingDone: string = "Réservation de votre réunion en cours...";
   msgUnauthorized: string = "Vous n'êtes pas authorisé à réserver cette salle";
 
-  isPinInClearText:boolean;
+  isPinInClearText: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
 
@@ -43,11 +43,11 @@ export class BookingPage {
   ionViewDidLoad() {
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.updateTranslations();
 
     this.adminService.isPinInClearText$.subscribe((data) => {
-      if(!data) {
+      if (!data) {
         return;
       }
       this.isPinInClearText = data;
@@ -65,14 +65,14 @@ export class BookingPage {
     loadingEmployee.present();
 
     const corporateId = this.adminService.corporateIdRadical + pinCode;
-    const site=this.adminService.selectedSite;
+    const site = this.adminService.selectedSite;
     this.emp = null;
     try {
       // get employee info based on the corporate ID
-      this.emp =  await this.gesroomService.getEmployeeDetails(corporateId, site);
+      this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
 
       // if something went wrong...
-      if(!this.emp){
+      if (!this.emp) {
         const errorEmp = this.loadingCtrl.create({
           spinner: 'hide',
           content: this.msgAccountNotFound,
@@ -86,7 +86,7 @@ export class BookingPage {
       } else {
         // if OK, check if employee can book a meeting on this room
         const isEmployeeOk: Boolean = await this.gesroomService.checkRoomRights(this.room, this.emp);
-        if(!isEmployeeOk){
+        if (!isEmployeeOk) {
           const errorEmp = this.loadingCtrl.create({
             spinner: 'hide',
             content: this.msgUnauthorized,
@@ -105,7 +105,7 @@ export class BookingPage {
     } catch (error) {
       let alert = this.alertCtrl.create({
         title: this.msgErrorTitle,
-        subTitle: this.msgBookingError+error,
+        subTitle: this.msgBookingError + error,
         buttons: [this.msgBack],
         cssClass: "prompt"
       });
@@ -135,7 +135,7 @@ export class BookingPage {
     // });
 
 
-    if(!this.isEmployeeReady()){
+    if (!this.isEmployeeReady()) {
       const errorEmp = this.loadingCtrl.create({
         spinner: 'hide',
         content: this.msgAccountNotFound,
@@ -158,39 +158,39 @@ export class BookingPage {
   async confirmBooking() {
     // TODO : maybe check the user rights again?
     //if (this.adminService.isUserAuthorized(this.emp._corporateId)) {
-      const loadingMeeting = this.loadingCtrl.create({
-        spinner: 'dots',
-        content: this.msgPending,
+    const loadingMeeting = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: this.msgPending,
+      cssClass: "prompt"
+    });
+    loadingMeeting.present();
+    this.bookMeeting(this.start, this.end.subtract(1, "seconds"), this.emp, this.room).then((data) => {
+      loadingMeeting.dismiss();
+      const confirm = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: this.msgBookingDone,
         cssClass: "prompt"
       });
-      loadingMeeting.present();
-      this.bookMeeting(this.start, this.end.subtract(1,"seconds"), this.emp, this.room).then( (data)=> {
-        loadingMeeting.dismiss();
-        const confirm = this.loadingCtrl.create({
-          spinner: 'hide',
-          content: this.msgBookingDone,
-          cssClass: "prompt"
-        });
-        confirm.present();
-        setTimeout(() => {
-          confirm.dismiss();
-          this.onCancelClicked();
-        }, this.timer);
-      },(reason) => {
-        loadingMeeting.dismiss();
-        let alert = this.alertCtrl.create({
-          title: this.msgErrorTitle,
-          subTitle: `${this.msgBookingError}: ${reason.status}<br>${reason.message}<br>${reason.error ? reason.error.message : ''}`,
-          buttons: [this.msgBack],
-          cssClass: 'alert'
-        });
-        alert.present();
-        setTimeout(() => {
-          alert.dismiss();
-          this.onCancelClicked();
-        }, this.timer);
-      }
-    )
+      confirm.present();
+      setTimeout(() => {
+        confirm.dismiss();
+      }, this.timer);
+    }, (reason) => {
+      loadingMeeting.dismiss();
+      let alert = this.alertCtrl.create({
+        title: this.msgErrorTitle,
+        subTitle: `${this.msgBookingError}: ${reason.status}<br>${reason.message}<br>${reason.error ? reason.error.message : ''}`,
+        buttons: [this.msgBack],
+        cssClass: 'alert'
+      });
+      alert.present();
+      setTimeout(() => {
+        alert.dismiss();
+      }, this.timer);
+    }
+    );
+
+    this.onCancelClicked();
 
     // }
     // else {
@@ -206,12 +206,12 @@ export class BookingPage {
 
 
   async bookMeeting(start: moment.Moment, end: moment.Moment, employee: Employee, room: Room) {
-    const title:string = "Réservation depuis tablette";
+    const title: string = "Réservation depuis tablette";
     const input: MeetingConstructorInput = {
-      id:null,
+      id: null,
       meetingDescription: title,
       startDateTime: start,
-      endDateTime:end,
+      endDateTime: end,
       owner: employee,
       room: room
     };
@@ -219,39 +219,39 @@ export class BookingPage {
 
 
 
-      // null,
-      // null,
-      // null,
-      // title,
-      // "",
-      // MeetingType.Meeting /*meetintype*/,
-      // MeetingStatus.NotStarted /* meeting status*/,
-      // start,
-      // end,
-      // employee,
-      // room,
-      // '');
+    // null,
+    // null,
+    // null,
+    // title,
+    // "",
+    // MeetingType.Meeting /*meetintype*/,
+    // MeetingStatus.NotStarted /* meeting status*/,
+    // start,
+    // end,
+    // employee,
+    // room,
+    // '');
 
     await this.gesroomService.postMeeting(meeting);
   }
 
-  isEmployeeReady():boolean{
-    if(!this.emp){
+  isEmployeeReady(): boolean {
+    if (!this.emp) {
       return false;
     }
-    else if(!this.emp.id){
+    else if (!this.emp.id) {
       return false;
     }
     return true;
   }
 
-  onCancelClicked(){
+  onCancelClicked() {
     // dismiss modal
     this.viewCtrl.dismiss();
   }
 
 
-  async updateTranslations(){
+  async updateTranslations() {
     await this.translate.get('BOOKING.SEARCHING').toPromise().then((res) => {
       this.msgSearchingAccouunt = res;
     });
