@@ -79,12 +79,14 @@ export function meetingFromJSON(input: Object) {
       attendies.push(EmployeeFromJSON(element));
     });
   }
+  const owner = EmployeeFromJSON(input['host']);
 
   let temp: MeetingConstructorInput = {
     id: input['meetingId'],
     attendies: attendies,
-    startDateTime: moment(input['completeStartDate']),
-    endDateTime: moment(input['completeEndDate']),
+    owner: owner,
+    startDateTime: moment(input['meetingStartDate']),
+    endDateTime: moment(input['meetingEndDate']),
   };
 
   return new Meeting(temp);

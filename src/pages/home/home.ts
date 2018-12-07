@@ -111,7 +111,7 @@ export class HomePage {
     private gesroomService: GesroomService,
     public events: Events,
     private modalCtrl: ModalController,
-    private alertController: AlertController,
+    private alertCtrl: AlertController,
     private translate: TranslateService,
     private loadingCtrl: LoadingController,
     private tabletService: TabletService,
@@ -579,6 +579,10 @@ export class HomePage {
     this.meeting.meetingStatus = MeetingStatus.Started;
     let updatePending: string = "Modification de votre réservation en cours...";
     let updateDone: string = "Modification de votre réservation effectuée.";
+    let msgBookingError: string = "Une erreur est survenue : ";
+    let msgErrorTitle: string = "Erreur";
+    let msgError: string = "Une erreur est survenue : ";
+    let msgBack: string = "Retour";
 
     await this.translate.get('UPDATE.PENDING').toPromise().then((res) => {
       updatePending = res;
@@ -594,22 +598,39 @@ export class HomePage {
     });
     loadingMeeting.present();
 
-    this.gesroomService.putMeeting(this.meeting)
-      .then((res) => {
-        //console.log(res);
-        loadingMeeting.dismiss();
-        const confirm = this.loadingCtrl.create({
-          spinner: 'hide',
-          content: updateDone,
-          cssClass: 'prompt'
+    try{
+      this.gesroomService.putMeeting(this.meeting)
+        .then((res) => {
+          //console.log(res);
+          //loadingMeeting.dismiss();
+          const confirm = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: updateDone,
+            cssClass: 'prompt'
+          });
+          confirm.present();
+          setTimeout(() => {
+            confirm.dismiss();
+            this.refresh();
+            this.isOverlayDisplayed = false;
+          }, this.promptTimer);
         });
-        confirm.present();
-        setTimeout(() => {
-          confirm.dismiss();
-          this.refresh();
-          this.isOverlayDisplayed = false;
-        }, this.promptTimer);
+    } catch (error){
+
+      let alert = this.alertCtrl.create({
+        title: msgErrorTitle,
+        subTitle: `${msgBookingError}: ${error.status}<br>${error.message}<br>${error.error ? error.error.message : ''}`,
+        buttons: [msgBack],
+        cssClass: 'alert'
       });
+      alert.present();
+      setTimeout(() => {
+        alert.dismiss();
+      }, this.promptTimer);
+    } finally {
+      loadingMeeting.dismiss();
+    }
+
     this.isSomethingElseDisplayed = false;
     this.refresh();
     // force refresh of the button colors => remove the orange if cancelled
@@ -689,7 +710,7 @@ export class HomePage {
         }, this.promptTimer);
       }, (reason) => {
         loadingMeeting.dismiss();
-        let alert = this.alertController.create({
+        let alert = this.alertCtrl.create({
           title: 'Erreur',
           subTitle: "Une erreur est survenue : " + reason,
           buttons: ['retour']

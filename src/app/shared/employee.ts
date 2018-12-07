@@ -65,6 +65,9 @@ export class Employee {
 }
 
 export function EmployeeFromJSON(json: Object): Employee {
+  if(json === undefined){
+    return undefined;
+  }
 
   let input:ConstructorType = {
     id: json['userId']?json['userId']:json['employeeId'],

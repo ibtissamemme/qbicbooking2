@@ -28,6 +28,7 @@ export class CheckPincodePage {
   msgError: string = "Une erreur est survenue : ";
   msgErrorTitle: string = "Erreur";
   msgBack: string = "Retour";
+  msgUnauthorized: string = "Vous n'êtes pas authorisé à réserver cette salle";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
 
@@ -56,6 +57,53 @@ export class CheckPincodePage {
 
     const corporateId = this.adminService.corporateIdRadical + pinCode;
     const site=this.adminService.selectedSite;
+
+    try {
+      // get employee info based on the corporate ID
+      this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
+      //loadingEmployee.dismiss();
+
+      // if something went wrong...
+      if(!this.emp){
+        const errorEmp = this.loadingCtrl.create({
+          spinner: 'hide',
+          content: this.msgNotFound,
+          cssClass: "prompt",
+        });
+        errorEmp.present();
+        setTimeout(() => {
+          errorEmp.dismiss();
+        }, this.timer);
+        return;
+      } else {
+        // if OK, check if employee can book a meeting on this room
+        const isEmployeeOk: Boolean = await this.gesroomService.checkRoomRights(this.adminService.selectedRoom, this.emp);
+        if(!isEmployeeOk){
+          const errorEmp = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: this.msgUnauthorized,
+            cssClass: "prompt",
+          });
+          errorEmp.present();
+          setTimeout(() => {
+            errorEmp.dismiss();
+            //loadingEmployee.dismiss();
+          }, this.timer);
+        }
+      }
+    } catch (error) {
+      let alert = this.alertCtrl.create({
+        title: this.msgErrorTitle,
+        subTitle: this.msgError+error,
+        buttons: [this.msgBack],
+        cssClass: "prompt"
+      });
+      alert.present();
+    } finally {
+      loadingEmployee.dismiss();
+       // return to the parent
+    this.viewCtrl.dismiss(this.emp);
+    }
     // this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
     //   if(data){
     //     // for some reason we get back an array
@@ -87,8 +135,7 @@ export class CheckPincodePage {
     //   }, this.timer);
     // }
 
-    // return to the parent
-    this.viewCtrl.dismiss(this.emp);
+
   }
 
   async onPinCancel() {
@@ -124,6 +171,8 @@ export class CheckPincodePage {
     await this.translate.get('BOOKING.BACK').toPromise().then((res) => {
       this.msgBack = res;
     });
-
+    await this.translate.get('BOOKING.UNAUTHORIZED').toPromise().then((res) => {
+      this.msgUnauthorized = res;
+    });
   }
 }

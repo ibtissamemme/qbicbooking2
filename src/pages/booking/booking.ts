@@ -69,7 +69,7 @@ export class BookingPage {
     this.emp = null;
     try {
       // get employee info based on the corporate ID
-      this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
+      this.emp =  await this.gesroomService.getEmployeeDetails(corporateId, site);
 
       // if something went wrong...
       if(!this.emp){
@@ -92,10 +92,13 @@ export class BookingPage {
             content: this.msgUnauthorized,
             cssClass: "prompt",
           });
+
           errorEmp.present();
           setTimeout(() => {
             errorEmp.dismiss();
             loadingEmployee.dismiss();
+            // and go back to the home page
+            this.onCancelClicked();
           }, this.timer);
         }
       }
@@ -161,7 +164,7 @@ export class BookingPage {
         cssClass: "prompt"
       });
       loadingMeeting.present();
-      this.bookMeeting(this.start, this.end.subtract(1,"seconds"), this.emp, this.room).then( (data )=> {
+      this.bookMeeting(this.start, this.end.subtract(1,"seconds"), this.emp, this.room).then( (data)=> {
         loadingMeeting.dismiss();
         const confirm = this.loadingCtrl.create({
           spinner: 'hide',
@@ -177,7 +180,7 @@ export class BookingPage {
         loadingMeeting.dismiss();
         let alert = this.alertCtrl.create({
           title: this.msgErrorTitle,
-          subTitle: this.msgBookingError+reason,
+          subTitle: `${this.msgBookingError}: ${reason.status}<br>${reason.message}<br>${reason.error ? reason.error.message : ''}`,
           buttons: [this.msgBack],
           cssClass: 'alert'
         });
@@ -206,8 +209,6 @@ export class BookingPage {
     const title:string = "Réservation depuis tablette";
     const input: MeetingConstructorInput = {
       id:null,
-      meetingType: MeetingType.Meeting,
-      meetingStatus: MeetingStatus.NotStarted,
       meetingDescription: title,
       startDateTime: start,
       endDateTime:end,

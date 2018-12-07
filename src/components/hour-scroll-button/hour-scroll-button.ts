@@ -303,7 +303,7 @@ export class HourScrollButtonComponent {
   }
 
 
-
+  // Meeting details page & cancel logic
   checkAttachedMeeting() {
     if (this.attachedMeeting) {
       console.log(this.attachedMeeting);
@@ -316,9 +316,7 @@ export class HourScrollButtonComponent {
 
 
       myModal.onDidDismiss((ret: boolean) => {
-        if (ret) {
           this.events.publish('forcerefresh', true);
-        }
       });
 
       myModal.present();

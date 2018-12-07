@@ -210,31 +210,36 @@ export class GesroomService {
   async getRoomCapacity(room: Room) {
     //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
     let cap = 8;
-    await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise().then((data) => {
-      cap = data['Capacity'];
-    });
-
+    const resp = await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise();
+    if(resp && Array.isArray(resp)){
+      cap = resp[0]['capacity'];
+    }
     return cap;
   }
 
   async getEmployeeDetails(corporateId: string, site: Site) {
-    const resp = await this.http.get(`${this.endpoint2}/api/User?UserName=${corporateId}`, await this.setHeaders2()).toPromise();
+    const resp = await this.http.get(`${this.endpoint2}/api/Employee?corporateId=${corporateId}`, await this.setHeaders2()).toPromise();
 
     if (resp) {
       let ret: Employee
       if (Array.isArray(resp)) {
+        if(resp.length === 0){
+          return null;
+        }
         // for some reason we get back an array
         ret = EmployeeFromJSON(resp[0]);
       } else {
         ret = EmployeeFromJSON(resp);
       }
-      return ret;
+      if(ret.id !== null){
+        return ret;
+      }
     }
     return null;
   }
 
   async checkEmployeeRights(action: string, meeting: Meeting, emp: Employee): Promise<boolean> {
-    const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
+    const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&employeeId=${emp.id}`, await this.setHeaders2()).toPromise();
     if (resp) {
       let ret: boolean = resp;
       return ret;
@@ -243,12 +248,14 @@ export class GesroomService {
   }
 
   async checkRoomRights(room: Room, emp: Employee): Promise<boolean> {
-    const resp = await this.http.get(`${this.endpoint2}/api/CheckRightRoom?roomId=${room.Id}&userId=${emp.id}`, await this.setHeaders2()).toPromise();
-    if (resp) {
-      let ret: boolean = resp=="true" ? true : false;
-      return ret;
+    try {
+      const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightRoom?roomId=${room.Id}&employeeId=${emp.id}`, await this.setHeaders2()).toPromise();
+      return resp;
+    } catch (error) {
+      if(error.status !== 404){
+        throw error;
+      }
     }
-    return undefined;
   }
 
   async getSites() {
@@ -298,6 +305,9 @@ export class GesroomService {
           });
         }
       } catch (error) {
+        if(error.name === "TimeoutError"){
+          console.error(error);
+        }
         // for the API, a 404 equals to no meeting
         if(error.status !== 404){
           throw error;
@@ -335,42 +345,19 @@ export class GesroomService {
     const room = meeting.room;
     return this.http.post(`${this.endpoint2}/api/Meeting`, {
       description: meeting.meetingDescription,
-      meetingType: meeting.meetingType,
-      completeStartDate: meeting.startDateTime,
-      completeEndDate: meeting.endDateTime,
-      host: {
-        employeeId: owner._id,
-        // corporateID: owner._corporateId,
-        // firstName: owner._firstName,
-        // lastName: owner._lastName,
-        // company: owner.company
-      },
-      organizer: {
-        employeeId: owner._id,
-        // corporateID: owner._corporateId,
-        // firstName: owner._firstName,
-        // lastName: owner._lastName,
-        // company: owner.company
-      },
-      createdBy: {
-        employeeId: owner._id,
-        // corporateID: owner._corporateId,
-        // firstName: owner._firstName,
-        // lastName: owner._lastName,
-        // company: owner.company
-      },
-      room: {
-        roomId: room.Id,
-      },
-      reference: meeting.meetingReference
+      meetingStartDate: meeting.startDateTime,
+      meetingEndDate: meeting.endDateTime,
+      organizerId: owner.id,
+      hostId: owner.id,
+      roomId: room.Id
     }, await this.setHeaders2()).toPromise();
   }
 
   async putMeeting(meeting: Meeting) {
-    await this.http.put(`${this.endpoint2}/api/Meeting/` + meeting.id, {
-      startDateTime: meeting.startDateTime,
-      endDateTime: meeting.endDateTime,
-      meetingStatus: meeting.meetingStatus,
+    await this.http.put(`${this.endpoint2}/api/Meeting/${meeting.id}`, {
+        meetingStartDate: meeting.startDateTime,
+        meetingEndDate: meeting.endDateTime,
+        meetingId: meeting.id
     }, await this.setHeaders2()).toPromise();
 
   }
@@ -384,7 +371,7 @@ export class GesroomService {
   // }
 
   async deleteMeeting(meeting: Meeting) {
-    return this.http.delete(`${this.endpoint2}/api/Meeting/` + meeting.id, await this.setHeaders2()).toPromise();
+    return this.http.delete(`${this.endpoint2}/api/Meeting/${meeting.id}`, await this.setHeaders2()).toPromise();
   }
 
 }
