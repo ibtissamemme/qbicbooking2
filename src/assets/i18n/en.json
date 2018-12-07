@@ -46,7 +46,8 @@
     "BOOKING_RANGE": "Booking range, start and end hours",
     "BOOKING_START": "Starting hour",
     "BOOKING_END": "Ending hour",
-    "PIN_VISIBILITY":"Display the pin code in clear text"
+    "PIN_VISIBILITY":"Display the pin code in clear text",
+    "REBOOT": "Reboot the device"
   },
   "BOOKING": {
     "TITLE": "Room booking",

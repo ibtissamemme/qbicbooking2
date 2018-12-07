@@ -148,7 +148,20 @@ export class TabletService {
         );
     }
   }
-
+  public rebootTablet(){
+    this.http
+    .post(  "http://localhost:8080/v1/reboot"
+     , this.options
+    )
+    .subscribe(
+      data => {
+        //console.log("success");
+      },
+      error => {
+        //console.log(error);
+      }
+    );
+  }
 //   public getserialnumber() {
 //     if (this.detectmob()) {
 //       this.http

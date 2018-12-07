@@ -93,7 +93,7 @@ import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './utils/timeoutInterceptor'
     TabletService,
     AdminService,
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
-    { provide: DEFAULT_TIMEOUT, useValue: 10000},
+    { provide: DEFAULT_TIMEOUT, useValue: 60000},
   ]
 })
 export class AppModule { }

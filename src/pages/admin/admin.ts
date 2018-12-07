@@ -1,3 +1,4 @@
+import { TabletService } from './../../services/tablet.service';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MeetingList } from './../../app/shared/meetingList';
 import { Component } from "@angular/core";
@@ -41,6 +42,7 @@ export class AdminPage {
     public navParams: NavParams,
     private gesroomService: GesroomService,
     private adminService: AdminService,
+    private tabletService: TabletService,
     private loadingCtrl:LoadingController
   ) {
 
@@ -229,8 +231,13 @@ export class AdminPage {
     this.onSaveAPIParam();
     // go back to the root page
     setTimeout(() => this.navCtrl.popToRoot(),500);
-
   }
+
+  // reboot the device
+  onRebootClick(){
+    this.tabletService.rebootTablet();
+  }
+
 
   // updates rooms on site change
   async updateRooms(){

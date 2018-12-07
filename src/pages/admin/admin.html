@@ -110,6 +110,14 @@
 
     </ion-item-group>
 
+    <ion-item-group>
+      <button ion-button outline icon-start (click)="onRebootClick()">
+        <ion-icon name="power"></ion-icon>
+        {{ 'ADMIN.REBOOT' | translate }}
+      </button>
+
+    </ion-item-group>
+
 
   </ion-list>
 </ion-content>
