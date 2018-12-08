@@ -111,6 +111,10 @@
     </ion-item-group>
 
     <ion-item-group>
+      <button ion-button outline icon-start (click)="onCloseAppClick()">
+        <ion-icon name="exit"></ion-icon>
+        {{ 'ADMIN.EXIT' | translate }}
+      </button>
       <button ion-button outline icon-start (click)="onRebootClick()">
         <ion-icon name="power"></ion-icon>
         {{ 'ADMIN.REBOOT' | translate }}

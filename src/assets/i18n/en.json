@@ -47,7 +47,8 @@
     "BOOKING_START": "Starting hour",
     "BOOKING_END": "Ending hour",
     "PIN_VISIBILITY":"Display the pin code in clear text",
-    "REBOOT": "Reboot the device"
+    "REBOOT": "Reboot the device",
+    "EXIT": "Close application"
   },
   "BOOKING": {
     "TITLE": "Room booking",

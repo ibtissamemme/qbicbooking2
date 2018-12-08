@@ -2,7 +2,7 @@ import { TabletService } from './../../services/tablet.service';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MeetingList } from './../../app/shared/meetingList';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, LoadingController } from "ionic-angular";
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from "ionic-angular";
 import { Site, siteFromJson } from "../../app/shared/site";
 import { Room, roomFromJSON } from "../../app/shared/room";
 import { GesroomService } from "../../services/gesroom.service";
@@ -15,6 +15,7 @@ import { AdminService } from "../../services/admin.service";
   templateUrl: "admin.html"
 })
 export class AdminPage {
+  platform: Platform;
   sites: Site[] = [];
   rooms: Room[] = [];
   selectedSite: Site;
@@ -43,9 +44,10 @@ export class AdminPage {
     private gesroomService: GesroomService,
     private adminService: AdminService,
     private tabletService: TabletService,
-    private loadingCtrl:LoadingController
+    private loadingCtrl:LoadingController,
+    private _platform: Platform
   ) {
-
+    this.platform = _platform;
   }
 
   async ionViewWillEnter() {
@@ -229,7 +231,9 @@ export class AdminPage {
   onRebootClick(){
     this.tabletService.rebootTablet();
   }
-
+  onCloseAppClick(){
+      this.platform.exitApp();
+  }
 
   // updates rooms on site change
   async updateRooms(){
