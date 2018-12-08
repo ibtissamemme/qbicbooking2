@@ -150,15 +150,7 @@ export class AdminPage {
   onSiteChange() {
     console.log("new site: " + this.selectedSite.name);
     // set and store + returns the room list
-
     this.updateRooms();
-    // this.gesroomService.getRooms(this.selectedSite).then((data) => {
-    //   if(data && Array.isArray(data)){
-
-    //     this.rooms = data;
-    //     // this.rooms = data.json().sort((a, b) => a.name.localeCompare(b.name));
-    //   }
-    // });
   }
 
   onRoomChange() {
@@ -244,6 +236,7 @@ export class AdminPage {
     if (this.selectedSite) {
       // get room list
       this.rooms = await this.gesroomService.getRooms(this.selectedSite);
+      this.rooms = this.rooms.sort((a, b) => a.name.localeCompare(b.name));
     }
   }
 
