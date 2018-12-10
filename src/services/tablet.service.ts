@@ -67,7 +67,7 @@ export class TabletService {
       this.http
         .post(
           "http://localhost:8080/v1/led/front_led",
-          JSON.stringify({ red: r, green: g, blue: b }),
+          { red: r, green: g, blue: b },
           this.options
         )
         .subscribe(
@@ -86,7 +86,7 @@ export class TabletService {
       this.http
         .post(
           "http://localhost:8080/v1/led/led_bars",
-          JSON.stringify({ red: r, green: g, blue: b }),
+          { red: r, green: g, blue: b },
           this.options
         )
         .subscribe(
