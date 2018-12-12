@@ -346,8 +346,8 @@ export class GesroomService {
     const room = meeting.room;
     return this.http.post(`${this.endpoint2}/api/Meeting`, {
       description: meeting.meetingDescription,
-      meetingStartDate: meeting.startDateTime,
-      meetingEndDate: meeting.endDateTime,
+      meetingStartDate: meeting.startDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
+      meetingEndDate: meeting.endDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
       organizerId: owner.id,
       hostId: owner.id,
       roomId: room.Id
@@ -356,8 +356,8 @@ export class GesroomService {
 
   async putMeeting(meeting: Meeting) {
     await this.http.put(`${this.endpoint2}/api/Meeting/${meeting.id}`, {
-        meetingStartDate: meeting.startDateTime,
-        meetingEndDate: meeting.endDateTime,
+        meetingStartDate: meeting.startDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
+        meetingEndDate: meeting.endDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
         meetingId: meeting.id
     }, await this.setHeaders2()).toPromise();
 

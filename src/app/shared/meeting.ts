@@ -85,8 +85,8 @@ export function meetingFromJSON(input: Object) {
     id: input['meetingId'],
     attendies: attendies,
     owner: owner,
-    startDateTime: moment(input['meetingStartDate']),
-    endDateTime: moment(input['meetingEndDate']),
+    startDateTime: moment(input['meetingStartDate'], 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+    endDateTime: moment(input['meetingEndDate'], 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
   };
 
   return new Meeting(temp);
