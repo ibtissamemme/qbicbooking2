@@ -28,25 +28,39 @@
 
     <ion-row text-center>
       <ion-col>
-        <h4>
+        <h3>
           {{ meeting.meetingName }}
+        </h3>
+        <br>
+        <h4>
+          {{ meeting.meetingDescription }}
         </h4>
       </ion-col>
     </ion-row>
 
     <ion-row text-left>
+      <ion-col></ion-col>
       <ion-col>
         <div>
           Organisateur : {{ meeting?.owner.firstName }} {{ meeting?.owner.lastName }}
         </div>
       </ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
     </ion-row>
     <ion-row text-left>
+      <ion-col></ion-col>
       <ion-col>
         <div>
           De {{ meeting?.startDateTime.format('LT') }} à {{ meeting?.endDateTime.format('LT') }}
         </div>
       </ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
     </ion-row>
 
 <div padding>&nbsp;</div>
@@ -55,11 +69,11 @@
       <ion-col>
         <ion-icon  color="background" name="clipboard"></ion-icon>
       </ion-col>
-      <ion-col>Statut</ion-col>
-      <ion-col>Prénom</ion-col>
-      <ion-col>Nom</ion-col>
-      <ion-col>Société</ion-col>
-      <ion-col></ion-col>
+      <ion-col><h5>Statut</h5></ion-col>
+      <ion-col><h5>Nom</h5></ion-col>
+      <ion-col><h5>Prénom</h5></ion-col>
+      <ion-col><h5>Société</h5></ion-col>
+      <ion-col><h5></h5></ion-col>
     </ion-row>
   </ion-grid>
   </ion-header>
@@ -79,9 +93,9 @@
         <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === true" color="primary" name="checkmark"></ion-icon>
       </ion-col>
-      <ion-col>{{meeting?.meetingStatus.description}}</ion-col>
-      <ion-col>{{attendee.firstName}}</ion-col>
+      <ion-col>{{attendee.status}}</ion-col>
       <ion-col>{{attendee.lastName}}</ion-col>
+      <ion-col>{{attendee.firstName}}</ion-col>
       <ion-col>{{attendee.company}}</ion-col>
       <ion-col></ion-col>
     </ion-row>

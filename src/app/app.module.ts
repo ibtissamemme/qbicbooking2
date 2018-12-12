@@ -31,6 +31,8 @@ import { NfcCheckPageModule } from './../pages/nfc-check/nfc-check.module';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './utils/timeoutInterceptor';
 
+
+
 // import * as Sentry from 'sentry-cordova';
 // import { SentryIonicErrorHandler } from './SentryIonicErrorHandler';
 

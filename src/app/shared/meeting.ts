@@ -68,14 +68,31 @@ export class Meeting {
 export function meetingFromJSON(input: Object) {
   const attendies = new Array<Employee>();
 
+  // Method for sorting the array of employees by last name
+  let compare = (a, b) => {
+    // Use toUpperCase() to ignore character casing
+    const nameA = a.lastName.toUpperCase();
+    const nameB = b.lastName.toUpperCase();
+  
+    let comparison = 0;
+    if (nameA > nameB) {
+      comparison = 1;
+    } else if (nameA < nameB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   if(Array.isArray(input['Attendees'])){
     input['Attendees'].forEach(element => {
+      attendies.sort(compare);
       attendies.push(EmployeeFromJSON(element));
     });
   }
 
   if(Array.isArray(input['attendees'])){
     input['attendees'].forEach(element => {
+      attendies.sort(compare);
       attendies.push(EmployeeFromJSON(element));
     });
   }
