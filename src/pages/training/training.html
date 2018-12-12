@@ -29,7 +29,7 @@
     <ion-row text-center>
       <ion-col>
         <h4>
-          {{ meeting.meetingName }} {{ meeting.meetingDescription }}
+          {{ meeting.meetingName }}
         </h4>
       </ion-col>
     </ion-row>
@@ -55,17 +55,17 @@
       <ion-col>
         <ion-icon  color="background" name="clipboard"></ion-icon>
       </ion-col>
+      <ion-col>Statut</ion-col>
       <ion-col>Prénom</ion-col>
       <ion-col>Nom</ion-col>
       <ion-col>Société</ion-col>
+      <ion-col></ion-col>
     </ion-row>
   </ion-grid>
   </ion-header>
 
 
-<ion-content>
-
-
+<ion-content align-items-end>
   <ion-slides *ngIf="!meeting">
     <ion-slide *ngFor="let image of slideURLarray">
       <img src="{{image}}" alt="">
@@ -79,9 +79,11 @@
         <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === true" color="primary" name="checkmark"></ion-icon>
       </ion-col>
+      <ion-col>{{meeting?.meetingStatus.description}}</ion-col>
       <ion-col>{{attendee.firstName}}</ion-col>
       <ion-col>{{attendee.lastName}}</ion-col>
       <ion-col>{{attendee.company}}</ion-col>
+      <ion-col></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

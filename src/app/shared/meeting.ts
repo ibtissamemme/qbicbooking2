@@ -84,9 +84,12 @@ export function meetingFromJSON(input: Object) {
   let temp: MeetingConstructorInput = {
     id: input['meetingId'],
     attendies: attendies,
+    meetingName: input['description'],
+    meetingDescription: input['comment'],
     owner: owner,
     startDateTime: moment(input['meetingStartDate']),
     endDateTime: moment(input['meetingEndDate']),
+    meetingStatus: input['description']
   };
 
   return new Meeting(temp);

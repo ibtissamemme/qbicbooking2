@@ -34,6 +34,7 @@ export class Employee {
     this.corporateID = input.corporateID;
     this.firstName = input.firstName;
     this.lastName = input.lastName;
+    this.company = input.company;
     this.type = input.type;
     this.status = input.status;
   }
