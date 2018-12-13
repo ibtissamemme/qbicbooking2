@@ -66,7 +66,7 @@ export class Meeting {
 }
 
 export function meetingFromJSON(input: Object) {
-  const attendies = new Array<Employee>();
+  let attendies = new Array<Employee>();
 
   // Method for sorting the array of employees by last name
   let compare = (a, b) => {
@@ -83,6 +83,22 @@ export function meetingFromJSON(input: Object) {
     return comparison;
   }
 
+  // If there are duplicates, this method remove them 
+  const getUnique = (arr, comp) => {
+
+    const unique = arr
+         .map(e => e[comp])
+  
+       // store the keys of the unique objects
+      .map((e, i, final) => final.indexOf(e) === i && i)
+  
+       // eliminate the dead keys & store unique objects
+      .filter(e => arr[e]).map(e => arr[e]);
+  
+     return unique;
+  }
+   
+
   if(Array.isArray(input['Attendees'])){
     input['Attendees'].forEach(element => {
       attendies.sort(compare);
@@ -96,6 +112,11 @@ export function meetingFromJSON(input: Object) {
       attendies.push(EmployeeFromJSON(element));
     });
   }
+
+  // new array of attendies without duplicates
+  attendies = getUnique(attendies, 'id');
+
+
   const owner = EmployeeFromJSON(input['host']);
 
   let temp: MeetingConstructorInput = {

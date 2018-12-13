@@ -87,7 +87,9 @@
   </ion-slides>
   <ion-grid>
 
-    <ion-row *ngFor="let attendee of meeting?.attendies">
+    <ion-row *ngFor="let attendee of meeting?.attendies; index as i; odd as isOdd; even as isEven" 
+    [class.Odd]="isOdd" 
+    [class.Even]="isEven">
       <ion-col text-center>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === null" color="background" name="help"></ion-icon>
         <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
@@ -101,6 +103,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
 <!--
     <button ion-button outlined class="hidden" (click)="onAdminClicked()">&nbsp;</button>
     <ion-grid *ngIf="meeting">

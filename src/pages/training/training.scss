@@ -23,4 +23,9 @@ page-training {
     height: 50px;
   }
 
+  .Even {
+    background-color: color($colors, even-row);
+  }
+
+
 }
