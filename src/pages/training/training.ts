@@ -3,7 +3,7 @@ import { RoomType, Room } from './../../app/shared/room';
 import { GesroomService } from './../../services/gesroom.service';
 import { AdminPage } from './../admin/admin';
 import { MeetingList } from '../../app/shared/meetingList';
-import { Meeting } from 'app/shared/meeting';
+import { Meeting, States } from '../../app/shared/meeting';
 import { AdminService } from './../../services/admin.service';
 import { Component, ViewChild } from "@angular/core";
 import { IonicPage, NavController, Events, ModalController, Slides } from "ionic-angular";
@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../app/shared/employee';
 import { ENV } from '@app/env';
+import { TabletService } from './../../services/tablet.service';
 
 @IonicPage()
 @Component({
@@ -55,6 +56,7 @@ export class TrainingPage {
     private adminService: AdminService,
     private gesroomService: GesroomService,
     public events: Events,
+    public TabletService: TabletService,
     private modalCtrl: ModalController) {
 
 
@@ -63,6 +65,8 @@ export class TrainingPage {
   ionViewWillEnter() {
     moment.locale("fr");
     this.headerTime = moment();
+    // changing led to green
+    this.TabletService.changeLED(States.FREE);
 
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
@@ -158,12 +162,10 @@ export class TrainingPage {
         if (this.currentMeeting.startDateTime <= this.upcomingMeeting.startDateTime) {
           this.upcomingMeeting = null;
           this.meeting = this.currentMeeting;
-        }
-        else {
+        } else {
           this.meeting = this.upcomingMeeting;
         }
-      }
-      else {
+      } else {
         this.meeting = this.upcomingMeeting;
       }
       // this.headerColor = 'secondary';
