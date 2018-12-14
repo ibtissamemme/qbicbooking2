@@ -10,6 +10,7 @@ import { IonicPage, NavController, Events, ModalController, Slides } from "ionic
 import * as moment from "moment";
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../app/shared/employee';
+import { ENV } from '@app/env';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,8 @@ export class TrainingPage {
   // time displayed in the header
   headerTime: moment.Moment = moment();
   headerColor: string = 'primary';
+
+  logo: string = `assets/imgs/${ENV.logo}`;
 
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 50000;

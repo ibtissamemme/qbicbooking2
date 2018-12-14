@@ -101,19 +101,18 @@ export function meetingFromJSON(input: Object) {
 
   if(Array.isArray(input['Attendees'])){
     input['Attendees'].forEach(element => {
-      attendies.sort(compare);
       attendies.push(EmployeeFromJSON(element));
     });
   }
 
   if(Array.isArray(input['attendees'])){
     input['attendees'].forEach(element => {
-      attendies.sort(compare);
       attendies.push(EmployeeFromJSON(element));
     });
   }
-
-  // new array of attendies without duplicates
+  
+  attendies = attendies.sort(compare);
+  // Attendies without duplicates
   attendies = getUnique(attendies, 'id');
 
 
