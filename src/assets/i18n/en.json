@@ -14,6 +14,14 @@
     "OVERLAY_HELPER": "Touch the screen to make a reservation",
     "BOOKING_DISABLED": "Booking is disabled on this device"
   },
+
+  "TRAINING_PAGE": {
+    "STATUS": "Status",
+    "LASTNAME": "Lastname",
+    "FIRSTNAME": "Firstname",
+    "COMPANY": "Company",
+    "TRAINER": "Trainer"
+  },
   "UPDATE": {
     "PENDING": "Updating your booking...",
     "DONE": "Booking update successfully done.",

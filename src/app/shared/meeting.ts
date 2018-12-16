@@ -66,7 +66,38 @@ export class Meeting {
 }
 
 export function meetingFromJSON(input: Object) {
-  const attendies = new Array<Employee>();
+  let attendies = new Array<Employee>();
+
+  // Method for sorting the array of employees by last name
+  let compare = (a, b) => {
+    // Use toUpperCase() to ignore character casing
+    const nameA = a.lastName.toUpperCase();
+    const nameB = b.lastName.toUpperCase();
+
+    let comparison = 0;
+    if (nameA > nameB) {
+      comparison = 1;
+    } else if (nameA < nameB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
+  // If there are duplicates, this method remove them
+  const getUnique = (arr, comp) => {
+
+    const unique = arr
+         .map(e => e[comp])
+
+       // store the keys of the unique objects
+      .map((e, i, final) => final.indexOf(e) === i && i)
+
+       // eliminate the dead keys & store unique objects
+      .filter(e => arr[e]).map(e => arr[e]);
+
+     return unique;
+  }
+
 
   if(Array.isArray(input['Attendees'])){
     input['Attendees'].forEach(element => {
@@ -79,14 +110,23 @@ export function meetingFromJSON(input: Object) {
       attendies.push(EmployeeFromJSON(element));
     });
   }
+
+  attendies = attendies.sort(compare);
+  // Attendies without duplicates
+  attendies = getUnique(attendies, 'id');
+
+
   const owner = EmployeeFromJSON(input['host']);
 
   let temp: MeetingConstructorInput = {
     id: input['meetingId'],
     attendies: attendies,
+    meetingName: input['description'],
+    meetingDescription: input['comment'],
     owner: owner,
     startDateTime: moment(input['meetingStartDate'], 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
     endDateTime: moment(input['meetingEndDate'], 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+    meetingStatus: input['description']
   };
 
   return new Meeting(temp);

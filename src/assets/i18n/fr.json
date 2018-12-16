@@ -14,6 +14,14 @@
     "OVERLAY_HELPER": "Touchez l'écran pour faire une réservation",
     "BOOKING_DISABLED": "La réservation est désactivée depuis cette tablette"
   },
+
+  "TRAINING_PAGE": {
+    "STATUS": "Statut",
+    "LASTNAME": "Nom",
+    "FIRSTNAME": "Prénom",
+    "COMPANY": "Société",
+    "TRAINER": "Formateur"
+  },
   "UPDATE": {
     "PENDING": "Modification de votre réservation en cours...",
     "DONE": "Modification de votre réservation effectuée.",

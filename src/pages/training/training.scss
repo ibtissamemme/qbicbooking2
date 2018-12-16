@@ -23,4 +23,81 @@ page-training {
     height: 50px;
   }
 
+  //vincent
+  .header-padding{
+    padding-left: 10px;
+    padding-right:10px;
+  }
+  .header-center-group{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+
+    .header-room{
+      display: flex;
+      font-weight: 800;
+      font-size: $font-size-big;
+    }
+
+    .header-capacity-icon{
+      display: flex;
+      margin-left: 25px;
+    }
+    .header-capacity-icon-img{
+      height: $font-size-small;
+    }
+    .header-capacity{
+      font-size: $font-size-small;
+    }
+  }
+
+  .header-right-group{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    div{
+      padding-right: 20px;
+      // padding-left: 10px;
+    }
+    .header-date{
+      font-weight: 300;
+      font-size: $font-size-small;
+    }
+
+    .header-time{
+      font-weight: 500;
+      font-size: $font-size-small;
+    }
+    .header-langage-button{
+      border: 1px solid white;
+      border-radius: 3px;
+      width: 42px;
+      background-color: rgba($color: #FFF, $alpha: 0.0)
+    }
+  }
+
+  // vincent
+  .Odd {
+    background-color: color($colors, even-row);
+  }
+  .middle {
+    width: 80%;
+  }
+  .centering {
+    align-items: center;
+  }
+  .centered {
+    align-self: center;
+  }
+  .header-table {
+    background-color: color($colors, header-table);
+  }
+  
+  ion-scroll {
+    height: 37%;
+  }
+  
 }
