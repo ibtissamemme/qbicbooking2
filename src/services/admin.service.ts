@@ -19,9 +19,9 @@ export class AdminService {
   private _bookingStartHour: number;
   private _bookingEndHour: number = 20;
   hourScrollInterval: number = 15;
+  defaultLang: string = "fr";
 
-  // TODO put that in the env file
-  corporateIdRadical: string = "SESA";
+  corporateIdRadical: string;
 
   private selectedRoomObs: BehaviorSubject<Room>;
   get selectedRoom$(): Observable<Room> {
@@ -163,6 +163,9 @@ export class AdminService {
       .catch(e => {
         console.error(e);
       });
+
+      this.defaultLang = ENV.defaultlang;
+      this.corporateIdRadical = ENV.prefix;
   }
 
 

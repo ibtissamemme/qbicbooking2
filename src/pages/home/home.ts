@@ -219,6 +219,9 @@ export class HomePage {
     events.subscribe('forcerefresh', (time) => {
       this.refresh();
     });
+
+    // get the default langage from the admin service
+    this.language = this.adminService.defaultLang;
   }
 
   // init of the view

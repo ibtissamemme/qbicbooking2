@@ -11,6 +11,8 @@ export const ENV = {
   tabletId: "123456",
   adminCode: "1607",
   logo: "schneider-white-logo.png",
+  defaultlang:"fr",
+  prefix:"SESA",
   bookingStartHour:7,
   bookingEndHour:20,
   isPinInClearText:"true",
