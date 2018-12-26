@@ -20,7 +20,9 @@
     "LASTNAME": "Lastname",
     "FIRSTNAME": "Firstname",
     "COMPANY": "Company",
-    "TRAINER": "Trainer"
+    "TRAINER": "Trainer",
+    "START":"Start",
+    "END":"End"
   },
   "UPDATE": {
     "PENDING": "Updating your booking...",

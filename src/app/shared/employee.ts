@@ -71,7 +71,7 @@ export function EmployeeFromJSON(json: Object): Employee {
   }
 
   let input:ConstructorType = {
-    id: json['userId']?json['userId']:json['employeeId'],
+    id: json['userId']?json['userId']:json['employeeId'] || json['attendeeId'],
     corporateID: json['corporateId'],
     firstName: json['firstName'],
     lastName: json['lastName'],

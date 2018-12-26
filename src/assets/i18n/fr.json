@@ -20,7 +20,9 @@
     "LASTNAME": "Nom",
     "FIRSTNAME": "Prénom",
     "COMPANY": "Société",
-    "TRAINER": "Formateur"
+    "TRAINER": "Formateur",
+    "START":"Début",
+    "END":"Fin"
   },
   "UPDATE": {
     "PENDING": "Modification de votre réservation en cours...",

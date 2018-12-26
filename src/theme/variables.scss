@@ -45,8 +45,7 @@ $colors: (
   dark:       #222,
   background: #fff,
   text: #222,
-  even-row: rgb(206, 206, 206),
-  header-table: rgb(192, 192, 192)
+  primary-light-training:  rgb(172, 255, 146),
 );
 
 // $colors: (
@@ -111,6 +110,7 @@ $toolbar-md-height:$header-size;
   }
 $font-family-base: 'Source', sans-serif !default;
 $font-size-buttons: 24px;
+$font-size-very-small: 1.2em;
 $font-size-small: 1.5em;
 $font-size-normal: 2em;
 $font-size-big: 2.5em;

@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../app/shared/employee';
 import { ENV } from '@app/env';
 import { TabletService } from './../../services/tablet.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -47,6 +48,7 @@ export class TrainingPage {
   refreshLoop: any;
   slideLoop: any;
   slideURLarray: string[];
+  language: string;
   // Slides for empty training page
   @ViewChild(Slides) slides: Slides;
 
@@ -56,17 +58,20 @@ export class TrainingPage {
     private adminService: AdminService,
     private gesroomService: GesroomService,
     public events: Events,
-    public TabletService: TabletService,
-    private modalCtrl: ModalController) {
+    public tabletService: TabletService,
+    private modalCtrl: ModalController,
+    private translate: TranslateService,) {
 
+      this.language = this.adminService.defaultLang;
 
   }
+
 
   ionViewWillEnter() {
     moment.locale("fr");
     this.headerTime = moment();
     // changing led to green
-    this.TabletService.changeLED(States.FREE);
+    this.tabletService.changeLED(States.FREE);
 
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
@@ -117,9 +122,8 @@ export class TrainingPage {
 
   // refreshes the data on screen based on time
   refresh() {
-
+    this.adminService.refreshMeetings();
     this.headerTime = moment();
-
   }
 
 
@@ -208,6 +212,18 @@ export class TrainingPage {
   }
 
 
+// cycles through the available langages
+getNextLang(currentLanguage: string): string {
+  const langs = this.translate.getLangs();
+  return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
+}
+ // changes to the next language
+ changeLangage() {
+  this.translate.use(this.language);
+  this.language = this.getNextLang(this.language);
+  //this.getHelperText();
+  // langage displayed on the interface should be the next lang
+}
 
   isPresent(emp: Employee): boolean {
     if (emp.corporateID)

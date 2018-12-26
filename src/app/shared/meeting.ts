@@ -132,39 +132,3 @@ export function meetingFromJSON(input: Object) {
   return new Meeting(temp);
 }
 
-// {
-//   "Trainer": {
-//     "AttendeeId": "string",
-//     "PersonVisitedId": "string",
-//     "VisitorId": "string",
-//     "PersonVisitedLogin": "string",
-//     "LastName": "string",
-//     "FirstName": "string",
-//     "Company": "string",
-//     "Email": "string",
-//     "AttendeeStatus": "string",
-//     "AttendeeType": "string"
-//   },
-//   "Attendees": [
-//     {
-//       "AttendeeId": "string",
-//       "PersonVisitedId": "string",
-//       "VisitorId": "string",
-//       "PersonVisitedLogin": "string",
-//       "LastName": "string",
-//       "FirstName": "string",
-//       "Company": "string",
-//       "Email": "string",
-//       "AttendeeStatus": "string",
-//       "AttendeeType": "string"
-//     }
-//   ],
-//   "MeetingId": "string",
-//   "MeetingStatusId": "string",
-//   "ExternalId": "string",
-//   "RoomId": "string",
-//   "MeetingDetailId": "string",
-//   "CompleteStartDate": "2018-11-16T14:20:05.201Z",
-//   "CompleteEndDate": "2018-11-16T14:20:05.201Z"
-// }
-

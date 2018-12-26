@@ -1,16 +1,4 @@
 page-training {
- .container{
-  //  height: 100%;
-  //  display: flex;
- }
-  .trainingDesc{
-
-  }
-  .attendies{
-    // margin-top:30%;
-    // height:50%;
-    // overflow:hidden;
-  }
 
   .logo{
     padding:5px;
@@ -62,6 +50,7 @@ page-training {
       padding-right: 20px;
       // padding-left: 10px;
     }
+
     .header-date{
       font-weight: 300;
       font-size: $font-size-small;
@@ -79,13 +68,54 @@ page-training {
     }
   }
 
-  // vincent
-  .Odd {
-    background-color: color($colors, even-row);
+  .container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
   }
+
+  .label {
+    font-size: $font-size-very-small;
+    font-weight: 200;
+    padding-bottom: 5px;
+  }
+  .value {
+    font-size: $font-size-small;
+    font-weight: 500;
+  }
+
   .middle {
-    width: 80%;
+    width: 90%;
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .training-title {
+      font-size: $font-size-big;
+      font-weight: 400;
+      padding-top: 2%;
+      padding-bottom: 2%;
+    }
+
+    .trainer {
+      padding: 1%;
+      background-color: color($colors, primary-light-training);
+      border-radius: 5px;
+    }
+    .trainer-info {
+      display: flex;
+      flex-grow: 8;
+    }
+    .divider {
+      height: 100%;
+      border-right: 1px solid color($colors, primary);
+      margin-right: 20px;
+    }
+
   }
+
   .centering {
     align-items: center;
   }
@@ -93,11 +123,32 @@ page-training {
     align-self: center;
   }
   .header-table {
-    background-color: color($colors, header-table);
+    font-size: $font-size-very-small;
+    font-weight: 200;
+    border-bottom: 1pt solid color($colors, primary-light);
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
-  
+
+  .attendees {
+    font-size: $font-size-small;
+    border-bottom: 1pt solid color($colors, disabled);
+    padding-top: 6px;
+    padding-bottom: 4px;
+    .name {
+      font-weight: 500;
+    }
+    .company {
+      font-weight: 300;
+    }
+  }
+
+  .scroll-wrapper {
+    height: 60%;
+  }
+
   ion-scroll {
-    height: 37%;
+    height: 100%;
   }
-  
+
 }
