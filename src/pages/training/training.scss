@@ -133,22 +133,26 @@ page-training {
   .attendees {
     font-size: $font-size-small;
     border-bottom: 1pt solid color($colors, disabled);
-    padding-top: 6px;
-    padding-bottom: 4px;
+
     .name {
+       padding-top: 10px;
+       padding-bottom: 4px;
       font-weight: 500;
     }
     .company {
+       padding-top: 10px;
+       padding-bottom: 4px;
       font-weight: 300;
     }
   }
 
   .scroll-wrapper {
     height: 60%;
+
+    ion-scroll {
+      height: 100%;
+    }
   }
 
-  ion-scroll {
-    height: 100%;
-  }
 
 }

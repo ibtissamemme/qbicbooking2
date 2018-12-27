@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="37px" height="37px" viewBox="0 0 37 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_Checkin</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Meeting_ACACIA" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="_TrainingSessions" transform="translate(-134.000000, -454.000000)">
+            <g id="icon_OnBoard_bl" transform="translate(134.000000, 454.000000)">
+                <path d="M18.5,0 L18.5,0 C28.7172679,-1.87688166e-15 37,8.28273213 37,18.5 L37,18.5 C37,28.7172679 28.7172679,37 18.5,37 L18.5,37 C8.28273213,37 1.25125444e-15,28.7172679 0,18.5 L0,18.5 C-1.25125444e-15,8.28273213 8.28273213,1.87688166e-15 18.5,0 Z" id="Rectangle-10" fill="#19C019" fill-rule="nonzero"></path>
+                <g id="Group" stroke-width="1" fill-rule="evenodd" transform="translate(8.000000, 10.000000)" stroke="#FEFEFE" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.88730833,11.88555 L2.88730833,14.7125083 C2.88730833,15.8862167 3.83930833,16.8375083 5.01230833,16.8375083 L17.2459333,16.8375083 C18.4196417,16.8375083 19.3709333,15.8862167 19.3709333,14.7125083 L19.3709333,2.47959167 C19.3709333,1.305175 18.4196417,0.354591667 17.2459333,0.354591667 L5.01230833,0.354591667 C3.83930833,0.354591667 2.88730833,1.305175 2.88730833,2.47959167 L2.88730833,5.30655" id="Stroke-1"></path>
+                    <path d="M14.6356542,8.59640417 L0.3542375,8.59640417" id="Stroke-3"></path>
+                    <polyline id="Stroke-5" points="10.8248917 12.4070958 14.635725 8.5962625 10.8248917 4.78542917"></polyline>
+                </g>
+            </g>
+            <g id="Page"></g>
+            <g id="Page"></g>
+            <g id="Page"></g>
+        </g>
+    </g>
+</svg>

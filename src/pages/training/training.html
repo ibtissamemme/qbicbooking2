@@ -118,11 +118,9 @@
       <ion-scroll scrollY="true" align-items-end>
         <ion-grid class="centering">
 
-          <ion-row class="middle attendees" *ngFor="let attendee of meeting?.attendies">
-            <ion-col  col-1 align-self-center>
-              <ion-icon item-start *ngIf="this.isPresent(attendee) === null" color="background" name="help"></ion-icon>
-              <ion-icon item-start *ngIf="this.isPresent(attendee) === false" color="danger" name="close"></ion-icon>
-              <ion-icon item-start *ngIf="this.isPresent(attendee) === true" color="primary" name="checkmark"></ion-icon>
+          <ion-row class="middle attendees" center *ngFor="let attendee of meeting?.attendies">
+            <ion-col  col-1  >
+              <img  *ngIf="this.isPresent(attendee) === true"  src="assets/icon/icon_Checkin.svg"/>
             </ion-col>
             <ion-col col-3 class="name">
               {{attendee.lastName}}

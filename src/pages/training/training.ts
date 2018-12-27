@@ -28,7 +28,7 @@ export class TrainingPage {
   logo: string = `assets/imgs/${ENV.logo}`;
 
   // screen refresh interval in milliseconds => used for the refresh method
-  refreshInterval: number = 50000;
+  refreshInterval: number = 30000;
   slideLoopInterval: number = 5000;
   // declaration in order to force label change in the header
   selectedRoom: Room;
@@ -115,8 +115,6 @@ export class TrainingPage {
       }
     });
 
-    // start the refresh loop
-    // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
 
@@ -131,7 +129,6 @@ export class TrainingPage {
   // puts it in meeting
   getCurrentMeeting() {
     moment.locale("fr");
-
 
     this.upcomingMeeting = null;
     this.currentMeeting = null;
@@ -150,9 +147,7 @@ export class TrainingPage {
 
           if (this.headerTime.isBetween(start, end)) {
             this.currentMeeting = m;
-            // console.log(this.currentMeeting.meetingName);
 
-            // this.headerColor = 'danger';
           }
 
         }.bind(this));
@@ -176,7 +171,6 @@ export class TrainingPage {
     }
     else if (this.currentMeeting) {
       this.meeting = this.currentMeeting;
-
     }
 
     if (!this.upcomingMeeting && !this.currentMeeting) {
@@ -185,12 +179,16 @@ export class TrainingPage {
     }
 
     console.log(this.meeting);
+    this.tabletService.changeLED(States.FREE);
+
   }
 
 
   // go to admin panel
   onAdminClicked() {
     this.navCtrl.push(AdminPage);
+    clearInterval(this.refreshLoop);
+    clearInterval(this.slideLoop);
   }
 
   ionViewWillLeave() {
