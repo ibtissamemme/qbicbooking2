@@ -19,6 +19,7 @@ import { Observable } from 'rxjs/Observable';
 import { TrainingPage } from '../training/training';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ENV } from '@app/env';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: "page-home",
@@ -104,6 +105,8 @@ export class HomePage {
   // control of the refresh loop
   refreshLoop: any;
 
+  // subscription array, to unsubscribe when leaving the page
+  private subscriptions: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -131,8 +134,28 @@ export class HomePage {
 
     this.androidFullScreen.showUnderSystemUI().catch(err => console.log(err));
 
-    // get selected room
-    this.adminService.selectedRoom$.subscribe((data) => {
+
+
+    // get the default langage from the admin service
+    this.language = this.adminService.defaultLang;
+  }
+
+  // init of the view
+  ionViewWillEnter() {
+    this.subscriptions = new Subscription();
+
+    this.events.subscribe('hourscrollbutton:clicked', (time) => {
+      this.buttonPressed(time);
+    });
+
+    //moment.locale(this.language);
+    moment.locale('fr');
+
+    // set the language button to the next language
+    this.language = this.getNextLang(this.language);
+    this.buildHourScrollArray();
+// get selected room
+    this.subscriptions.add( this.adminService.selectedRoom$.subscribe((data) => {
       if (!data) {
         return;
       }
@@ -162,16 +185,17 @@ export class HomePage {
         this.goToTrainingPage();
       }
       this.refresh();
-    });
+    }));
+
 
     // get meeting updates
-    this.adminService.meetingList$.subscribe((data) => {
+    this.subscriptions.add(this.adminService.meetingList$.subscribe((data) => {
       if (!data) {
         return;
       }
       this.meetingList = data;
       this.getCurrentMeeting();
-    });
+    }));
 
     this.adminService.isBookingEnabled$.subscribe((data) => {
       if (data === undefined) {
@@ -216,27 +240,10 @@ export class HomePage {
 
 
     // envent recieved from the hourscrollbuttons when someone cancel a meeting
-    events.subscribe('forcerefresh', (time) => {
+    this.subscriptions.add(this.events.subscribe('forcerefresh', (time) => {
       this.refresh();
-    });
+    }));
 
-    // get the default langage from the admin service
-    this.language = this.adminService.defaultLang;
-  }
-
-  // init of the view
-  ionViewWillEnter() {
-
-    this.events.subscribe('hourscrollbutton:clicked', (time) => {
-      this.buttonPressed(time);
-    });
-
-    //moment.locale(this.language);
-    moment.locale('fr');
-
-    // set the language button to the next language
-    this.language = this.getNextLang(this.language);
-    this.buildHourScrollArray();
 
     this.refresh();
     // start the refresh loop
@@ -798,6 +805,7 @@ export class HomePage {
     // stop the refresh
     clearInterval(this.refreshLoop);
     this.events.unsubscribe('hourscrollbutton:clicked');
+    this.subscriptions.unsubscribe();
   }
 
   ngOnDestroy() {
