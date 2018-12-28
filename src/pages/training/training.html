@@ -48,6 +48,11 @@
 
   <div class="container">
 
+      <ion-slides *ngIf="!meeting">
+          <ion-slide *ngFor="let image of slideURLarray">
+            <img src="{{image}}" alt="">
+          </ion-slide>
+        </ion-slides>
 
     <ion-grid *ngIf="meeting" class="middle">
       <ion-row text-center class="training-title">
@@ -90,7 +95,7 @@
       </ion-row>
 
     </ion-grid>
-    <ion-grid>
+    <ion-grid  *ngIf="meeting">
       <!-- <div padding>&nbsp;</div> -->
 
       <ion-row class="centered middle header-table">
@@ -135,11 +140,7 @@
         </ion-grid>
       </ion-scroll>
 
-      <ion-slides *ngIf="!meeting">
-        <ion-slide *ngFor="let image of slideURLarray">
-          <img src="{{image}}" alt="">
-        </ion-slide>
-      </ion-slides>
+
 
     </div>
   </div>

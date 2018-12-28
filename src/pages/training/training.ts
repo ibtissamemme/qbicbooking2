@@ -97,23 +97,39 @@ export class TrainingPage {
     });
 
     // get meeting updates
-    this.adminService.slidesAvailable$.subscribe((data) => {
-      if (!data) {
-        return;
-      }
+    // this.adminService.slidesAvailable$.subscribe((data) => {
+    //   if (!data) {
+    //     return;
+    //   }
+    //   // only display slides if we have a meeting
+    //   if (!this.meeting) {
+    //     this.slideURLarray = data.slides;
+    //     if(!this.slides){
+    //       return;
+    //     }
+    //     this.slides.loop = true;
+    //     this.slides.centeredSlides = true;
+    //     this.slides.speed = 700;
+
+    //     this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
+    //   }
+    // });
+
       // only display slides if we have a meeting
       if (!this.meeting) {
-        this.slideURLarray = data.slides;
-        if(!this.slides){
-          return;
-        }
+        this.slideURLarray = new Array<string>();
+        this.slideURLarray.push("assets/slideshow/2.jpg");
+        this.slideURLarray.push("assets/slideshow/3.jpg");
+        this.slideURLarray.push("assets/slideshow/4.jpg");
+        this.slideURLarray.push("assets/slideshow/5.jpg");
+
         this.slides.loop = true;
         this.slides.centeredSlides = true;
         this.slides.speed = 700;
 
         this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
       }
-    });
+
 
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
