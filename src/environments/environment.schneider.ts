@@ -16,6 +16,7 @@ export const ENV = {
   bookingStartHour:7,
   bookingEndHour:20,
   isPinInClearText:"true",
+  isNfcEnabled: "false",
   colors: {
     primary: {
       r: 90,

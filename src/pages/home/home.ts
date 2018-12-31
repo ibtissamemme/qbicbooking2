@@ -20,6 +20,7 @@ import { TrainingPage } from '../training/training';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ENV } from '@app/env';
 import { Subscription } from 'rxjs/Subscription';
+import { NFC, Ndef } from '@ionic-native/nfc';
 
 @Component({
   selector: "page-home",
@@ -65,7 +66,7 @@ export class HomePage {
   overlayOpacityState = 'shown';
   overlayDisplayState = 'block';
   overlayIdleTime = 60000;
-  public promptTimer:number = 3000;
+  public promptTimer: number = 3000;
 
   @ViewChild('buttonBar') buttonBar: ElementRef;
 
@@ -79,10 +80,10 @@ export class HomePage {
   // screen refresh interval in milliseconds => used for the refresh method
   refreshInterval: number = 30000;
   buttonNumber: number = 20;
-  bookingStartHour:number;
-  bookingEndHour:number;
+  bookingStartHour: number;
+  bookingEndHour: number;
   // used for the hour-scroll-buttons, to handle the end range
-  upperRange:moment.Moment;
+  upperRange: moment.Moment;
   // declaration in order to force label change in the header
   selectedRoom: Room;
 
@@ -120,7 +121,9 @@ export class HomePage {
     private tabletService: TabletService,
     private _sanitizer: DomSanitizer,
     private statusBar: StatusBar,
-    private androidFullScreen: AndroidFullScreen) {
+    private androidFullScreen: AndroidFullScreen,
+    private nfc: NFC,
+    private ndef: Ndef) {
     this.hourScrollInterval = adminService.hourScrollInterval;
 
     this.statusBar.hide();
@@ -128,9 +131,9 @@ export class HomePage {
 
 
     this.androidFullScreen.isImmersiveModeSupported()
-    .then(() => console.log('Immersive mode supported'))
-    .then(() => androidFullScreen.immersiveMode())
-    .catch(err => console.log(err));
+      .then(() => console.log('Immersive mode supported'))
+      .then(() => androidFullScreen.immersiveMode())
+      .catch(err => console.log(err));
 
     this.androidFullScreen.showUnderSystemUI().catch(err => console.log(err));
 
@@ -154,8 +157,8 @@ export class HomePage {
     // set the language button to the next language
     this.language = this.getNextLang(this.language);
     this.buildHourScrollArray();
-// get selected room
-    this.subscriptions.add( this.adminService.selectedRoom$.subscribe((data) => {
+    // get selected room
+    this.subscriptions.add(this.adminService.selectedRoom$.subscribe((data) => {
       if (!data) {
         return;
       }
@@ -204,18 +207,18 @@ export class HomePage {
       this.isBookingEnabled = data;
     });
 
-    const that=this;
+    const that = this;
 
     this.adminService.bookingStartHour$.subscribe((data) => {
       if (data === undefined) {
         return;
       }
-      that.bookingStartHour= data;
+      that.bookingStartHour = data;
       // for this update, we need to completely rebuild the array
       that.dateArray = new Array();
       // and launch a refresh
       that.refresh();
-      console.log("bookingStartHour",that.bookingStartHour);
+      console.log("bookingStartHour", that.bookingStartHour);
     });
 
     this.adminService.bookingEndHour$.subscribe((data) => {
@@ -244,9 +247,32 @@ export class HomePage {
       this.refresh();
     }));
 
+    if(this.adminService.isNfcEnabled){
+      this.subscriptions.add(
+        this.nfc.addNdefListener(() => {
+          console.log('successfully attached ndef listener');
+        }, (err) => {
+          console.log('error attaching ndef listener', err);
+        }).subscribe((event) => {
+          console.log('received ndef message. the tag contains: ', event.tag);
+          console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
 
-    this.refresh();
-    // start the refresh loop
+          let alert = this.alertCtrl.create({
+            title: 'NFC ' + event.tag,
+            subTitle: `decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
+            <br>
+            ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
+            `,
+            buttons: ['Dismiss']
+          });
+          alert.present();
+
+        }));
+      }
+
+
+        this.refresh();
+        // start the refresh loop
     // this.updateMeetingScrollList();
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
@@ -308,14 +334,14 @@ export class HomePage {
 
     // we wait for the app to init...
     // the signal will come from the admin service through the observable
-    if(!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)){
+    if (!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)) {
       return;
     }
 
     // use another array to avoid flicker
     let newDateArray = new Array();
 
-    if(!Array.isArray(this.dateArray)){
+    if (!Array.isArray(this.dateArray)) {
       this.dateArray = new Array();
     }
 
@@ -335,7 +361,7 @@ export class HomePage {
     startInterval.minutes(0);
     startInterval.seconds(0);
     startInterval.milliseconds(0);
-    if(now.isBefore(startInterval)){
+    if (now.isBefore(startInterval)) {
       rounded = moment().hours(this.bookingStartHour).minutes(0).seconds(0).milliseconds(0);
     }
 
@@ -366,7 +392,7 @@ export class HomePage {
       //this.dateArray.push(iterate.clone());
     }
 
-    for (let i=0; i < newDateArray.length; i++) {
+    for (let i = 0; i < newDateArray.length; i++) {
       if (!this.dateArray[i]) {
         this.dateArray.push(newDateArray[i].clone())
       } else if (this.dateArray[i].unix() !== newDateArray[i].unix()) {
@@ -608,7 +634,7 @@ export class HomePage {
     });
     loadingMeeting.present();
 
-    try{
+    try {
       this.gesroomService.putMeeting(this.meeting)
         .then((res) => {
           //console.log(res);
@@ -625,7 +651,7 @@ export class HomePage {
             this.isOverlayDisplayed = false;
           }, this.promptTimer);
         });
-    } catch (error){
+    } catch (error) {
 
       let alert = this.alertCtrl.create({
         title: msgErrorTitle,
@@ -785,6 +811,17 @@ export class HomePage {
     }
     return false;
   }
+
+  hex2a(hexx: string): string {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+  }
+
+
+
   //-----------------
   // NAVIGATION
   //-----------------

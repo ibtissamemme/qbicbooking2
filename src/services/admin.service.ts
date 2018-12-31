@@ -16,6 +16,8 @@ export class AdminService {
   selectedRoom: Room;
   isBookingEnabled: boolean;
   isPinInClearText: boolean;
+  isNfcEnabled: boolean;
+
   private _bookingStartHour: number;
   private _bookingEndHour: number = 20;
   hourScrollInterval: number = 15;
@@ -53,6 +55,11 @@ export class AdminService {
     return this.isPinInClearTextObs.asObservable();
   }
 
+  private isNfcEnabledObs: BehaviorSubject<boolean>;
+  get isNfcEnabled$(): Observable<boolean> {
+    return this.isNfcEnabledObs.asObservable();
+  }
+
   private bookingStartHourObs: BehaviorSubject<number>;
   get bookingStartHour$(): Observable<number> {
     return this.bookingStartHourObs.asObservable();
@@ -74,6 +81,7 @@ export class AdminService {
 
     this.isBookingEnabledObs = new BehaviorSubject(undefined);
     this.isPinInClearTextObs = new BehaviorSubject(undefined);
+    this.isNfcEnabledObs = new BehaviorSubject(undefined);
     this.bookingStartHourObs = new BehaviorSubject(undefined);
     this.bookingEndHourObs = new BehaviorSubject(undefined);
 
@@ -109,6 +117,21 @@ export class AdminService {
       }
       this.isPinInClearText = data.toLowerCase() == "true" ? true : false;
       this.isPinInClearTextObs.next(this.isPinInClearText);
+    });
+
+    this.storage.get("isNfcEnabled").then((data: string) => {
+      console.log("isNfcEnabled storage", data);
+
+      if (data === null) {
+        let that = this;
+        that.loadParam("isNfcEnabled").then(data2 => {
+          that.isNfcEnabled = data2.toLowerCase() == "true" ? true : false;
+          that.isNfcEnabledObs.next(that.isNfcEnabled);
+        });
+        return;
+      }
+      this.isNfcEnabled = data.toLowerCase() == "true" ? true : false;
+      this.isNfcEnabledObs.next(this.isNfcEnabled);
     });
 
     this.storage.get("isBookingEnabled").then(data => {
@@ -202,10 +225,16 @@ export class AdminService {
     this.isBookingEnabled = isBooking;
   }
 
-  setisPinInClearText(isBooking: boolean) {
-    this.isPinInClearTextObs.next(isBooking);
-    this.setToStorage("isPinInClearText", isBooking);
-    this.isPinInClearText = isBooking;
+  setisPinInClearText(input: boolean) {
+    this.isPinInClearTextObs.next(input);
+    this.setToStorage("isPinInClearText", input);
+    this.isPinInClearText = input;
+  }
+
+  setisNfcEnabled(input: boolean) {
+    this.isNfcEnabledObs.next(input);
+    this.setToStorage("isNfcEnabled", input);
+    this.isNfcEnabled = input;
   }
 
   setBookingStartHour(hour: number) {

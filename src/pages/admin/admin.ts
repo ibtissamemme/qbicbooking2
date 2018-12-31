@@ -2,11 +2,13 @@ import { TabletService } from './../../services/tablet.service';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MeetingList } from './../../app/shared/meetingList';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from "ionic-angular";
+import { IonicPage, NavController, NavParams, LoadingController, Platform, AlertController } from "ionic-angular";
 import { Site, siteFromJson } from "../../app/shared/site";
 import { Room, roomFromJSON } from "../../app/shared/room";
 import { GesroomService } from "../../services/gesroom.service";
 import { AdminService } from "../../services/admin.service";
+import { NFC, Ndef } from '@ionic-native/nfc';
+import { Subscription } from 'rxjs';
 
 
 @IonicPage()
@@ -15,6 +17,7 @@ import { AdminService } from "../../services/admin.service";
   templateUrl: "admin.html"
 })
 export class AdminPage {
+  subscription: Subscription;
   platform: Platform;
   sites: Site[] = [];
   rooms: Room[] = [];
@@ -32,7 +35,8 @@ export class AdminPage {
   bookingStartHour;
   bookingEndHour;
 
-  isPinInClearText:boolean = true;
+  isPinInClearText: boolean = true;
+  isNfcEnabled: boolean = true;
 
   // flag to enable or not the booking on the tablet
   // default to true
@@ -44,13 +48,18 @@ export class AdminPage {
     private gesroomService: GesroomService,
     private adminService: AdminService,
     private tabletService: TabletService,
-    private loadingCtrl:LoadingController,
-    private _platform: Platform
+    private loadingCtrl: LoadingController,
+    private _platform: Platform,
+    private alertCtrl: AlertController,
+    private nfc: NFC,
+    private ndef: Ndef
   ) {
     this.platform = _platform;
   }
 
   async ionViewWillEnter() {
+    this.subscription = new Subscription();
+
     this.gesroomService.endpoint$.subscribe((data) => {
       this.endpoint = data;
     });
@@ -83,49 +92,6 @@ export class AdminPage {
       this.updateRooms();
     });
 
-
-    // // get site list
-    // this.gesroomService.getSites().then(data => {
-    //   if (!data) {
-    //     return console.error('no site list data');
-    //   }
-    //   this.sites = new Array<Site>();
-    //   const input = data.json().sort();
-
-    //   input.forEach(element => {
-    //     this.sites.push(siteFromJson(element));
-    //   });
-    //   // this.sites = data.json();
-    //   // this.sites.map((res) => console.log(res.name + "/" + res.Id));
-
-    // }).then(() => {
-
-    //   // get selected site
-    //   this.adminService.selectedSite$.subscribe((data) => {
-    //     if (!data) {
-    //       return console.error('no room list data');
-    //     }
-    //     this.selectedSite = data;
-    //   })
-    // }).then(() => {
-    //   if (this.selectedSite) {
-    //     // get room list
-    //     this.gesroomService.getRooms(this.selectedSite).then(data => {
-    //       if (!data) {
-    //         return console.log('no selected room data');
-    //       }
-    //       this.rooms = data;
-    //       // this.rooms = new Array<Room>();
-    //       // const input = data.json().sort();
-    //       // input.forEach(element => {
-    //       //   this.rooms.push(roomFromJSON(element));
-    //       // });
-    //     });
-    //   }
-    // }
-    // );
-
-
     // get selected room
     this.adminService.selectedRoom$.subscribe((data) => {
       if (!data) {
@@ -135,17 +101,25 @@ export class AdminPage {
     });
 
     this.adminService.isBookingEnabled$.subscribe((data) => {
-      if(!data) {
+      if (!data) {
         return;
       }
       this.isBookingEnabled = data;
     });
 
     this.adminService.isPinInClearText$.subscribe((data) => {
-      if(!data) {
+      if (!data) {
         return;
       }
       this.isPinInClearText = data;
+    });
+
+    this.adminService.isNfcEnabled$.subscribe((data) => {
+      if (!data) {
+        return;
+      }
+      this.isNfcEnabled = data;
+      this.nfcTestMode();
     });
   }
 
@@ -187,12 +161,13 @@ export class AdminPage {
     }
     this.adminService.setIsBookingEnabled(this.isBookingEnabled);
     this.adminService.setisPinInClearText(this.isPinInClearText);
+    this.adminService.setisNfcEnabled(this.isNfcEnabled);
 
     this.bookingStartHour = Number.parseInt(this.bookingStartHour);
     this.bookingEndHour = Number.parseInt(this.bookingEndHour);
 
     // TODO: translate this....
-    if(!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)){
+    if (!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)) {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
         content: "Merci de rentrer un chiffre pour l'heure de début et de fin de plage horaire",
@@ -206,7 +181,7 @@ export class AdminPage {
     }
 
 
-    if(!this.checkHourRange(this.bookingStartHour) || !this.checkHourRange(this.bookingEndHour)){
+    if (!this.checkHourRange(this.bookingStartHour) || !this.checkHourRange(this.bookingEndHour)) {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
         content: "Merci de rentrer un chiffre entre 0 et 23 pour l'heure de début et de fin de plage horaire",
@@ -224,19 +199,19 @@ export class AdminPage {
     // also save the api params
     this.onSaveAPIParam();
     // go back to the root page
-    setTimeout(() => this.navCtrl.popToRoot(),500);
+    setTimeout(() => this.navCtrl.popToRoot(), 500);
   }
 
   // reboot the device
-  onRebootClick(){
+  onRebootClick() {
     this.tabletService.rebootTablet();
   }
-  onCloseAppClick(){
-      this.platform.exitApp();
+  onCloseAppClick() {
+    this.platform.exitApp();
   }
 
   // updates rooms on site change
-  async updateRooms(){
+  async updateRooms() {
     if (this.selectedSite) {
       // get room list
       this.rooms = await this.gesroomService.getRooms(this.selectedSite);
@@ -249,12 +224,36 @@ export class AdminPage {
     // go back to the root page
     this.navCtrl.popToRoot();
   }
-  onBookingEnabledChange(){
+  onBookingEnabledChange() {
 
   }
 
-  onBookingPinVisibilityChange(){
+  onBookingPinVisibilityChange() {
 
+  }
+  nfcTestMode() {
+    if (this.isNfcEnabled) {
+      // TODO : Remove subscription on exit
+      this.subscription.add(this.nfc.addNdefListener(() => {
+        console.log('successfully attached ndef listener');
+      }, (err) => {
+        console.log('error attaching ndef listener', err);
+      }).subscribe((event) => {
+        console.log('received ndef message. the tag contains: ', event.tag);
+        console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+
+        let alert = this.alertCtrl.create({
+          title: 'Test NFC ' + event.tag,
+          subTitle: `Decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
+        <br>
+        ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
+        `,
+          buttons: ['Dismiss']
+        });
+        alert.present();
+
+      }));
+    }
   }
 
   compareSite(c1: Site, c2: Site): boolean {
@@ -265,10 +264,26 @@ export class AdminPage {
     return c1 && c2 ? c1.Id === c2.Id : c1 === c2;
   }
 
-  checkHourRange(input:number): boolean{
-    if(input<0 || input>23){
+  checkHourRange(input: number): boolean {
+    if (input < 0 || input > 23) {
       return false;
     }
     return true;
+  }
+
+
+  hex2a(hexx: string): string {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+  }
+
+
+  ionViewWillLeave() {
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
   }
 }
