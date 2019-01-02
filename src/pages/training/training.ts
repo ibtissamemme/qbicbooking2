@@ -60,9 +60,9 @@ export class TrainingPage {
     public events: Events,
     public tabletService: TabletService,
     private modalCtrl: ModalController,
-    private translate: TranslateService,) {
+    private translate: TranslateService, ) {
 
-      this.language = this.adminService.defaultLang;
+    this.language = this.adminService.defaultLang;
 
   }
 
@@ -81,7 +81,7 @@ export class TrainingPage {
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
       // if we switch to a standard room type, go to the home page
-      if(this.selectedRoom.roomType === RoomType.Meeting){
+      if (this.selectedRoom.roomType === RoomType.Meeting) {
         this.navCtrl.setRoot(HomePage);
       }
       this.refresh();
@@ -94,41 +94,11 @@ export class TrainingPage {
       }
       this.meetingList = data;
       this.getCurrentMeeting();
+      this.showSlides();
     });
 
-    // get meeting updates
-    // this.adminService.slidesAvailable$.subscribe((data) => {
-    //   if (!data) {
-    //     return;
-    //   }
-    //   // only display slides if we have a meeting
-    //   if (!this.meeting) {
-    //     this.slideURLarray = data.slides;
-    //     if(!this.slides){
-    //       return;
-    //     }
-    //     this.slides.loop = true;
-    //     this.slides.centeredSlides = true;
-    //     this.slides.speed = 700;
 
-    //     this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
-    //   }
-    // });
-
-      // only display slides if we have a meeting
-      if (!this.meeting) {
-        this.slideURLarray = new Array<string>();
-        this.slideURLarray.push("assets/slideshow/2.jpg");
-        this.slideURLarray.push("assets/slideshow/3.jpg");
-        this.slideURLarray.push("assets/slideshow/4.jpg");
-        this.slideURLarray.push("assets/slideshow/5.jpg");
-
-        this.slides.loop = true;
-        this.slides.centeredSlides = true;
-        this.slides.speed = 700;
-
-        this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
-      }
+    
 
 
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
@@ -199,6 +169,22 @@ export class TrainingPage {
 
   }
 
+  // only display slides if we have a meeting
+  showSlides() {
+    if (!this.meeting) {
+      this.slideURLarray = new Array<string>();
+      this.slideURLarray.push("assets/slideshow/2.jpg");
+      this.slideURLarray.push("assets/slideshow/3.jpg");
+      this.slideURLarray.push("assets/slideshow/4.jpg");
+      this.slideURLarray.push("assets/slideshow/5.jpg");
+
+      this.slides.loop = true;
+      this.slides.centeredSlides = true;
+      this.slides.speed = 700;
+
+      this.slideLoop = setInterval(() => this.nextSlide(), this.slideLoopInterval);
+    }
+  }
 
   // go to admin panel
   onAdminClicked() {
@@ -226,18 +212,18 @@ export class TrainingPage {
   }
 
 
-// cycles through the available langages
-getNextLang(currentLanguage: string): string {
-  const langs = this.translate.getLangs();
-  return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
-}
- // changes to the next language
- changeLangage() {
-  this.translate.use(this.language);
-  this.language = this.getNextLang(this.language);
-  //this.getHelperText();
-  // langage displayed on the interface should be the next lang
-}
+  // cycles through the available langages
+  getNextLang(currentLanguage: string): string {
+    const langs = this.translate.getLangs();
+    return (langs.indexOf(currentLanguage) < langs.length - 1) ? langs[langs.indexOf(currentLanguage) + 1] : langs[0];
+  }
+  // changes to the next language
+  changeLangage() {
+    this.translate.use(this.language);
+    this.language = this.getNextLang(this.language);
+    //this.getHelperText();
+    // langage displayed on the interface should be the next lang
+  }
 
   isPresent(emp: Employee): boolean {
     if (emp.corporateID)
