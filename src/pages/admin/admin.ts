@@ -170,7 +170,7 @@ export class AdminPage {
     if (!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)) {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
-        content: "Merci de rentrer un chiffre pour l'heure de début et de fin de plage horaire",
+        content: "Please enter a number between 0 and 23 for the start time and the end time",
         cssClass: 'prompt'
       });
       sorryAlert.present();

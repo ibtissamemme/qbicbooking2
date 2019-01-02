@@ -97,10 +97,6 @@ export class TrainingPage {
       this.showSlides();
     });
 
-
-    
-
-
     this.refreshLoop = setInterval(() => this.refresh(), this.refreshInterval);
   }
 
@@ -169,7 +165,7 @@ export class TrainingPage {
 
   }
 
-  // only display slides if we have a meeting
+  // only displays slides if we have a meeting
   showSlides() {
     if (!this.meeting) {
       this.slideURLarray = new Array<string>();
