@@ -14,7 +14,11 @@ export class Room {
     this.Id = Id;
     this.name = name;
     this.localization = localization;
-    this.roomType = roomType;
+    if(roomType) {
+      this.roomType = roomType;
+    } else {
+      this.roomType = RoomType.Meeting;
+    }
     if(capacity){
       this.capacity = capacity;
     }

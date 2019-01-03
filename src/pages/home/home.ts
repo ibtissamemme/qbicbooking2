@@ -829,6 +829,10 @@ export class HomePage {
     this.navCtrl.setRoot(TrainingPage);
   }
 
+  goToHomePage() {
+    this.navCtrl.setRoot(HomePage);
+  }
+
 
   // go to admin panel
   onAdminClicked() {

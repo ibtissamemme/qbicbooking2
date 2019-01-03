@@ -80,6 +80,7 @@ export class TrainingPage {
       }
       console.log("admin obs room : " + data.name);
       this.selectedRoom = data;
+      console.log(this.selectedRoom.roomType);
       // if we switch to a standard room type, go to the home page
       if (this.selectedRoom.roomType === RoomType.Meeting) {
         this.navCtrl.setRoot(HomePage);
@@ -129,7 +130,6 @@ export class TrainingPage {
 
           if (this.headerTime.isBetween(start, end)) {
             this.currentMeeting = m;
-
           }
 
         }.bind(this));
@@ -159,8 +159,6 @@ export class TrainingPage {
       // this.headerColor = 'primary';
       this.meeting = null;
     }
-
-    console.log(this.meeting);
     this.tabletService.changeLED(States.FREE);
 
   }

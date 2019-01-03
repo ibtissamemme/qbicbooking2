@@ -125,7 +125,7 @@
 
           <ion-row class="middle attendees" center *ngFor="let attendee of meeting?.attendies">
             <ion-col  col-1  >
-              <img  *ngIf="this.isPresent(attendee) === true"  src="assets/icon/icon_Checkin.svg"/>
+              <img  *ngIf="this.isPresent(attendee) === true"  src="../../assets/icon/icon_Checkin.svg"/>
             </ion-col>
             <ion-col col-3 class="name">
               {{attendee.lastName}}

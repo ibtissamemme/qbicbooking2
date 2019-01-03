@@ -83,7 +83,7 @@ export function meetingFromJSON(input: Object) {
     return comparison;
   }
 
-  // If there are duplicates, this method remove them
+  // If there are duplicates, this method removes them
   const getUnique = (arr, comp) => {
 
     const unique = arr

@@ -131,6 +131,7 @@ export class AdminPage {
 
   onRoomChange() {
     // nothing for now...
+    console.log(this.selectedRoom.roomType);
   }
 
   onSaveAPIParam() {
@@ -197,7 +198,7 @@ export class AdminPage {
     this.adminService.setBookingEndHour(this.bookingEndHour);
 
     // also save the api params
-    this.onSaveAPIParam();
+    this.onSaveAPIParam()
     // go back to the root page
     setTimeout(() => this.navCtrl.popToRoot(), 500);
   }
