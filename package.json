@@ -20,7 +20,7 @@
     "ionic:release": "CUSTOM_ENV=prod ionic cordova build --release android --prod",
     "ionic:release:schneider": "CUSTOM_ENV=schneider ionic cordova build --release android",
     "ionic:release:planuk": "CUSTOM_ENV=planuk ionic cordova build --release android",
-    "postionic:release": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/bounaixvincent/Documents/safeware/qbicbooking2/my-release-key.keystore ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidRelease &&  /Users/bounaixvincent/Documents/safeware/zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk",
+    "postionic:release": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/bounaixvincent/Documents/safeware/qbicbooking2/my-release-key.keystore ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk keystore &&  /Users/bounaixvincent/Documents/safeware/zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk",
     "postionic:release:schneider": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/safeware/HamiltonApps/private/androidReleaseKeystore.jks ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidRelease &&  /Users/safeware/Library/Android/sdk/build-tools/28.0.2/zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk",
     "postionic:release:planuk": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/safeware/HamiltonApps/private/androidReleaseKeystore.jks ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidRelease &&  /Users/safeware/Library/Android/sdk/build-tools/28.0.2/zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./platforms/android/app/build/outputs/apk/release/qbicbooking2.apk",
     "ionic:ios": "ionic cordova build ios --prod",
@@ -59,6 +59,7 @@
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "moment": "^2.22.1",
+    "phonegap-nfc": "1.0.3",
     "rxjs": "5.5.10",
     "sentry-cordova": "^0.13.1",
     "sw-toolbox": "3.6.0",
@@ -82,7 +83,8 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-fullscreen": {},
       "cordova-plugin-statusbar": {},
-      "sentry-cordova": {}
+      "sentry-cordova": {},
+      "phonegap-nfc": {}
     },
     "platforms": [
       "ios",
