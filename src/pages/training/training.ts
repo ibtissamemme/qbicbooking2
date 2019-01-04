@@ -13,6 +13,7 @@ import { Employee } from '../../app/shared/employee';
 import { ENV } from '@app/env';
 import { TabletService } from './../../services/tablet.service';
 import { TranslateService } from '@ngx-translate/core';
+import { NfcCheckPage } from '../nfc-check/nfc-check';
 
 @IonicPage()
 @Component({
@@ -182,7 +183,8 @@ export class TrainingPage {
 
   // go to admin panel
   onAdminClicked() {
-    this.navCtrl.push(AdminPage);
+    // this.navCtrl.push(AdminPage);
+    this.navCtrl.push(NfcCheckPage);
     clearInterval(this.refreshLoop);
     clearInterval(this.slideLoop);
   }
