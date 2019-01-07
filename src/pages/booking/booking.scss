@@ -72,14 +72,14 @@ page-booking {
 
 .scanButton {
   position: absolute;
-  bottom: 13vh;
-  right: 7vw;
-  background-color: rgba(22, 21, 21, 0.39);
+  bottom: 5px;
+  right: 2.5vw;
+  background-color: rgba(0, 0, 0, 0);
   z-index: 3;
-  width: 50px;
-  height: 50px;
+  width: 15%;
+  height: 15%;
 }
 
 .scan {
-  height: 50px;
+  height: 100%;
 }
