@@ -1,6 +1,8 @@
-<button ion-button icon-only class="scanButton" clear>
-    <img src="assets/icon/icon-Scan.png" alt="" class="scan">
-  </button>
+<div *ngIf="this.isNfcEnabled">
+    <div class="scandiv">
+      <img src="assets/icon/icon-Scan.png" alt="" class="scan">
+    </div>
+</div>
   <ion-content padding class="centered">
 
   <div class="wrapper" *ngIf="isEmployeeReady()">

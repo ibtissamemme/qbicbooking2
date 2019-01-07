@@ -9,6 +9,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import * as moment from "moment";
 import { toTypeScript } from '@angular/compiler';
+import { NfcCheckPage } from './../nfc-check/nfc-check';
+import { NFC, Ndef } from '@ionic-native/nfc';
+import { Subscription } from 'rxjs';
+
 
 
 @IonicPage()
@@ -36,7 +40,10 @@ export class BookingPage {
 
   isPinInClearText: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
+  isNfcEnabled: boolean;
+  subscription: Subscription;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService, private nfc: NFC) {
 
   }
 
@@ -52,8 +59,49 @@ export class BookingPage {
       }
       this.isPinInClearText = data;
     });
+
+    this.adminService.isNfcEnabled$.subscribe((data) => {
+      if (!data) {
+        return;
+      }
+      this.isNfcEnabled = data;
+      this.nfcTestMode();
+    });
   }
 
+  nfcTestMode() {
+    if (this.isNfcEnabled) {
+      // TODO : Remove subscription on exit
+      this.subscription.add(this.nfc.addNdefListener(() => {
+        console.log('successfully attached ndef listener');
+      }, (err) => {
+        console.log('error attaching ndef listener', err);
+      }).subscribe((event) => {
+        console.log('received ndef message. the tag contains: ', event.tag);
+        console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+
+        let alert = this.alertCtrl.create({
+          title: 'Test NFC ' + event.tag,
+          subTitle: `Decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
+        <br>
+        ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
+        `,
+          buttons: ['Dismiss']
+        });
+        alert.present();
+
+      }));
+    }
+  }
+
+  hex2a(hexx: string): string {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+  }
+  
   async onPinSubmit(pinCode: string) {
 
     //console.log(pinCode);

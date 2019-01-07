@@ -87,9 +87,7 @@
     "CANCEL_CONFIRM_BUTTON": "Confirm",
 
     "CANCEL_PENDING": "Cancelling your booking...",
-    "CANCEL_DONE": "Cancellation successfully done.",
-
-    "TOUCH_TO_IDENTICATE": "Click to scan you badge"
+    "CANCEL_DONE": "Cancellation successfully done."
 
   },
 
