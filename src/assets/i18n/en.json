@@ -12,8 +12,7 @@
     "EXTEND": "Extend booking",
     "NOT_CONFIGURED": "This device is not properly configured, please contact the support",
     "OVERLAY_HELPER": "Touch the screen to make a reservation",
-    "BOOKING_DISABLED": "Booking is disabled on this device",
-    "TOUCH_TO_IDENTICATE": "Click to scan you badge"
+    "BOOKING_DISABLED": "Booking is disabled on this device"
   },
 
   "TRAINING_PAGE": {
@@ -88,7 +87,9 @@
     "CANCEL_CONFIRM_BUTTON": "Confirm",
 
     "CANCEL_PENDING": "Cancelling your booking...",
-    "CANCEL_DONE": "Cancellation successfully done."
+    "CANCEL_DONE": "Cancellation successfully done.",
+
+    "TOUCH_TO_IDENTICATE": "Click to scan you badge"
 
   },
 

@@ -54,17 +54,32 @@ page-booking {
     padding-top: 30px;
     font-weight: 600;
   }
-// confirm button config
-button#confirm {
-  // background-color: color($colors, primary);
-  // color: white;
-  font-size: $font-size-small;
+  // confirm button config
+  button#confirm {
+    // background-color: color($colors, primary);
+    // color: white;
+    font-size: $font-size-small;
+  }
+  #cancel{
+    border-bottom: 1px solid darkgray;
+    padding-bottom: 3px;
+    width:80%;
+    font-size: $font-size-small;
+    color: darkgray;
+  }
+  
 }
-#cancel{
-  border-bottom: 1px solid darkgray;
-  padding-bottom: 3px;
-  width:80%;
-  font-size: $font-size-small;
-  color: darkgray;
+
+.scanButton {
+  position: absolute;
+  bottom: 13vh;
+  right: 7vw;
+  background-color: rgba(22, 21, 21, 0.39);
+  z-index: 3;
+  width: 50px;
+  height: 50px;
 }
+
+.scan {
+  height: 50px;
 }

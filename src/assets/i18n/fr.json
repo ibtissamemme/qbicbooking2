@@ -12,8 +12,7 @@
     "EXTEND": "Prolonger la réservation",
     "NOT_CONFIGURED": "Cette tablette n'est pas correctement configurée, merci de contacter le support.",
     "OVERLAY_HELPER": "Touchez l'écran pour faire une réservation",
-    "BOOKING_DISABLED": "La réservation est désactivée depuis cette tablette",
-    "TOUCH_TO_IDENTICATE": "Cliquez pour scanner votre badge"
+    "BOOKING_DISABLED": "La réservation est désactivée depuis cette tablette"
   },
 
   "TRAINING_PAGE": {
@@ -87,7 +86,9 @@
     "CANCEL_CONFIRM": "Êtes-vous sûr de vouloir annuler cette réservation ?",
     "CANCEL_CONFIRM_BUTTON": "Confirmer",
     "CANCEL_PENDING": "Annulation en cours",
-    "CANCEL_DONE": "Annulation effectuée."
+    "CANCEL_DONE": "Annulation effectuée.",
+
+    "TOUCH_TO_IDENTICATE": "Cliquez pour scanner votre badge"
 
   },
   "CHECK": {

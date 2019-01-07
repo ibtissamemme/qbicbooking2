@@ -132,12 +132,24 @@ $loading-ios-max-width: 50%;
   .modal-wrapper {
     position: absolute;
     top: 0 !important;
+    left:0 !important;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0% !important;
+    overflow: visible !important;
+   }
+
+
+   .centered {
+    position: absolute;
+    top: 0 !important;
     left:20%;
     display: block;
     width: 60% !important;
     height: 100% !important;
     border-radius: 0% !important;
-    overflow: hidden;
+    overflow: visible !important;
    }
 }
  // for all the alerts and loading controllers
