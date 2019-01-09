@@ -86,7 +86,9 @@
     "CANCEL_CONFIRM": "Êtes-vous sûr de vouloir annuler cette réservation ?",
     "CANCEL_CONFIRM_BUTTON": "Confirmer",
     "CANCEL_PENDING": "Annulation en cours",
-    "CANCEL_DONE": "Annulation effectuée."
+    "CANCEL_DONE": "Annulation effectuée.",
+
+    "SCAN": "Scannez votre badge"
 
   },
   "CHECK": {

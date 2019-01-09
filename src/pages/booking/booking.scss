@@ -6,7 +6,7 @@ page-booking {
     // align-items: center;
     // justify-items: auto;
     height: 90%;
-    padding-top: 10%;
+    // padding-top: 10%;
 
   }
 
@@ -67,21 +67,33 @@ page-booking {
     font-size: $font-size-small;
     color: darkgray;
   }
-
-  .scandiv {
-    position: absolute;
-    bottom: 5px;
-    right: 2.5vw;
-    z-index: 3;
-    width: 15%;
-    height: 15%;
-    text-align: center;
-  }
   
   .scan {
-    height: 100%;
+    width: 60%;
+    height: 11%;
+    bottom: 0vh;
+    left: 20%;
+    position: absolute;
+    border: dashed 4px #000;
+    border-image: url("../assets/imgs/dashed2.png")  3 round ;
+    border-bottom: 0;
   }
-  
+
+  .scantext {
+    padding-top: 3%;
+    width: 100%;
+    margin: auto;
+    height: 100%;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #a0a0a0;
+    text-align: center;
+  }
+
+  .downIcon {
+    height: 60%;
+    color: #a0a0a0;
+  }
 }
 
 

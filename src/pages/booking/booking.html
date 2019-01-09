@@ -1,9 +1,4 @@
-<div *ngIf="this.isNfcEnabled">
-    <div class="scandiv">
-      <img src="assets/icon/icon-Scan.png" alt="" class="scan">
-    </div>
-</div>
-  <ion-content padding class="centered">
+  <ion-content padding>
 
   <div class="wrapper" *ngIf="isEmployeeReady()">
 
@@ -111,6 +106,8 @@
     <!-- <button ion-button color='danger' (click)="onCancelClicked()">{{'BOOKING.CANCEL' | translate}} </button> -->
   </div>
 
-  
+  <div class="scan">
+    <p class="scantext">{{'BOOKING.SCAN' | translate}} <br> <img class="downIcon" src="assets/icon/icon_DownArrow.png" alt=""></p>
+  </div>
   
 </ion-content>

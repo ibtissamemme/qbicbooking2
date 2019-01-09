@@ -87,7 +87,9 @@
     "CANCEL_CONFIRM_BUTTON": "Confirm",
 
     "CANCEL_PENDING": "Cancelling your booking...",
-    "CANCEL_DONE": "Cancellation successfully done."
+    "CANCEL_DONE": "Cancellation successfully done.",
+
+    "SCAN": "Scan here"
 
   },
 
