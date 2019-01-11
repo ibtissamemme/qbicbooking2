@@ -27,7 +27,7 @@
 
     <!-- <button ion-button color='danger' (click)="onCancelClicked()">{{'BOOKING.CANCEL' | translate}} </button> -->
 
-    <div class="scan">
+    <div class="scan" *ngIf="isNfcEnabled">
       <p class="scantext">{{'BOOKING.SCAN' | translate}} <br> <img class="downIcon" src="assets/icon/icon_DownArrow.png"
           alt=""></p>
     </div>

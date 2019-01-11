@@ -9,6 +9,7 @@ import { GesroomService } from "../../services/gesroom.service";
 import { AdminService } from "../../services/admin.service";
 import { NFC, Ndef } from '@ionic-native/nfc';
 import { Subscription } from 'rxjs';
+import { HomePage } from '../home/home';
 
 
 @IonicPage()
@@ -200,6 +201,7 @@ export class AdminPage {
     // also save the api params
     this.onSaveAPIParam()
     // go back to the root page
+    this.navCtrl.setRoot(HomePage);
     setTimeout(() => this.navCtrl.popToRoot(), 500);
   }
 

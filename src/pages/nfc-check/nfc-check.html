@@ -40,7 +40,7 @@
     </div>
 
     <ion-pincode [isPinInClearText]="isPinInClearText" (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel()"></ion-pincode>
-    <div class="scan">
+    <div class="scan" *ngIf="isNfcEnabled">
       <p class="scantext">{{'BOOKING.SCAN' | translate}} <br> <img class="downIcon" src="assets/icon/icon_DownArrow.png"
           alt=""></p>
     </div>

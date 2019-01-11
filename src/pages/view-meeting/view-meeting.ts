@@ -10,6 +10,9 @@ import { IonicPage, NavController, NavParams, ViewController, AlertController, M
 
 import { Employee, EmployeeFromJSON } from './../../app/shared/employee';
 import { Meeting } from './../../app/shared/meeting';
+
+import { NFC } from '@ionic-native/nfc';
+import { Subscription } from 'rxjs';
 /**
  * Generated class for the ViewMeetingPage page.
  *
@@ -44,14 +47,18 @@ export class ViewMeetingPage {
   msgOwnerOnly: string = "Seul l'organisateur peut annuler cette réunion"
 
   msgCancellationPending: string = "Annulation en cours...";
-  msgCancellationDone: string = "Annulation effectuée."
+  msgCancellationDone: string = "Annulation effectuée.";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private translate: TranslateService, private alertCtrl: AlertController, private adminService: AdminService, private gesroomService: GesroomService, private loadingCtrl: LoadingController, private events: Events
-  ) {
+  isNfcEnabled: boolean;
+  subscription: Subscription;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private translate: TranslateService, private alertCtrl: AlertController, private adminService: AdminService, private gesroomService: GesroomService, private loadingCtrl: LoadingController, private events: Events,
+  private nfc: NFC) {
   }
 
   ionViewDidLoad() {
 
+    this.subscription = new Subscription;
     this.updateTranslations();
 
     if (!this.meeting) {
@@ -67,6 +74,13 @@ export class ViewMeetingPage {
         return;
       }
       this.isPinInClearText = data;
+    });
+    this.adminService.isNfcEnabled$.subscribe((data) => {
+      if (!data) {
+        return;
+      }
+      this.isNfcEnabled = data;
+      this.nfcTestMode();
     });
   }
 
@@ -111,6 +125,24 @@ export class ViewMeetingPage {
     return this.displayPincodeAttr;
   }
 
+  nfcTestMode() {
+    if (this.isNfcEnabled) {
+      // TODO : Remove subscription on exit
+      this.subscription.add(this.nfc.addNdefListener(() => {
+        console.log('successfully attached ndef listener');
+      }, (err) => {
+        console.log('error attaching ndef listener', err);
+      }).subscribe((event) => {
+        console.log('received ndef message. the tag contains: ', event.tag);
+        console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+
+        let payload = event.tag.ndefMessage[0].payload;
+        let tagContent = this.nfc.bytesToString(payload).substring(3);
+
+        this.onPinSubmit(tagContent);
+      }));
+    }
+  }
 
   async onPinSubmit(pinCode: string) {
     let emp: Employee;
@@ -214,6 +246,11 @@ export class ViewMeetingPage {
 
     // hide the modal, send something to the hone.ts to trigger a refresh
     this.viewCtrl.dismiss(true);
+  }
+
+  ionViewWillLeave() {
+    // Otherwise alerts will increment
+    this.subscription.unsubscribe();
   }
 
   async updateTranslations() {

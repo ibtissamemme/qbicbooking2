@@ -70,6 +70,11 @@
 
     <ion-pincode [isPinInClearText]="isPinInClearText" (pincodeSubmitted)="onPinSubmit($event)" (pincodeCancelled)="onBackClicked($event)"></ion-pincode>
 
+    <div class="scan" *ngIf="isNfcEnabled">
+        <p class="scantext">{{'BOOKING.SCAN' | translate}} <br> <img class="downIcon" src="assets/icon/icon_DownArrow.png"
+            alt=""></p>
+      </div>
+
     <!-- <button ion-button color='danger' (click)="onCancelClicked()">{{'BOOKING.CANCEL' | translate}} </button> -->
   </div>
 
