@@ -43,6 +43,7 @@ export class BookingPage {
   isNfcEnabled: boolean;
   subscription: Subscription;
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService, private nfc: NFC) {
 
   }
@@ -51,6 +52,8 @@ export class BookingPage {
   }
 
   ionViewWillEnter() {
+
+    this.subscription = new Subscription();
     this.updateTranslations();
 
     this.adminService.isPinInClearText$.subscribe((data) => {
@@ -80,16 +83,19 @@ export class BookingPage {
         console.log('received ndef message. the tag contains: ', event.tag);
         console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
 
-        let alert = this.alertCtrl.create({
-          title: 'Test NFC ' + event.tag,
-          subTitle: `Decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
-        <br>
-        ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
-        `,
-          buttons: ['Dismiss']
-        });
-        alert.present();
+        let payload = event.tag.ndefMessage[0].payload;
+        let tagContent = this.nfc.bytesToString(payload).substring(3);
 
+        // let alert = this.alertCtrl.create({
+        //   title: 'Test NFC ' + event.tag,
+        //   subTitle: `Decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
+        // <br>
+        // ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
+        // `,
+        //   buttons: ['Dismiss']
+        // });
+        // alert.present();
+        this.onPinSubmit(tagContent);
       }));
     }
   }
@@ -160,12 +166,7 @@ export class BookingPage {
       alert.present();
     }
 
-
     loadingEmployee.dismiss();
-
-
-
-
 
     // await this.gesroomService.getEmployeeDetails(corporateId, site).then( (data, that = this) => {
     //   if(data){
@@ -181,7 +182,6 @@ export class BookingPage {
     //   });
     //   alert.present();
     // });
-
 
     if (!this.isEmployeeReady()) {
       const errorEmp = this.loadingCtrl.create({

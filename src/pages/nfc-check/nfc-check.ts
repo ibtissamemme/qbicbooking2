@@ -48,6 +48,11 @@ export class NfcCheckPage {
         console.log('received ndef message. the tag contains: ', event.tag);
         console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
         this.nfcTag = this.nfc.bytesToHexString(event.tag.id);
+
+        let payload = event.tag.ndefMessage[0].payload;
+        let tagContent = this.nfc.bytesToString(payload).substring(3);
+
+        this.onPinSubmit(tagContent);
       });
     }
     else this.message = 'Impossible de lancer le NFC';

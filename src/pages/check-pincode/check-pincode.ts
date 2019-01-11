@@ -30,6 +30,7 @@ export class CheckPincodePage {
   msgBack: string = "Retour";
   msgUnauthorized: string = "Vous n'êtes pas authorisé à réserver cette salle";
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public adminService: AdminService, private alertCtrl: AlertController, public viewCtrl: ViewController, private loadingCtrl: LoadingController, private gesroomService: GesroomService, private translate: TranslateService) {
 
   }
@@ -44,7 +45,9 @@ export class CheckPincodePage {
     });
 
     this.updateTranslations();
+
   }
+
 
   async onPinSubmit(pinCode: string) {
     //console.log(pinCode);

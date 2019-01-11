@@ -247,28 +247,31 @@ export class HomePage {
       this.refresh();
     }));
 
-    if(this.adminService.isNfcEnabled){
-      this.subscriptions.add(
-        this.nfc.addNdefListener(() => {
-          console.log('successfully attached ndef listener');
-        }, (err) => {
-          console.log('error attaching ndef listener', err);
-        }).subscribe((event) => {
-          console.log('received ndef message. the tag contains: ', event.tag);
-          console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+    // if(this.adminService.isNfcEnabled){
+    //   this.subscriptions.add(
+    //     this.nfc.addNdefListener(() => {
+    //       console.log('successfully attached ndef listener');
+    //     }, (err) => {
+    //       console.log('error attaching ndef listener', err);
+    //     }).subscribe((event) => {
+    //       console.log('received ndef message. the tag contains: ', event.tag);
+    //       console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
 
-          let alert = this.alertCtrl.create({
-            title: 'NFC ' + event.tag,
-            subTitle: `decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
-            <br>
-            ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
-            `,
-            buttons: ['Dismiss']
-          });
-          alert.present();
+    //       let payload = event.tag.ndefMessage[0].payload;
+    //       let tagContent = this.nfc.bytesToString(payload).substring(3);
 
-        }));
-      }
+    //       let alert = this.alertCtrl.create({
+    //         title: 'NFC ' + event.tag,
+    //         subTitle: `decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
+    //         <br>
+    //         ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
+    //         `,
+    //         buttons: ['Dismiss']
+    //       });
+    //       alert.present();
+
+    //     }));
+    //   }
 
 
         this.refresh();
