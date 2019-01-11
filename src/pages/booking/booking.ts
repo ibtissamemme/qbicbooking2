@@ -95,6 +95,7 @@ export class BookingPage {
         //   buttons: ['Dismiss']
         // });
         // alert.present();
+        
         this.onPinSubmit(tagContent);
       }));
     }
@@ -296,6 +297,11 @@ export class BookingPage {
   onCancelClicked() {
     // dismiss modal
     this.viewCtrl.dismiss();
+  }
+
+  ionViewWillLeave() {
+    // otherwise alerts will increment
+    this.subscription.unsubscribe();
   }
 
 

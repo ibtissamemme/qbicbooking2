@@ -575,7 +575,7 @@ export class HomePage {
   async startNow() {
     this.isSomethingElseDisplayed = true;
 
-    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass: "my-modal" });
+    let myModal = this.modalCtrl.create(NfcCheckPage, null, { cssClass: "my-modal" });
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(async (emp: Employee) => this.confirmStartMeeting(emp));
@@ -682,7 +682,7 @@ export class HomePage {
   async endNow() {
     this.isSomethingElseDisplayed = true;
 
-    let myModal = this.modalCtrl.create(CheckPincodePage, null, { cssClass: "my-modal" });
+    let myModal = this.modalCtrl.create(NfcCheckPage, null, { cssClass: "my-modal" });
     this.tappedButtons = new Array();
 
     myModal.onDidDismiss(async (emp: Employee) => this.confirmEndNow(emp));
@@ -836,11 +836,30 @@ export class HomePage {
     this.navCtrl.setRoot(HomePage);
   }
 
+  goingToAdmin() {
+    let myModal = this.modalCtrl.create(
+      CheckPincodePage,
+      null,
+      { cssClass: "my-modal" });
+
+    this.tappedButtons = new Array();
+
+    myModal.onDidDismiss(() => {
+      this.isSomethingElseDisplayed = false;
+      this.refresh();
+      // force refresh of the button colors => remove the orange if cancelled
+      this.events.publish('refreshColor:clicked');
+    });
+
+    myModal.present();
+  }
 
   // go to admin panel
   onAdminClicked() {
     // this.navCtrl.push(AdminPage);
-    this.navCtrl.push(NfcCheckPage);
+    // this.navCtrl.push(NfcCheckPage);
+    this.goingToAdmin();
+    this.isSomethingElseDisplayed = true;
   }
 
 

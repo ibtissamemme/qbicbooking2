@@ -39,6 +39,7 @@
     "DONE": "Booking update successfully done."
   },
   "ADMIN": {
+    "TITLE": "Administration",
     "SITE_CONFIGURATION": "Site configuration",
     "SITE": "Site",
     "ROOM": "Room",

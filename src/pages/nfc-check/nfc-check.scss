@@ -1,3 +1,88 @@
 page-nfc-check {
-
+    .wrapper{
+        display: flex;
+        // justify-content: center;
+        // align-items: center;
+        // padding-top:50px;
+        flex-flow: column;
+    
+        .title-wrapper{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      
+          .title {
+            font-size: $font-size-big;
+            padding: 0.5em;
+            margin-bottom:20px;
+          }
+        }
+      }
+      .grid-wrapper{
+        height: 100%;
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        // align-self: center;
+        // justify-content: center;
+        .grid-elem{
+          align-self: center;
+          ion-row{
+    
+          }
+        }
+      }
+    
+      .label{
+        font-size: $font-size-small;
+        border-bottom: 1px solid lightgrey;
+        padding-bottom: 30px;
+        padding-top: 30px;
+      }
+      .value{
+        font-size: $font-size-small;
+        border-bottom: 1px solid lightgrey;
+        padding-bottom: 30px;
+        padding-top: 30px;
+        font-weight: 600;
+      }
+      // confirm button config
+      button#confirm {
+        // background-color: color($colors, primary);
+        // color: white;
+        font-size: $font-size-small;
+      }
+      #cancel{
+        border-bottom: 1px solid darkgray;
+        padding-bottom: 3px;
+        width:80%;
+        font-size: $font-size-small;
+        color: darkgray;
+      }
+      .scan {
+        width: 60%;
+        height: 11%;
+        bottom: 0vh;
+        left: 20%;
+        position: absolute;
+        border: dashed 4px #000;
+        border-image: url("../assets/imgs/dashed2.png")  3 round ;
+        border-bottom: 0;
+      }
+    
+      .scantext {
+        padding-top: 3%;
+        width: 100%;
+        margin: auto;
+        height: 100%;
+        font-size: 1.4em;
+        font-weight: bold;
+        color: #a0a0a0;
+        text-align: center;
+      }
+    
+      .downIcon {
+        height: 60%;
+        color: #a0a0a0;
+      }
 }

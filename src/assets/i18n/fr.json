@@ -39,6 +39,7 @@
     "DONE": "Modification de votre réservation effectuée."
   },
   "ADMIN": {
+    "TITLE": "Administration",
     "SITE_CONFIGURATION": "Configuration de la salle",
     "SITE": "Site",
     "ROOM": "Salle",

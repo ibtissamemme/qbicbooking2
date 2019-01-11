@@ -15,13 +15,21 @@
 
 <ion-content padding>
 
-  
 
-  <div class="wrapper">
-    <div class="title">
-      {{'BOOKING.TITLE' | translate}}
+  <div class="wrapper" *ngIf="!isEmployeeReady()">
+    <div class="title-wrapper">
+      <div class="title">
+        {{'ADMIN.TITLE' | translate}}
+      </div>
+    </div>
+
+    <ion-pincode [isPinInClearText]="false" (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel($event)"></ion-pincode>
+
+    <!-- <button ion-button color='danger' (click)="onCancelClicked()">{{'BOOKING.CANCEL' | translate}} </button> -->
+
+    <div class="scan">
+      <p class="scantext">{{'BOOKING.SCAN' | translate}} <br> <img class="downIcon" src="assets/icon/icon_DownArrow.png"
+          alt=""></p>
     </div>
   </div>
-
-  <ion-pincode [isPinInClearText]="isPinInClearText" (pincodeSubmitted)="this.onPinSubmit($event)" (pincodeCancelled)="this.onPinCancel()"></ion-pincode>
 </ion-content>
