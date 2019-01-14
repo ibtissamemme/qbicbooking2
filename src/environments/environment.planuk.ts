@@ -1,12 +1,12 @@
 //r: 61, g:205, b: 88
 export const ENV = {
   mode: "Production",
+  // endpoint:
+  //   "http://accueil.et.services.schneider-electric.com/GesroomRestAPI/Gesroom/API",
+  // apiKey: "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ",
   endpoint:
-    "http://accueil.et.services.schneider-electric.com/GesroomRestAPI/Gesroom/API",
-  apiKey: "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ",
-  endpoint2:
     "https://staging.safeware.fr/HamiltonAppsAPI_PlanUK",
-  apiKey2: "MD33CZZ7MHAZZZ2BICVWFCYELIZZ",
+  apiKey: "MD33CZZ7MHAZZZ2BICVWFCYELIZZ",
   adminId: "SVHAMILTON",
   tabletId: "123456",
   adminCode: "1607",

@@ -76,7 +76,7 @@ export class NfcCheckPage {
     }
   }
 
-  async onPinSubmit(pinCode: string) {
+  async onPinSubmit(pinCodeSubmitted: string) {
     //console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
       spinner: 'dots',
@@ -85,12 +85,13 @@ export class NfcCheckPage {
     });
     loadingEmployee.present();
 
-    const corporateId = this.adminService.corporateIdRadical + pinCode;
+    // const corporateId = this.adminService.corporateIdRadical + pinCode;
+    const pinCode = pinCodeSubmitted;
     const site=this.adminService.selectedSite;
 
     try {
       // get employee info based on the corporate ID
-      this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
+      this.emp = await this.gesroomService.getEmployeeDetails(pinCode, site);
       //loadingEmployee.dismiss();
 
       // if something went wrong...

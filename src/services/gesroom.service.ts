@@ -15,14 +15,29 @@ import { Employee, EmployeeFromJSON } from "../app/shared/employee";
 export class GesroomService {
   ges_tablet: string;
 
-  private endpoint: string;
+  // private endpoint: string;
   private userId: string;
-  private apiKey: string;
+  // private apiKey: string;
   private tabletId: string;
 
-  private apiKey2: string; //= "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ";
-  private endpoint2: string; // = "http://safeware-custk.hds-group.com/TelemaqueRestAPI";
+  private apiKey: string; //= "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ";
+  private endpoint: string; // = "http://safeware-custk.hds-group.com/TelemaqueRestAPI";
   private authToken: string;
+
+  // private endpointObs: BehaviorSubject<string>;
+  // get endpoint$(): Observable<string> {
+  //   return this.endpointObs.asObservable();
+  // };
+
+  // private apiKeyObs: BehaviorSubject<string>;
+  // get apiKey$(): Observable<string> {
+  //   return this.apiKeyObs.asObservable();
+  // };
+
+  private userIdObs: BehaviorSubject<string>;
+  get userId$(): Observable<string> {
+    return this.userIdObs.asObservable();
+  };
 
   private endpointObs: BehaviorSubject<string>;
   get endpoint$(): Observable<string> {
@@ -34,26 +49,11 @@ export class GesroomService {
     return this.apiKeyObs.asObservable();
   };
 
-  private userIdObs: BehaviorSubject<string>;
-  get userId$(): Observable<string> {
-    return this.userIdObs.asObservable();
-  };
-
-  private endpoint2Obs: BehaviorSubject<string>;
-  get endpoint2$(): Observable<string> {
-    return this.endpoint2Obs.asObservable();
-  };
-
-  private apiKey2Obs: BehaviorSubject<string>;
-  get apiKey2$(): Observable<string> {
-    return this.apiKey2Obs.asObservable();
-  };
-
   constructor(private http: HttpClient, private storage: Storage, ) {
+    // this.endpointObs = new BehaviorSubject(undefined)
+    // this.apiKeyObs = new BehaviorSubject(undefined)
     this.endpointObs = new BehaviorSubject(undefined)
     this.apiKeyObs = new BehaviorSubject(undefined)
-    this.endpoint2Obs = new BehaviorSubject(undefined)
-    this.apiKey2Obs = new BehaviorSubject(undefined)
     this.userIdObs = new BehaviorSubject(undefined)
   }
 
@@ -75,25 +75,40 @@ export class GesroomService {
     return res;
   }
 
-  setHeaders(): HttpHeaders {
-    // const reqHeaders = new Headers();
-    // this.broadcaster.on("serialNumber").subscribe(ges_tablet => {
-    //   this.ges_tablet = ges_tablet;
-    // });
-    const options = new HttpHeaders();
-    options.append("GES_USERID", this.userId);
-    options.append("GES_APIKEY", this.apiKey);
-    options.append("GES_TABLET", "123456");
-    options.append("Accept", "application/json");
+  // setHeaders(): HttpHeaders {
+  //   // const reqHeaders = new Headers();
+  //   // this.broadcaster.on("serialNumber").subscribe(ges_tablet => {
+  //   //   this.ges_tablet = ges_tablet;
+  //   // });
+  //   const options = new HttpHeaders();
+  //   options.append("GES_USERID", this.userId);
+  //   options.append("GES_APIKEY", this.apiKey);
+  //   options.append("GES_TABLET", "123456");
+  //   options.append("Accept", "application/json");
 
-    // headers.append("GES_USERID", this.sesaId);
-    // headers.append("GES_APIKEY", this.adminDataServ.apiKey);
-    // headers.append("GES_TABLET", this.ges_tablet);
-    // headers.append("Accept", "application/json");
+  //   // headers.append("GES_USERID", this.sesaId);
+  //   // headers.append("GES_APIKEY", this.adminDataServ.apiKey);
+  //   // headers.append("GES_TABLET", this.ges_tablet);
+  //   // headers.append("Accept", "application/json");
 
-    return options;
+  //   return options;
+  // }
+
+  // setEndpoint(end: string) {
+  //   this.endpointObs.next(end);
+  //   this.setToStorage("endpoint", end);
+  //   this.endpoint = end;
+  // }
+  // setApiKey(key: string) {
+  //   this.apiKeyObs.next(key);
+  //   this.setToStorage("apiKey", key);
+  //   this.apiKey = key;
+  // }
+  setUserId(id: string) {
+    this.userIdObs.next(id);
+    this.setToStorage("userId", id);
+    this.userId = id;
   }
-
   setEndpoint(end: string) {
     this.endpointObs.next(end);
     this.setToStorage("endpoint", end);
@@ -104,21 +119,6 @@ export class GesroomService {
     this.setToStorage("apiKey", key);
     this.apiKey = key;
   }
-  setUserId(id: string) {
-    this.userIdObs.next(id);
-    this.setToStorage("userId", id);
-    this.userId = id;
-  }
-  setEndpoint2(end: string) {
-    this.endpoint2Obs.next(end);
-    this.setToStorage("endpoint2", end);
-    this.endpoint2 = end;
-  }
-  setApiKey2(key: string) {
-    this.apiKey2Obs.next(key);
-    this.setToStorage("apiKey2", key);
-    this.apiKey2 = key;
-  }
   // utility to store with key
   setToStorage(key: string, object: any) {
     this.storage.set(key, JSON.stringify(object));
@@ -127,20 +127,20 @@ export class GesroomService {
   // checks and load API parameters
   // called at startup by the app.module.ts
   async setup() {
-    if (!this.endpoint || !this.userId || !this.apiKey || !this.endpoint2 || !this.apiKey2) {
-      this.endpoint = await this.loadParam('endpoint');
+    if (!this.endpoint || !this.apiKey) {
+      // this.endpoint = await this.loadParam('endpoint');
       this.userId = await this.loadParam('adminId');
+      // this.apiKey = await this.loadParam('apiKey');
+
+      this.endpoint = await this.loadParam('endpoint');
       this.apiKey = await this.loadParam('apiKey');
 
-      this.endpoint2 = await this.loadParam('endpoint2');
-      this.apiKey2 = await this.loadParam('apiKey2');
-
-      this.endpointObs.next(this.endpoint);
+      // this.endpointObs.next(this.endpoint);
       this.userIdObs.next(this.userId)
-      this.apiKeyObs.next(this.apiKey)
+      // this.apiKeyObs.next(this.apiKey)
       //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
-      this.endpoint2Obs.next(this.endpoint2);
-      this.apiKey2Obs.next(this.apiKey2)
+      this.endpointObs.next(this.endpoint);
+      this.apiKeyObs.next(this.apiKey)
 
       this.authenticate();
     }
@@ -166,9 +166,9 @@ export class GesroomService {
     body.set('grant_type', 'password');
     body.set('username', this.userId);
     body.set('password', this.userId);
-    body.set('APIKeys', this.apiKey2);
+    body.set('APIKeys', this.apiKey);
 
-    await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
+    await this.http.post(this.endpoint + "/api/token", body.toString(), options).toPromise().then((data) => {
       if(data){
         this.authToken = data['access_token'];
       }
@@ -180,7 +180,7 @@ export class GesroomService {
   // **********************
   // new API authorization header helper
   // **********************
-  async setHeaders2()  {
+  async setHeaders()  {
     if (!this.authToken) {
       await this.authenticate();
     }
@@ -203,22 +203,22 @@ export class GesroomService {
   // Data methods
   // **********************
   async getRoomPicture(room: Room) {
-    return this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Photo`, await this.setHeaders2()).toPromise();
+    return this.http.get(`${this.endpoint}/api/Room/${room.Id}/Photo`, await this.setHeaders()).toPromise();
   }
 
   // TODO fix this on API side...
   async getRoomCapacity(room: Room) {
-    //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
+    //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders())
     let cap = 8;
-    const resp = await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise();
+    const resp = await this.http.get(`${this.endpoint}/api/Room/${room.Id}/Layout`, await this.setHeaders()).toPromise();
     if(resp && Array.isArray(resp)){
       cap = resp[0]['capacity'];
     }
     return cap;
   }
 
-  async getEmployeeDetails(corporateId: string, site: Site) {
-    const resp = await this.http.get(`${this.endpoint2}/api/Employee?corporateId=${corporateId}`, await this.setHeaders2()).toPromise();
+  async getEmployeeDetails(pinCode: string, site: Site) {
+    const resp = await this.http.get(`${this.endpoint}/api/Employee?pinCode=${pinCode}`, await this.setHeaders()).toPromise();
 
     if (resp) {
       let ret: Employee
@@ -239,7 +239,7 @@ export class GesroomService {
   }
 
   async checkEmployeeRights(action: string, meeting: Meeting, emp: Employee): Promise<boolean> {
-    const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&employeeId=${emp.id}`, await this.setHeaders2()).toPromise();
+    const resp = await this.http.get<boolean>(`${this.endpoint}/api/CheckRightMeeting?action=${action}&meetingId=${meeting.id}&employeeId=${emp.id}`, await this.setHeaders()).toPromise();
     if (resp) {
       let ret: boolean = resp;
       return ret;
@@ -249,7 +249,7 @@ export class GesroomService {
 
   async checkRoomRights(room: Room, emp: Employee): Promise<boolean> {
     try {
-      const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightRoom?roomId=${room.Id}&employeeId=${emp.id}`, await this.setHeaders2()).toPromise();
+      const resp = await this.http.get<boolean>(`${this.endpoint}/api/CheckRightRoom?roomId=${room.Id}&employeeId=${emp.id}`, await this.setHeaders()).toPromise();
       return resp;
     } catch (error) {
       if(error.status !== 404){
@@ -260,7 +260,7 @@ export class GesroomService {
 
   async getSites() {
     const sites = new Array<Site>();
-    const resp = await this.http.get(`${this.endpoint2}/api/Site`, await this.setHeaders2()).toPromise();
+    const resp = await this.http.get(`${this.endpoint}/api/Site`, await this.setHeaders()).toPromise();
     if (resp && Array.isArray(resp)) {
       resp.forEach(element => {
         sites.push(siteFromJson(element));
@@ -273,7 +273,7 @@ export class GesroomService {
     const rooms = new Array<Room>();
     try {
       const resp = await this.http
-        .get(`${this.endpoint2}/api/Room?siteId=${site.Id}`, await this.setHeaders2())
+        .get(`${this.endpoint}/api/Room?siteId=${site.Id}`, await this.setHeaders())
         .toPromise();
 
         if (resp && Array.isArray(resp)) {
@@ -296,7 +296,7 @@ export class GesroomService {
       const end = moment().endOf("day").format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
       try {
         const resp = await this.http
-          .get(`${this.endpoint2}/api/Meeting?roomId=${room.Id}&dateFrom=${start}&dateTo=${end}`, await this.setHeaders2())
+          .get(`${this.endpoint}/api/Meeting?roomId=${room.Id}&dateFrom=${start}&dateTo=${end}`, await this.setHeaders())
           .toPromise();
 
         if (resp && Array.isArray(resp)) {
@@ -344,22 +344,22 @@ export class GesroomService {
   async postMeeting(meeting: Meeting) {
     const owner = meeting.owner;
     const room = meeting.room;
-    return this.http.post(`${this.endpoint2}/api/Meeting`, {
+    return this.http.post(`${this.endpoint}/api/Meeting`, {
       description: meeting.meetingDescription,
       meetingStartDate: meeting.startDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
       meetingEndDate: meeting.endDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
       organizerId: owner.id,
       hostId: owner.id,
       roomId: room.Id
-    }, await this.setHeaders2()).toPromise();
+    }, await this.setHeaders()).toPromise();
   }
 
   async putMeeting(meeting: Meeting) {
-    await this.http.put(`${this.endpoint2}/api/Meeting/${meeting.id}`, {
+    await this.http.put(`${this.endpoint}/api/Meeting/${meeting.id}`, {
         meetingStartDate: meeting.startDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
         meetingEndDate: meeting.endDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
         meetingId: meeting.id
-    }, await this.setHeaders2()).toPromise();
+    }, await this.setHeaders()).toPromise();
 
   }
 
@@ -372,7 +372,7 @@ export class GesroomService {
   // }
 
   async deleteMeeting(meeting: Meeting) {
-    return this.http.delete(`${this.endpoint2}/api/Meeting/${meeting.id}`, await this.setHeaders2()).toPromise();
+    return this.http.delete(`${this.endpoint}/api/Meeting/${meeting.id}`, await this.setHeaders()).toPromise();
   }
 
 }

@@ -87,8 +87,8 @@ export class BookingPage {
         let tagContent = this.nfc.bytesToString(payload).substring(3);
 
         // let alert = this.alertCtrl.create({
-        //   title: 'Test NFC ' + event.tag,
-        //   subTitle: `Decoded tag id', ${this.nfc.bytesToHexString(event.tag.id)}
+        //   title: 'Test NFC ' + tagContent,
+        //   subTitle: `Decoded tag id', ${tagContent}
         // <br>
         // ${this.hex2a(this.nfc.bytesToHexString(event.tag.id))}
         // `,
@@ -109,7 +109,7 @@ export class BookingPage {
     return str;
   }
   
-  async onPinSubmit(pinCode: string) {
+  async onPinSubmit(pinCodeSubmitted: string) {
 
     //console.log(pinCode);
     const loadingEmployee = this.loadingCtrl.create({
@@ -119,12 +119,14 @@ export class BookingPage {
     });
     loadingEmployee.present();
 
-    const corporateId = this.adminService.corporateIdRadical + pinCode;
+    // const corporateId = this.adminService.corporateIdRadical + pinCodeSubmitted;
+    const pinCode = pinCodeSubmitted;
+
     const site = this.adminService.selectedSite;
     this.emp = null;
     try {
       // get employee info based on the corporate ID
-      this.emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
+      this.emp = await this.gesroomService.getEmployeeDetails(pinCode, site);
 
       // if something went wrong...
       if (!this.emp) {

@@ -144,7 +144,7 @@ export class ViewMeetingPage {
     }
   }
 
-  async onPinSubmit(pinCode: string) {
+  async onPinSubmit(pinCodeSubmitted: string) {
     let emp: Employee;
 
     const loadingEmployee = this.loadingCtrl.create({
@@ -154,11 +154,12 @@ export class ViewMeetingPage {
     });
     loadingEmployee.present();
 
-    const corporateId = this.adminService.corporateIdRadical + pinCode;
+    // const corporateId = this.adminService.corporateIdRadical + pinCode;
+    const pinCode = pinCodeSubmitted;
     const site = this.adminService.selectedSite;
     try {
 
-      emp = await this.gesroomService.getEmployeeDetails(corporateId, site);
+      emp = await this.gesroomService.getEmployeeDetails(pinCode, site);
 
       if (!emp) {
         const errorEmp = this.loadingCtrl.create({

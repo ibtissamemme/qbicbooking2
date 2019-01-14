@@ -6,6 +6,7 @@ interface ConstructorType {
   company: string
   type: any
   status: any
+  pinCode: string
 }
 
 export class Employee {
@@ -28,6 +29,7 @@ export class Employee {
   Login: string;
   PersonVisitedId: string;
   SiteId: string;
+  pinCode: string;
 
   constructor(input:ConstructorType){
     this.id = input.id;
@@ -37,6 +39,7 @@ export class Employee {
     this.company = input.company;
     this.type = input.type;
     this.status = input.status;
+    this.pinCode = input.pinCode;
   }
 
   // constructor(id: number, corporateID: string, firstName: string, lastName: string, company: string, type: any, status: any) {
@@ -51,6 +54,10 @@ export class Employee {
 
   get _corporateId() {
     return this.corporateID ? this.corporateID : this.CorporateId;
+  };
+
+  get _pinCode() {
+    return this.pinCode;
   };
 
   get _firstName() {
@@ -77,7 +84,8 @@ export function EmployeeFromJSON(json: Object): Employee {
     lastName: json['lastName'],
     company: json['company'],
     type: json['attendeeType'],
-    status: json['attendeeStatus']
+    status: json['attendeeStatus'],
+    pinCode: json['pinCode']
   }
   return new Employee(input);
 }

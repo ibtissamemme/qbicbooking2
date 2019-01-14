@@ -78,9 +78,9 @@ export class CheckPincodePage {
     }
   }
 
-  async onPinSubmit(pinCode: string) {
-    console.log(pinCode);
-    if (this.adminService.isAdminAuthorized(pinCode)) {
+  async onPinSubmit(pinCodeSubmitted: string) {
+    console.log(pinCodeSubmitted);
+    if (this.adminService.isAdminAuthorized(pinCodeSubmitted)) {
       this.navCtrl.push(AdminPage);
     }
     else {
