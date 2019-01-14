@@ -120,7 +120,11 @@ export class AdminPage {
         return;
       }
       this.isNfcEnabled = data;
-      this.nfcTestMode();
+      try {
+        this.scanNfc();
+      } catch (error) {
+        console.error(error);
+      }
     });
   }
 
@@ -229,7 +233,7 @@ export class AdminPage {
   onBookingPinVisibilityChange() {
 
   }
-  nfcTestMode() {
+  scanNfc() {
     if (this.isNfcEnabled) {
       // TODO : Remove subscription on exit
       this.subscription.add(this.nfc.addNdefListener(() => {
