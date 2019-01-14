@@ -201,8 +201,9 @@ export class AdminPage {
     // also save the api params
     this.onSaveAPIParam()
     // go back to the root page
-    this.navCtrl.setRoot(HomePage);
-    setTimeout(() => this.navCtrl.popToRoot(), 500);
+    // this.navCtrl.setRoot(HomePage);
+    // setTimeout(() => this.navCtrl.popToRoot(), 500);
+    this.navCtrl.pop();
   }
 
   // reboot the device
