@@ -222,7 +222,9 @@ export class TrainingPage {
 
   // go to the next slide
   nextSlide() {
-    this.slides.slideNext();
+    if(this.slides) {
+      this.slides.slideNext();
+    }
   }
 
 
@@ -246,6 +248,9 @@ getNextLang(currentLanguage: string): string {
       return false;
     if (emp.status === 1)
       return true;
+    if (emp.status === "Present") {
+      return true;
+    }
     else return null;
   }
 }
