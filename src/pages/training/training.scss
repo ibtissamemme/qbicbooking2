@@ -131,6 +131,17 @@ page-training {
   }
 
   .attendees {
+    .present-col-icon {
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      vertical-align: middle;
+      img {
+        text-align: center;
+        vertical-align: middle;
+      }
+    }
+
     font-size: $font-size-small;
     border-bottom: 1pt solid color($colors, disabled);
 

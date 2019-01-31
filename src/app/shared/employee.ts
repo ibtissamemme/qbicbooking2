@@ -63,6 +63,19 @@ export class Employee {
   get _id(){
     return this.id ? this.id : this.PersonVisitedId;
   }
+
+  isPresent(): boolean {
+    if (this.corporateID)
+      return null;
+    if (this.status === -1)
+      return false;
+    if (this.status === 1)
+      return true;
+    if (this.status === "Present") {
+      return true;
+    }
+    else return null;
+  }
 }
 
 export function EmployeeFromJSON(json: Object): Employee {

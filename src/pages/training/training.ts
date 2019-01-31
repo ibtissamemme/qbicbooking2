@@ -241,16 +241,5 @@ getNextLang(currentLanguage: string): string {
   // langage displayed on the interface should be the next lang
 }
 
-  isPresent(emp: Employee): boolean {
-    if (emp.corporateID)
-      return null;
-    if (emp.status === -1)
-      return false;
-    if (emp.status === 1)
-      return true;
-    if (emp.status === "Present") {
-      return true;
-    }
-    else return null;
-  }
+
 }
