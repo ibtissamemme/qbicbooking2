@@ -117,13 +117,27 @@ export function meetingFromJSON(input: Object) {
 
 
   const owner = EmployeeFromJSON(input['host']);
+  let trainer;
+  let filteredAttendies = new Array<Employee>();
+  attendies.forEach( (emp) => {
+    if(emp && emp.type === "Trainer") {
+      trainer = emp;
+    } else {
+      filteredAttendies.push(emp);
+    }
+  })
+
+  if(!trainer || trainer === undefined) {
+    trainer = owner;
+  }
 
   let temp: MeetingConstructorInput = {
     id: input['meetingId'],
-    attendies: attendies,
+    attendies: filteredAttendies,
     meetingName: input['description'],
     meetingDescription: input['comment'],
     owner: owner,
+    trainer: trainer,
     startDateTime: moment(input['meetingStartDate'], 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
     endDateTime: moment(input['meetingEndDate'], 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
     meetingStatus: input['description']

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="19px" viewBox="0 0 21 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_Inside_Green</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="icon_OnBoard_Green" transform="translate(-7.000000, -9.000000)" stroke="#19C019">
+            <g id="icon_Inside_Green" transform="translate(8.000000, 10.000000)">
+                <path d="M2.88730833,11.88555 L2.88730833,14.7125083 C2.88730833,15.8862167 3.83930833,16.8375083 5.01230833,16.8375083 L17.2459333,16.8375083 C18.4196417,16.8375083 19.3709333,15.8862167 19.3709333,14.7125083 L19.3709333,2.47959167 C19.3709333,1.305175 18.4196417,0.354591667 17.2459333,0.354591667 L5.01230833,0.354591667 C3.83930833,0.354591667 2.88730833,1.305175 2.88730833,2.47959167 L2.88730833,5.30655" id="Stroke-1"></path>
+                <path d="M14.6356542,8.59640417 L0.3542375,8.59640417" id="Stroke-3"></path>
+                <polyline id="Stroke-5" points="10.8248917 12.4070958 14.635725 8.5962625 10.8248917 4.78542917"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -101,7 +101,7 @@ page-training {
 
     .trainer {
       padding: 1%;
-      background-color: color($colors, primary-light-training);
+      background-color: color($colors, primary-light-training-grey);
       border-radius: 5px;
     }
     .trainer-info {
@@ -110,7 +110,7 @@ page-training {
     }
     .divider {
       height: 100%;
-      border-right: 1px solid color($colors, primary);
+      border-right: 1px solid color($colors, out-of-range);
       margin-right: 20px;
     }
 

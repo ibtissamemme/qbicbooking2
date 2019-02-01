@@ -67,7 +67,7 @@
               {{ 'TRAINING_PAGE.TRAINER' | translate }}
             </div>
             <div class="value">
-              {{ meeting?.owner.firstName }} {{ meeting?.owner.lastName}}
+              {{ meeting?.trainer.firstName }} {{ meeting?.trainer.lastName}}
             </div>
           </div>
         </ion-col>
@@ -125,7 +125,7 @@
 
           <ion-row class="middle attendees" center *ngFor="let attendee of meeting?.attendies">
             <ion-col  center class="present-col-icon" col-1  >
-              <img style="height: 30px; width: 30px;" *ngIf="attendee.isPresent() === true"  src="assets/icon/icon_Checkin.svg"/>
+              <img style="height: 30px; width: 30px;" *ngIf="attendee.isPresent() === true"  src="assets/icon/icon_Inside_Green.svg"/>
             </ion-col>
             <ion-col col-3 class="name">
               {{attendee.lastName}}
