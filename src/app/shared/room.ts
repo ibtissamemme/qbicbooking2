@@ -36,5 +36,5 @@ export function roomFromJSON(jsonInput:Object):Room {
   return new Room(jsonInput['roomId'] || jsonInput['RoomId'],
   jsonInput['description'] || jsonInput['Description'],
   jsonInput['roomNumber'] || jsonInput['RoomNumber'],
-  jsonInput['roomType'] || jsonInput['RoomType'], 8);
+  jsonInput['roomType'], 8);
 }

@@ -169,7 +169,7 @@ export class GesroomService {
     body.set('APIKeys', this.apiKey2);
 
     await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
-      if(data){
+      if (data) {
         this.authToken = data['access_token'];
       }
       // console.log(data.text());
@@ -180,7 +180,7 @@ export class GesroomService {
   // **********************
   // new API authorization header helper
   // **********************
-  async setHeaders2()  {
+  async setHeaders2() {
     if (!this.authToken) {
       await this.authenticate();
     }
@@ -211,7 +211,7 @@ export class GesroomService {
     //return this.http.get(`${this.endpoint2}/api/RoomLayout/${room.Id}`, this.setHeaders2())
     let cap = 8;
     const resp = await this.http.get(`${this.endpoint2}/api/Room/${room.Id}/Layout`, await this.setHeaders2()).toPromise();
-    if(resp && Array.isArray(resp)){
+    if (resp && Array.isArray(resp)) {
       cap = resp[0]['capacity'];
     }
     return cap;
@@ -223,7 +223,7 @@ export class GesroomService {
     if (resp) {
       let ret: Employee
       if (Array.isArray(resp)) {
-        if(resp.length === 0){
+        if (resp.length === 0) {
           return null;
         }
         // for some reason we get back an array
@@ -231,7 +231,7 @@ export class GesroomService {
       } else {
         ret = EmployeeFromJSON(resp);
       }
-      if(ret.id !== null){
+      if (ret.id !== null) {
         return ret;
       }
     }
@@ -252,7 +252,7 @@ export class GesroomService {
       const resp = await this.http.get<boolean>(`${this.endpoint2}/api/CheckRightRoom?roomId=${room.Id}&employeeId=${emp.id}`, await this.setHeaders2()).toPromise();
       return resp;
     } catch (error) {
-      if(error.status !== 404){
+      if (error.status !== 404) {
         throw error;
       }
     }
@@ -276,17 +276,35 @@ export class GesroomService {
         .get(`${this.endpoint2}/api/Room?siteId=${site.Id}`, await this.setHeaders2())
         .toPromise();
 
-        if (resp && Array.isArray(resp)) {
+      if (resp && Array.isArray(resp)) {
         resp.forEach(element => {
           rooms.push(roomFromJSON(element));
         });
       }
     } catch (error) {
-      if(error.status !== 404){
+      if (error.status !== 404) {
         throw error;
       }
     }
     return rooms;
+  }
+
+  async getRoom(roomId: string) {
+    let room;
+    try {
+      const resp = await this.http
+        .get(`${this.endpoint2}/api/Room/${roomId}`, await this.setHeaders2())
+        .toPromise();
+
+      if (resp) {
+        room = roomFromJSON(resp);
+      }
+    } catch (error) {
+      if (error.status !== 404) {
+        throw error;
+      }
+    }
+    return room;
   }
 
   async getMeetings(room: Room) {
@@ -305,13 +323,14 @@ export class GesroomService {
           });
         }
       } catch (error) {
-        if(error.name === "TimeoutError"){
+        if (error.name === "TimeoutError") {
           console.error(error);
           return;
         }
         // for the API, a 404 equals to no meeting
-        if(error.status !== 404){
-          throw error;
+        if (error.status !== 404) {
+          console.log(error);
+           error;
         }
       }
       return meetings;
@@ -356,9 +375,9 @@ export class GesroomService {
 
   async putMeeting(meeting: Meeting) {
     await this.http.put(`${this.endpoint2}/api/Meeting/${meeting.id}`, {
-        meetingStartDate: meeting.startDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
-        meetingEndDate: meeting.endDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
-        meetingId: meeting.id
+      meetingStartDate: meeting.startDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
+      meetingEndDate: meeting.endDateTime.format('YYYY-MM-DD[T]HH:mm:ss'),
+      meetingId: meeting.id
     }, await this.setHeaders2()).toPromise();
 
   }

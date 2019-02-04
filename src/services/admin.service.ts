@@ -94,6 +94,16 @@ export class AdminService {
       this.selectedRoom = JSON.parse(data);
       this.selectedRoomObs.next(this.selectedRoom);
       this.checkSlides();
+      // refresh
+      this.gesroomService.getRoom(this.selectedRoom.Id).then( (room) => {
+        if(room) {
+          this.selectedRoom = room;
+          this.setToStorage("selectedRoom", this.selectedRoom);
+          this.selectedRoomObs.next(this.selectedRoom);
+        }
+      })
+      .catch( (error) => console.error(error) );
+
     });
 
     this.storage.get("isPinInClearText").then((data: string) => {

@@ -300,6 +300,7 @@ export class HomePage {
     //refresh the meetings
     this.adminService.refreshMeetings();
     this.tabletService.changeLED(this.currentStatus);
+
   };
 
 
