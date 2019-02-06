@@ -17,6 +17,7 @@ export class GesroomService {
 
   private endpoint: string;
   private userId: string;
+  private userPass: string;
   private apiKey: string;
   private tabletId: string;
 
@@ -39,6 +40,12 @@ export class GesroomService {
     return this.userIdObs.asObservable();
   };
 
+  private userPassObs: BehaviorSubject<string>;
+  get userPass$(): Observable<string> {
+    return this.userPassObs.asObservable();
+  };
+
+
   private endpoint2Obs: BehaviorSubject<string>;
   get endpoint2$(): Observable<string> {
     return this.endpoint2Obs.asObservable();
@@ -55,6 +62,7 @@ export class GesroomService {
     this.endpoint2Obs = new BehaviorSubject(undefined)
     this.apiKey2Obs = new BehaviorSubject(undefined)
     this.userIdObs = new BehaviorSubject(undefined)
+    this.userPassObs = new BehaviorSubject(undefined)
   }
 
   // generic parameter loading function
@@ -134,9 +142,11 @@ export class GesroomService {
 
       this.endpoint2 = await this.loadParam('endpoint2');
       this.apiKey2 = await this.loadParam('apiKey2');
+      this.userPass = await this.loadParam('password');
 
       this.endpointObs.next(this.endpoint);
       this.userIdObs.next(this.userId)
+      this.userPassObs.next(this.userPass)
       this.apiKeyObs.next(this.apiKey)
       //console.log("setup complete:",this.endpoint, this.apiKey, this.userId);
       this.endpoint2Obs.next(this.endpoint2);
@@ -165,7 +175,7 @@ export class GesroomService {
     let body = new URLSearchParams();
     body.set('grant_type', 'password');
     body.set('username', this.userId);
-    body.set('password', this.userId);
+    body.set('password', this.userPass? this.userPass : this.userId);
     body.set('APIKeys', this.apiKey2);
 
     await this.http.post(this.endpoint2 + "/api/token", body.toString(), options).toPromise().then((data) => {
