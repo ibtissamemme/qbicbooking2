@@ -127,7 +127,7 @@ export function meetingFromJSON(input: Object) {
     }
   })
 
-  if(!trainer || trainer === undefined) {
+  if(!trainer || trainer === undefined || trainer === undefined) {
     trainer = owner;
   }
 
