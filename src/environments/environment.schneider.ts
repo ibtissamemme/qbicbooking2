@@ -10,7 +10,7 @@ export const ENV = {
   adminId: "SESA65737",
   tabletId: "123456",
   adminCode: "1607",
-  logo: "schneider-white-logo.png",
+  logo: "logo-schneider.png",
   defaultlang:"fr",
   prefix:"SESA",
   bookingStartHour:7,
