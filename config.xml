@@ -20,6 +20,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <resource-file src="platforms/android/app/src/main/AndroidManifest.xml" target="AndroidManifest.xml" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/Icon-ldpi.png" />
         <icon density="mdpi" src="resources/android/icon/Icon-mdpi.png" />
@@ -87,5 +88,5 @@
     <plugin name="sentry-cordova" spec="^0.13.1" />
     <engine name="ios" spec="4.5.5" />
     <engine name="browser" spec="5.0.4" />
-    <engine name="android" spec="^7.0.0" />
+    <engine name="android" spec="7.1.4" />
 </widget>

@@ -1,9 +1,9 @@
 //r: 61, g:205, b: 88
 export const ENV = {
   mode: "Production",
-  endpoint: "http://demo.safeware.fr/sales/HamiltonAppsAPI",
+  endpoint: "https://demo.safeware.fr/sales/HamiltonAppsAPI",
   apiKey: "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ",
-  endpoint2: "http://demo.safeware.fr/sales/HamiltonAppsAPI",
+  endpoint2: "https://demo.safeware.fr/sales/HamiltonAppsAPI",
   apiKey2: "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ",
   adminId: "TAFFIN",
   password: "23Turbig0",
