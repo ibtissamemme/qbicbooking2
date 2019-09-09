@@ -10,12 +10,13 @@ export class Room {
   localization: string;
   roomType: RoomType;
   capacity: number = 8;
+
   constructor(Id: string, name: string, localization: string, roomType: number, capacity: number) {
     this.Id = Id;
     this.name = name;
     this.localization = localization;
     this.roomType = roomType;
-    if(capacity){
+    if (capacity) {
       this.capacity = capacity;
     }
   };
@@ -32,9 +33,10 @@ export class Room {
 // RoomNumber: "Bien Etre"
 // SiteId: "VPARDEFAUT"
 
-export function roomFromJSON(jsonInput:Object):Room {
+export function roomFromJSON(jsonInput: Object): Room {
   return new Room(jsonInput['roomId'] || jsonInput['RoomId'],
-  jsonInput['description'] || jsonInput['Description'],
-  jsonInput['roomNumber'] || jsonInput['RoomNumber'],
-  jsonInput['roomType'], 8);
+    jsonInput['description'] || jsonInput['Description'],
+    jsonInput['roomNumber'] || jsonInput['RoomNumber'],
+    jsonInput['roomType'], 8);
 }
+
