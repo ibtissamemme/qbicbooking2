@@ -1,11 +1,12 @@
 //r: 61, g:205, b: 88
 export const ENV = {
   mode: "Development",
-  endpoint: "http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API",
+  endpoint: "https://demo.safeware.fr/tech/HamiltonAppsAPI",
   apiKey: "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ",
-  endpoint2: "http://safeware-custk.hds-group.com/HamiltonAppsAPI",
+  endpoint2: "https://demo.safeware.fr/tech/HamiltonAppsAPI",
   apiKey2: "MEI97ZZ8POQFZZ2BIBWJPRNLSLPZ",
-  adminId: "SESA65737",
+  adminId: "taffin",
+  password: "2206",
   tabletId: "123456",
   adminCode: "1607",
   logo: "logo_white.png",
