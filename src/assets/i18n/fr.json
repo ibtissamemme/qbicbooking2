@@ -52,6 +52,7 @@
     "CONFIRM_AND_TEST": "Sauver et tester",
     "SAVE": "Sauver les paramètre",
     "TEST": "Tester la connection",
+    "RESET": "Configuration par défaut",
     "TABLET_CONFIGURATION": "Configuration tablette",
     "BOOKING_ENABLED": "Autoriser les réservations depuis cette tablette",
     "BOOKING_RANGE": "Plage horaire, heure de début et de fin possible de réservation (en heures)",

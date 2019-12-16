@@ -1,13 +1,13 @@
-import { RoomType } from "./../app/shared/room";
-import { GesroomService } from "./gesroom.service";
-import { MeetingList } from "../../src/app/shared/meetingList";
-import { Injectable } from "@angular/core";
-import { Site } from "app/shared/site";
-import { Room } from "app/shared/room";
-import { Storage } from "@ionic/storage";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ENV } from "@app/env";
+import {RoomType} from "./../app/shared/room";
+import {GesroomService} from "./gesroom.service";
+import {MeetingList} from "../../src/app/shared/meetingList";
+import {Injectable} from "@angular/core";
+import {Site} from "app/shared/site";
+import {Room} from "app/shared/room";
+import {Storage} from "@ionic/storage";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {ENV} from "@app/env";
 
 @Injectable()
 export class AdminService {
@@ -24,40 +24,49 @@ export class AdminService {
   corporateIdRadical: string;
 
   private selectedRoomObs: BehaviorSubject<Room>;
+
   get selectedRoom$(): Observable<Room> {
     return this.selectedRoomObs.asObservable();
   }
 
   private selectedSiteObs: BehaviorSubject<Site>;
+
   get selectedSite$(): Observable<Site> {
     return this.selectedSiteObs.asObservable();
   }
 
   private meetingListObs: BehaviorSubject<MeetingList>;
+
   get meetingList$(): Observable<MeetingList> {
     return this.meetingListObs.asObservable();
   }
 
   private slidesAvailableObs: BehaviorSubject<Site>;
+
   get slidesAvailable$(): Observable<Site> {
     return this.slidesAvailableObs.asObservable();
   }
 
   private isBookingEnabledObs: BehaviorSubject<boolean>;
+
   get isBookingEnabled$(): Observable<boolean> {
     return this.isBookingEnabledObs.asObservable();
   }
 
   private isPinInClearTextObs: BehaviorSubject<boolean>;
+
   get isPinInClearText$(): Observable<boolean> {
     return this.isPinInClearTextObs.asObservable();
   }
 
   private bookingStartHourObs: BehaviorSubject<number>;
+
   get bookingStartHour$(): Observable<number> {
     return this.bookingStartHourObs.asObservable();
   }
+
   private bookingEndHourObs: BehaviorSubject<number>;
+
   get bookingEndHour$(): Observable<number> {
     return this.bookingEndHourObs.asObservable();
   }
@@ -95,14 +104,14 @@ export class AdminService {
       this.selectedRoomObs.next(this.selectedRoom);
       this.checkSlides();
       // refresh
-      this.gesroomService.getRoom(this.selectedRoom.Id).then( (room) => {
-        if(room) {
+      this.gesroomService.getRoom(this.selectedRoom.Id).then((room) => {
+        if (room) {
           this.selectedRoom = room;
           this.setToStorage("selectedRoom", this.selectedRoom);
           this.selectedRoomObs.next(this.selectedRoom);
         }
       })
-      .catch( (error) => console.error(error) );
+        .catch((error) => console.error(error));
 
     });
 
@@ -135,7 +144,7 @@ export class AdminService {
       .then(async data => {
         if (!data) {
           let value = Number.parseInt(await that.loadParam("bookingStartHour"));
-          if(!Number.isInteger(value)){
+          if (!Number.isInteger(value)) {
             value = 7;
           }
           return value;
@@ -157,7 +166,7 @@ export class AdminService {
       .then(async data => {
         if (!data) {
           let value = Number.parseInt(await that.loadParam("bookingEndHour"));
-          if(!Number.isInteger(value)){
+          if (!Number.isInteger(value)) {
             value = 20;
           }
           return value;
@@ -174,10 +183,9 @@ export class AdminService {
         console.error(e);
       });
 
-      this.defaultLang = ENV.defaultlang;
-      this.corporateIdRadical = ENV.prefix;
+    this.defaultLang = ENV.defaultlang;
+    this.corporateIdRadical = ENV.prefix;
   }
-
 
 
   setSelectedSite(site: Site) {
@@ -236,7 +244,7 @@ export class AdminService {
       this.gesroomService
         .getMeetings(this.selectedRoomObs.getValue())
         .then(data => {
-          if (data ) {
+          if (data) {
             this.meetingList.meetingList = data;
             this.meetingList.sort();
             this.meetingListObs.next(this.meetingList);
@@ -316,5 +324,12 @@ export class AdminService {
       res = JSON.parse(data);
     }
     return res;
+  }
+
+  /**
+   * Clears local storage, needs reboot afterwards
+   */
+  localStorageReset() {
+    return this.storage.clear();
   }
 }

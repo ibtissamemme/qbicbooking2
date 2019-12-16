@@ -52,6 +52,7 @@
     "CONFIRM_AND_TEST": "Confirm & test",
     "SAVE": "Save parameters",
     "TEST": "Connection test",
+    "RESET": "Restore default configuration",
     "TABLET_CONFIGURATION": "Device configuration",
     "BOOKING_ENABLED": "Enable booking",
     "CONFIRM_BOOKING":"Continue",

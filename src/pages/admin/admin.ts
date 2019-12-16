@@ -266,6 +266,38 @@ export class AdminPage {
     })
   }
 
+  onResetClick() {
+    let alert = this.alertCtrl.create({
+      title: 'Warning',
+      message: `<p>Attention, cette action entrainera une réinitialisation des paramètres et un fermeture de l'application.</p>
+                <p>Vous devrez la redémarrer.</p>
+                <p>Souhaitez-vous continuer ?</p>`,
+      buttons: [{
+        role: 'cancel',
+        text: 'Annuler',
+        handler: (data) => {
+          alert.dismiss();
+          return false;
+        }
+      },
+        {
+          text: 'Réinitialisation',
+          handler: (data) => {
+            alert.dismiss();
+            this.adminService.localStorageReset().then(() => {
+              this.platform.exitApp();
+            });
+            return false;
+          }
+        }],
+      cssClass: 'alert'
+    });
+    alert.present();
+    setTimeout(() => {
+      alert.dismiss();
+    }, this.timer);
+  }
+
   // reboot the device
   onRebootClick() {
     this.tabletService.rebootTablet();
