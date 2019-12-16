@@ -12,17 +12,24 @@
 
       <ion-item>
         <ion-label> {{ 'ADMIN.SITE' | translate }} </ion-label>
-        <ion-select [(ngModel)]="this.selectedSite" (ionChange)="onSiteChange()" [compareWith]="compareSite">
+        <ion-select [disabled]="this.sites.length == 0"
+                    [(ngModel)]="this.selectedSite"
+                    (ionChange)="onSiteChange()"
+                    [compareWith]="compareSite">
           <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite?.Id===sisite.Id" [value]="sisite">{{
-            sisite.name }}</ion-option>
+              sisite.name }}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label> {{ 'ADMIN.ROOM' | translate }}</ion-label>
-        <ion-select [(ngModel)]="this.selectedRoom" (ionChange)="onRoomChange()" [compareWith]="compareRoom">
+        <ion-select
+          [disabled]="this.rooms.length == 0"
+          [(ngModel)]="this.selectedRoom"
+          (ionChange)="onRoomChange()"
+          [compareWith]="compareRoom">
           <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom?.Id===room.Id" [value]="room">{{
-            room.name }}</ion-option>
+              room.name }}</ion-option>
         </ion-select>
       </ion-item>
     </ion-item-group>
@@ -49,7 +56,7 @@
       </ion-item-divider>
       <ion-item>
         <ion-label class="hour"> {{ 'ADMIN.BOOKING_START' | translate }} </ion-label>
-        <ion-input text-right  type="tel" min=0 max=24 [(ngModel)]="this.bookingStartHour"></ion-input>
+        <ion-input text-right type="tel" min=0 max=24 [(ngModel)]="this.bookingStartHour"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label class="hour"> {{ 'ADMIN.BOOKING_END' | translate }} </ion-label>
@@ -92,7 +99,11 @@
     <ion-item-group>
       <button ion-button icon-start (click)="onSaveAPIParam()">
         <ion-icon name="checkmark-circle"></ion-icon>
-        {{ 'ADMIN.CONFIRM_AND_TEST' | translate }}
+        {{ 'ADMIN.SAVE' | translate }}
+      </button>
+      <button ion-button icon-start (click)="onTestClick()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        {{ 'ADMIN.TEST' | translate }}
       </button>
 
     </ion-item-group>

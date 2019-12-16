@@ -1,12 +1,12 @@
-import { TabletService } from './../../services/tablet.service';
-import { StatusBar } from '@ionic-native/status-bar';
-import { MeetingList } from './../../app/shared/meetingList';
-import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from "ionic-angular";
-import { Site, siteFromJson } from "../../app/shared/site";
-import { Room, roomFromJSON } from "../../app/shared/room";
-import { GesroomService } from "../../services/gesroom.service";
-import { AdminService } from "../../services/admin.service";
+import {TabletService} from './../../services/tablet.service';
+import {StatusBar} from '@ionic-native/status-bar';
+import {MeetingList} from './../../app/shared/meetingList';
+import {Component} from "@angular/core";
+import {IonicPage, NavController, NavParams, LoadingController, Platform, AlertController} from "ionic-angular";
+import {Site, siteFromJson} from "../../app/shared/site";
+import {Room, roomFromJSON} from "../../app/shared/room";
+import {GesroomService} from "../../services/gesroom.service";
+import {AdminService} from "../../services/admin.service";
 
 
 @IonicPage()
@@ -21,7 +21,7 @@ export class AdminPage {
   selectedSite: Site;
   selectedRoom: Room;
 
-  endpoint: string = "http://safeware-custk.hds-group.com/GesroomRestAPI/Gesroom/API";
+  endpoint: string;
   userId: string;
   apiKey: string;
   tabletId: string;
@@ -32,11 +32,13 @@ export class AdminPage {
   bookingStartHour;
   bookingEndHour;
 
-  isPinInClearText:boolean = true;
+  isPinInClearText: boolean = true;
 
   // flag to enable or not the booking on the tablet
   // default to true
   isBookingEnabled: boolean = true;
+  // popin dismiss timeout
+  timer: number = 3000;
 
   constructor(
     public navCtrl: NavController,
@@ -44,7 +46,8 @@ export class AdminPage {
     private gesroomService: GesroomService,
     private adminService: AdminService,
     private tabletService: TabletService,
-    private loadingCtrl:LoadingController,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
     private _platform: Platform
   ) {
     this.platform = _platform;
@@ -72,7 +75,6 @@ export class AdminPage {
     this.adminService.bookingEndHour$.subscribe((data) => {
       this.bookingEndHour = data;
     });
-
 
     this.sites = await this.gesroomService.getSites();
     this.adminService.selectedSite$.subscribe((data) => {
@@ -135,14 +137,14 @@ export class AdminPage {
     });
 
     this.adminService.isBookingEnabled$.subscribe((data) => {
-      if(!data) {
+      if (!data) {
         return;
       }
       this.isBookingEnabled = data;
     });
 
     this.adminService.isPinInClearText$.subscribe((data) => {
-      if(!data) {
+      if (!data) {
         return;
       }
       this.isPinInClearText = data;
@@ -192,7 +194,7 @@ export class AdminPage {
     this.bookingEndHour = Number.parseInt(this.bookingEndHour);
 
     // TODO: translate this....
-    if(!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)){
+    if (!Number.isInteger(this.bookingStartHour) || !Number.isInteger(this.bookingEndHour)) {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
         content: "Merci de rentrer un chiffre pour l'heure de début et de fin de plage horaire",
@@ -206,7 +208,7 @@ export class AdminPage {
     }
 
 
-    if(!this.checkHourRange(this.bookingStartHour) || !this.checkHourRange(this.bookingEndHour)){
+    if (!this.checkHourRange(this.bookingStartHour) || !this.checkHourRange(this.bookingEndHour)) {
       const sorryAlert = this.loadingCtrl.create({
         spinner: 'hide',
         content: "Merci de rentrer un chiffre entre 0 et 23 pour l'heure de début et de fin de plage horaire",
@@ -224,19 +226,57 @@ export class AdminPage {
     // also save the api params
     this.onSaveAPIParam();
     // go back to the root page
-    setTimeout(() => this.navCtrl.popToRoot(),500);
+    setTimeout(() => this.navCtrl.popToRoot(), 500);
+  }
+
+  onTestClick() {
+    const loading = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'loading...',
+      cssClass: 'prompt'
+    });
+    loading.present();
+    this.onSaveAPIParam();
+    this.gesroomService.authenticate().then(() => {
+      loading.dismiss();
+      // on successful test immidiatly refresh sites
+      this.updateSites();
+      let alert = this.alertCtrl.create({
+        title: 'Connection OK.',
+        subTitle: `Paramètres API OK.`,
+        buttons: ['OK'],
+        cssClass: 'alert'
+      });
+      alert.present();
+      setTimeout(() => {
+        alert.dismiss();
+      }, this.timer);
+    }).catch((reason) => {
+      loading.dismiss();
+      let alert = this.alertCtrl.create({
+        title: 'Connection problem...',
+        subTitle: `Error ${reason.status}<br>${reason.message}<br>${reason.error ? reason.error.message : ''}`,
+        buttons: ['OK'],
+        cssClass: 'alert'
+      });
+      alert.present();
+      setTimeout(() => {
+        alert.dismiss();
+      }, this.timer);
+    })
   }
 
   // reboot the device
-  onRebootClick(){
+  onRebootClick() {
     this.tabletService.rebootTablet();
   }
-  onCloseAppClick(){
-      this.platform.exitApp();
+
+  onCloseAppClick() {
+    this.platform.exitApp();
   }
 
   // updates rooms on site change
-  async updateRooms(){
+  async updateRooms() {
     if (this.selectedSite) {
       // get room list
       this.rooms = await this.gesroomService.getRooms(this.selectedSite);
@@ -244,16 +284,22 @@ export class AdminPage {
     }
   }
 
+  async updateSites() {
+    this.gesroomService.getSites().then((sites) => {
+      this.sites = sites;
+    });
+  }
 
   onCancelClicked() {
     // go back to the root page
     this.navCtrl.popToRoot();
   }
-  onBookingEnabledChange(){
+
+  onBookingEnabledChange() {
 
   }
 
-  onBookingPinVisibilityChange(){
+  onBookingPinVisibilityChange() {
 
   }
 
@@ -265,8 +311,8 @@ export class AdminPage {
     return c1 && c2 ? c1.Id === c2.Id : c1 === c2;
   }
 
-  checkHourRange(input:number): boolean{
-    if(input<0 || input>23){
+  checkHourRange(input: number): boolean {
+    if (input < 0 || input > 23) {
       return false;
     }
     return true;

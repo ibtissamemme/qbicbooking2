@@ -50,6 +50,8 @@
     "ENDPOINT2": "URL2",
     "API_KEY2": "API Key2",
     "CONFIRM_AND_TEST": "Confirm & test",
+    "SAVE": "Save parameters",
+    "TEST": "Connection test",
     "TABLET_CONFIGURATION": "Device configuration",
     "BOOKING_ENABLED": "Enable booking",
     "CONFIRM_BOOKING":"Continue",
