@@ -1,12 +1,7 @@
 # Architecture
 
 ## Usage
-Launch: `yarn ionic:serve`
-
-Release: `yarn ionic:release`
-Release for the Schneider version: `yarn ionic:releaseschneider`
-
-You will need a certificate store for the release on android and a ios dev env for the ios release.
+See below.
 
 ## Code
 Badly written in Ionic 3, Angular 5.
@@ -78,3 +73,36 @@ Start content should be
 fr.safeware.qbicbooking2/.MainActivity
 
 The tablet should be in fullscreen mode, without the Android native mode activated.
+
+# Workspace installation
+
+1. Use node 8.11.2
+```nvm use 8.11.2```
+
+2. Install Ionic 3.1.9
+```npm install ionic@3.1.9```
+
+3. Install and setup Java JDK 1.8
+
+4. Configure keystore and add signing key with `androidRelease` alias
+
+5. Download and install Android Tooling
+
+6. Install Android SDK, version 26
+
+7. Add SDK bin directory to the path => get `zipalign` tool callable from the command line
+
+8. Install Cordova 7.1.0
+```npm install```
+
+9. Add android platform
+```ionic cordova platform add android@6.4.0```
+
+10. Adjust keystore path and custom environment variables in the package JSON
+
+# Build and release
+
+1. Customise environments in `src/environments`
+1. Serve with `ionic:serve:custom`
+1. Build with `ionic:release:custom`
+1. Release APK will be available in the `release` directory
