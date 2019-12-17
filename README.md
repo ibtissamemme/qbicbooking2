@@ -82,7 +82,7 @@ The tablet should be in fullscreen mode, without the Android native mode activat
 2. Install Ionic 3.1.9
 ```npm install ionic@3.1.9```
 
-3. Install and setup Java JDK 1.8
+3. Install and setup Java JDK 1.8 (not a later version...)
 
 4. Configure keystore and add signing key with `androidRelease` alias
 
@@ -100,9 +100,13 @@ The tablet should be in fullscreen mode, without the Android native mode activat
 
 10. Adjust keystore path and custom environment variables in the package JSON
 
+11. For testing only. add browser platform
+```ionic cordova platform add browser```
+
 # Build and release
 
 1. Customise environments in `src/environments`
-1. Serve with `ionic:serve:custom`
-1. Build with `ionic:release:custom`
+1. Update the `package.json` => `custom_env` variable
+1. Serve with `ionic:serve`
+1. Build with `ionic:release`
 1. Release APK will be available in the `release` directory
