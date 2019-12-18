@@ -122,7 +122,7 @@ export class ViewMeetingPage {
     });
     loadingEmployee.present();
 
-    const corporateId = this.adminService.corporateIdRadical + pinCode;
+    const corporateId = this.adminService.prefix + pinCode;
     const site = this.adminService.selectedSite;
     try {
 

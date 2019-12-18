@@ -49,6 +49,7 @@
     "API_KEY": "API Key",
     "ENDPOINT2": "URL2",
     "API_KEY2": "API Key2",
+    "PREFIX": "Corporate ID prefix",
     "CONFIRM_AND_TEST": "Confirm & test",
     "SAVE": "Save parameters",
     "TEST": "Connection test",

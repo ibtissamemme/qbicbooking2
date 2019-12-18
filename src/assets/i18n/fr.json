@@ -49,6 +49,7 @@
     "API_KEY": "API Key",
     "ENDPOINT2": "URL2",
     "API_KEY2": "API Key2",
+    "PREFIX": "Préfix Matricule",
     "CONFIRM_AND_TEST": "Sauver et tester",
     "SAVE": "Sauver les paramètre",
     "TEST": "Tester la connection",

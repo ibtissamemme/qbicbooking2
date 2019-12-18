@@ -64,7 +64,7 @@ export class BookingPage {
     });
     loadingEmployee.present();
 
-    const corporateId = this.adminService.corporateIdRadical + pinCode;
+    const corporateId = this.adminService.prefix + pinCode;
     const site = this.adminService.selectedSite;
     this.emp = null;
     try {

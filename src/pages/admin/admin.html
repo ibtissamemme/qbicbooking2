@@ -17,7 +17,7 @@
                     (ionChange)="onSiteChange()"
                     [compareWith]="compareSite">
           <ion-option *ngFor="let sisite of sites" [selected]="this.selectedSite?.Id===sisite.Id" [value]="sisite">{{
-              sisite.name }}</ion-option>
+            sisite.name }}</ion-option>
         </ion-select>
       </ion-item>
 
@@ -29,7 +29,7 @@
           (ionChange)="onRoomChange()"
           [compareWith]="compareRoom">
           <ion-option *ngFor="let room of rooms" [selected]="this.selectedRoom?.Id===room.Id" [value]="room">{{
-              room.name }}</ion-option>
+            room.name }}</ion-option>
         </ion-select>
       </ion-item>
     </ion-item-group>
@@ -76,8 +76,12 @@
       </ion-item>
 
       <ion-item>
-        <ion-label staked> {{ 'ADMIN.API_KEY' | translate }}</ion-label>
+        <ion-label stacked> {{ 'ADMIN.API_KEY' | translate }}</ion-label>
         <ion-input [(ngModel)]="this.apiKey2"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked> {{ 'ADMIN.PREFIX' | translate }}</ion-label>
+        <ion-input [(ngModel)]="this.prefix"></ion-input>
       </ion-item>
 
     </ion-item-group>
@@ -96,7 +100,7 @@
         <ion-icon name="play"></ion-icon>
         {{ 'ADMIN.TEST' | translate }}
       </button>
-    <button ion-button icon-start (click)="onResetClick()">
+      <button ion-button icon-start (click)="onResetClick()">
         <ion-icon name="undo"></ion-icon>
         {{ 'ADMIN.RESET' | translate }}
       </button>

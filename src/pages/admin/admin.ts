@@ -28,6 +28,7 @@ export class AdminPage {
 
   endpoint2: string;
   apiKey2: string;
+  prefix: string;
 
   bookingStartHour;
   bookingEndHour;
@@ -77,6 +78,9 @@ export class AdminPage {
     });
 
     this.sites = await this.gesroomService.getSites();
+    this.adminService.prefix$.subscribe((data) => {
+      this.prefix = data;
+    });
     this.adminService.selectedSite$.subscribe((data) => {
       if (!data) {
         return console.error('no room list data');
@@ -177,6 +181,10 @@ export class AdminPage {
     if (this.userId) {
       this.gesroomService.setUserId(this.userId);
     }
+
+    // prefix can be empty string => no null value check there...
+    this.adminService.setPrefix(this.prefix);
+
   }
 
   onConfirmClicked() {

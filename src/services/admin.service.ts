@@ -21,7 +21,7 @@ export class AdminService {
   hourScrollInterval: number = 15;
   defaultLang: string = "fr";
 
-  corporateIdRadical: string;
+  prefix: string;
 
   private selectedRoomObs: BehaviorSubject<Room>;
 
@@ -71,6 +71,13 @@ export class AdminService {
     return this.bookingEndHourObs.asObservable();
   }
 
+  private prefixObs: BehaviorSubject<string>;
+
+  get prefix$(): Observable<string> {
+    return this.prefixObs.asObservable();
+  }
+
+
   constructor(
     private storage: Storage,
     private gesroomService: GesroomService
@@ -85,6 +92,7 @@ export class AdminService {
     this.isPinInClearTextObs = new BehaviorSubject(undefined);
     this.bookingStartHourObs = new BehaviorSubject(undefined);
     this.bookingEndHourObs = new BehaviorSubject(undefined);
+    this.prefixObs = new BehaviorSubject(undefined);
 
     this.storage.get("selectedSite").then(data => {
       if (!data) {
@@ -183,8 +191,26 @@ export class AdminService {
         console.error(e);
       });
 
+    this.storage.get("prefix").then(async data => {
+      if (!data) {
+        this.prefix = await that.loadParam("prefix");
+        if(!this.prefix) {
+          this.prefix = '';
+        }
+        return;
+      }
+      //console.log('selectedRoom Storage : ' + data);
+      this.prefix = JSON.parse(data);
+      if(!this.prefix) {
+        this.prefix = '';
+      }
+      this.prefixObs.next(this.prefix);
+      this.checkSlides();
+    }).catch(e => {
+      console.error(e);
+    });
+
     this.defaultLang = ENV.defaultlang;
-    this.corporateIdRadical = ENV.prefix;
   }
 
 
@@ -236,6 +262,12 @@ export class AdminService {
     this.bookingEndHourObs.next(hour);
     this.setToStorage("bookingEndHour", hour);
     this._bookingEndHour = hour;
+  }
+
+  setPrefix(prefix: string) {
+    this.prefixObs.next(prefix);
+    this.setToStorage("prefix", prefix);
+    this.prefix = prefix;
   }
 
   // makes a call to get meetings based on the selected room
