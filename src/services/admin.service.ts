@@ -197,15 +197,14 @@ export class AdminService {
         if(!this.prefix) {
           this.prefix = '';
         }
+        this.prefixObs.next(this.prefix);
         return;
       }
-      //console.log('selectedRoom Storage : ' + data);
       this.prefix = JSON.parse(data);
       if(!this.prefix) {
         this.prefix = '';
       }
       this.prefixObs.next(this.prefix);
-      this.checkSlides();
     }).catch(e => {
       console.error(e);
     });
